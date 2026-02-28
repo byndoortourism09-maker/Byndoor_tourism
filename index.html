@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="theme-color" content="#E8651A"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Byndoor"/>
+  <meta name="description" content="Discover Byndoor — Hidden Gem of Coastal Karnataka"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <link rel="stylesheet" href="css/app.css"/>
+  <title>Discover Byndoor 🌊</title>
+</head>
+<body>
+
+<!-- Install Banner -->
+<div id="install-banner">
+  <p>📲 Add Byndoor app to your home screen!</p>
+  <button id="install-btn">Install</button>
+  <button id="dismiss-btn">✕</button>
+</div>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="header-blob blob-lg"></div>
+  <div class="header-blob blob-sm"></div>
+  <div class="header-top">
+    <div class="app-logo">🌊 Discover Byndoor</div>
+    <div class="weather-pill">☀️ 29°C</div>
+  </div>
+  <div class="header-body">
+    <h1>Karnataka's<br/>Hidden Pearl</h1>
+    <p>📍 Udupi District · Coastal Karnataka</p>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-box">
+    <span>🔍</span>
+    <input id="search-input" type="text" placeholder="Search beaches, temples, food…"/>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" data-tab="attractions">🏛️ Attractions</button>
+  <button class="tab" data-tab="events">🎉 Events</button>
+  <button class="tab" data-tab="hotels">🏨 Hotels</button>
+  <button class="tab" data-tab="food">🍛 Food</button>
+</div>
+
+<!-- ATTRACTIONS -->
+<div class="section active" id="attractions">
+  <div class="hero-banner" style="background:linear-gradient(135deg,#1AAFCC,#0D8C76);margin-top:18px">
+    <div class="badge">⭐ Explore Byndoor</div>
+    <h2>Beautiful Coastal Attractions</h2>
+    <p>Beaches, temples, waterfalls & more</p>
+    <div class="deco">🌅</div>
+  </div>
+  <div class="sec-title" style="color:var(--sea)">🗺️ All Attractions</div>
+  <div id="attractions-grid" class="places-grid">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- EVENTS -->
+<div class="section" id="events">
+  <div class="hero-banner" style="background:linear-gradient(135deg,#E8397A,#E8651A);margin-top:18px">
+    <div class="badge">🎊 What's On</div>
+    <h2>Byndoor Celebrates!</h2>
+    <p>Festivals, clean-ups & cultural nights</p>
+    <div class="deco">🎉</div>
+  </div>
+  <div class="sec-title" style="color:var(--pink)">📅 Upcoming Events</div>
+  <div id="events-list">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- HOTELS -->
+<div class="section" id="hotels">
+  <div class="hero-banner" style="background:linear-gradient(135deg,#0D8C76,#1AAFCC);margin-top:18px">
+    <div class="badge">🛏️ Stay & Explore</div>
+    <h2>Rest in Coastal Comfort</h2>
+    <p>Forest retreats to beachside stays</p>
+    <div class="deco">🌴</div>
+  </div>
+  <div class="sec-title" style="color:var(--teal)">🏨 Where to Stay</div>
+  <div id="hotels-list">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- FOOD -->
+<div class="section" id="food">
+  <div class="hero-banner" style="background:linear-gradient(135deg,#E8651A,#F5B731);margin-top:18px">
+    <div class="badge">🍴 Local Flavours</div>
+    <h2>Taste Coastal Karnataka!</h2>
+    <p>Fresh seafood, coconut curries & more</p>
+    <div class="deco">🦐</div>
+  </div>
+  <div class="sec-title" style="color:var(--saffron)">🍽️ Where to Eat</div>
+  <div id="food-list">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" data-nav="attractions"><span class="ico">🏛️</span>Attractions</button>
+  <button class="nav-btn" data-nav="events"><span class="ico">🎉</span>Events</button>
+  <button class="nav-btn" data-nav="hotels"><span class="ico">🏨</span>Hotels</button>
+  <button class="nav-btn" data-nav="food"><span class="ico">🍛</span>Food</button>
+</div>
+
+<div id="offline-toast" class="toast">📵 Offline — showing cached content</div>
+
+<!-- Firebase -->
+<script src="js/firebase-config.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
