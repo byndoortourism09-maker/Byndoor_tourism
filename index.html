@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
@@ -18,11 +16,15 @@
     :root{--saffron:#E8651A;--gold:#F5B731;--sea:#1AAFCC;--teal:#0D8C76;--pink:#E8397A;--sand:#FFF8EF;--dark:#1C1C2E;--muted:#6B7280;--r:20px}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     body{font-family:'Poppins',sans-serif;background:var(--sand);color:var(--dark);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden}
+
+    /* INSTALL BANNER */
     #install-banner{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--dark);color:#fff;padding:12px 16px;z-index:999;align-items:center;gap:10px}
     #install-banner.show{display:flex}
     #install-banner p{flex:1;font-size:.8rem;font-weight:600}
     #ibtn{background:var(--saffron);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif}
     #dbtn{background:none;border:none;color:#aaa;font-size:1.2rem;cursor:pointer}
+
+    /* HEADER */
     .hdr{background:linear-gradient(150deg,#1AAFCC 0%,#E8651A 100%);padding:22px 18px 70px;position:relative;overflow:hidden}
     .hdr::after{content:'';position:absolute;bottom:-2px;left:-5%;width:110%;height:52px;background:var(--sand);border-radius:55% 55% 0 0/100% 100% 0 0}
     .blob{position:absolute;border-radius:50%;background:#fff;opacity:.12}
@@ -34,10 +36,14 @@
     .hdr-body{margin-top:14px;position:relative;z-index:2}
     .hdr-body h1{font-family:'Baloo 2',cursive;font-size:1.9rem;color:#fff;line-height:1.15;text-shadow:0 2px 12px rgba(0,0,0,.2)}
     .hdr-body p{color:rgba(255,255,255,.85);font-size:.85rem;margin-top:5px;font-weight:500}
+
+    /* SEARCH */
     .srch{padding:0 16px;margin-top:-20px;position:relative;z-index:10}
     .srch-box{display:flex;align-items:center;gap:10px;background:#fff;border-radius:50px;padding:12px 18px;box-shadow:0 8px 32px rgba(0,0,0,.13)}
     .srch-box input{border:none;outline:none;flex:1;font-family:'Poppins',sans-serif;font-size:.9rem;color:var(--dark);background:transparent}
     .srch-box input::placeholder{color:#bbb}
+
+    /* TABS */
     .tabs{display:flex;gap:8px;padding:16px 16px 0;overflow-x:auto;scrollbar-width:none}
     .tabs::-webkit-scrollbar{display:none}
     .tab{flex-shrink:0;border:none;cursor:pointer;padding:8px 18px;border-radius:50px;font-family:'Poppins',sans-serif;font-size:.8rem;font-weight:600;background:#ece8e2;color:#888;transition:all .25s}
@@ -46,15 +52,21 @@
     .tab[data-tab="events"].active{background:var(--pink)}
     .tab[data-tab="hotels"].active{background:var(--teal)}
     .tab[data-tab="food"].active{background:var(--saffron)}
-    .sec{display:none;padding:16px 16px 110px;animation:fu .3s ease}
+
+    /* SECTIONS */
+    .sec{display:none;padding:16px 16px 20px;animation:fu .3s ease}
     .sec.active{display:block}
     @keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
     .sec-title{font-family:'Baloo 2',cursive;font-size:1.25rem;margin-bottom:12px}
+
+    /* BANNER */
     .banner{border-radius:var(--r);padding:18px 20px;color:#fff;margin-bottom:18px;position:relative;overflow:hidden}
     .banner .bdg{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.85;margin-bottom:5px}
     .banner h2{font-family:'Baloo 2',cursive;font-size:1.25rem;line-height:1.2}
     .banner p{font-size:.8rem;opacity:.88;margin-top:4px}
     .banner .deco{position:absolute;right:12px;bottom:-10px;font-size:4.5rem;opacity:.22}
+
+    /* PLACE GRID */
     .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
     .pcard{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.08);cursor:pointer;transition:transform .18s;text-decoration:none;color:inherit;display:block}
     .pcard:active{transform:scale(.97)}
@@ -64,6 +76,8 @@
     .pcard-name{font-family:'Baloo 2',cursive;font-size:.95rem;line-height:1.2}
     .pcard-cat{display:inline-block;margin-top:5px;font-size:.65rem;font-weight:700;padding:3px 9px;border-radius:20px}
     .pcard-stars{font-size:.75rem;color:var(--gold);margin-top:3px}
+
+    /* LIST CARD */
     .lcard{background:#fff;border-radius:var(--r);margin-bottom:13px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.07);cursor:pointer}
     .lcard-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:3.2rem;position:relative;overflow:hidden}
     .lcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
@@ -73,9 +87,9 @@
     .lcard-price{font-family:'Baloo 2',cursive;font-size:1.2rem;color:var(--teal)}
     .lcard-price small{font-size:.72rem;color:#aaa;font-family:'Poppins',sans-serif}
     .cdesc{font-size:.8rem;color:var(--muted);margin-top:6px;line-height:1.6}
-    .ctags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-    .ctag{font-size:.68rem;font-weight:600;padding:3px 10px;border-radius:20px}
     .stars{color:var(--gold);font-size:.82rem;margin-top:2px}
+
+    /* EVENT CARD */
     .ecard{display:flex;align-items:center;gap:13px;background:#fff;border-radius:var(--r);padding:14px;margin-bottom:11px;box-shadow:0 3px 14px rgba(0,0,0,.07);cursor:pointer}
     .edate{flex-shrink:0;width:50px;height:56px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
     .edate .d{font-family:'Baloo 2',cursive;font-size:1.4rem;line-height:1}
@@ -83,26 +97,41 @@
     .einfo h3{font-family:'Baloo 2',cursive;font-size:.95rem}
     .einfo p{font-size:.74rem;color:var(--muted);margin-top:2px}
     .etag{display:inline-block;margin-top:5px;font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:20px;color:#fff}
+
+    /* FOOTER */
+    .footer{background:var(--dark);color:#fff;padding:28px 18px 130px;margin-top:10px}
+    .footer-logo{font-family:'Baloo 2',cursive;font-size:1.4rem;margin-bottom:3px}
+    .footer-tagline{font-size:.75rem;color:#888;margin-bottom:20px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:0;margin-bottom:20px;border-top:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+    .footer-links button{flex:1;min-width:50%;background:rgba(255,255,255,.04);color:#aaa;font-size:.74rem;text-decoration:none;font-weight:600;border:none;border-right:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer;padding:12px 10px;font-family:'Poppins',sans-serif;text-align:center;transition:background .2s}
+    .footer-links button:hover{background:rgba(255,255,255,.1);color:#fff}
+    .footer-hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin-bottom:14px}
+    .footer-copy{font-size:.72rem;color:#555;line-height:1.8}
+    .footer-copy strong{color:#777}
+    .footer-badge{display:inline-block;margin-top:12px;background:rgba(255,255,255,.06);border-radius:10px;padding:8px 12px;font-size:.7rem;color:#666;line-height:1.6}
+
+    /* BOTTOM NAV */
     .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #f0ede8;display:flex;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}
     .nbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 4px 13px;gap:2px;cursor:pointer;border:none;background:transparent;font-family:'Poppins',sans-serif;font-size:.6rem;font-weight:700;color:#bbb;transition:color .2s}
     .nbtn .ico{font-size:1.3rem;transition:transform .2s}
     .nbtn.active{color:var(--saffron)}
     .nbtn.active .ico{transform:scale(1.2)}
-    .tip{background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-radius:15px;padding:13px 15px;margin-bottom:14px;border-left:4px solid var(--saffron)}
-    .tip p{font-size:.8rem;color:#7c4b00;font-weight:500;line-height:1.6}
-    .tip strong{color:var(--saffron)}
+
+    /* LOADING / EMPTY */
     .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px;gap:14px}
     .spinner{width:36px;height:36px;border:4px solid #f0ede8;border-top-color:var(--saffron);border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .empty{text-align:center;padding:50px 20px;color:var(--muted);grid-column:1/-1}
+    .empty{text-align:center;padding:40px 20px;color:var(--muted);grid-column:1/-1}
     .empty .ei{font-size:3.5rem;margin-bottom:12px}
+
+    /* DETAIL PAGE */
     #detail-page{display:none;position:fixed;inset:0;background:var(--sand);z-index:500;overflow-y:auto;max-width:430px;margin:0 auto}
     .detail-hero{height:260px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:5rem}
     .detail-hero img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
-    .detail-hero .ov{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(transparent,rgba(28,28,46,.8))}
+    .detail-hero .ov{position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(transparent,rgba(28,28,46,.85))}
     .detail-hero .hname{position:absolute;bottom:16px;left:16px;right:16px;font-family:'Baloo 2',cursive;font-size:1.6rem;color:#fff;line-height:1.2;text-shadow:0 2px 10px rgba(0,0,0,.4)}
     .back-btn{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);border:none;color:#fff;padding:8px 16px;border-radius:25px;font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;z-index:2}
-    .detail-body{padding:16px 16px 100px}
+    .detail-body{padding:16px 16px 110px}
     .rating-row{display:flex;align-items:center;gap:10px;margin:14px 0 6px}
     .big-stars{color:var(--gold);font-size:1.1rem}
     .catbdg{display:inline-block;font-size:.72rem;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:14px}
@@ -112,20 +141,45 @@
     .iitem{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
     .iitem .lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
     .iitem .val{font-family:'Baloo 2',cursive;font-size:1rem;margin-top:3px}
-    .action-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #f0ede8;padding:12px 16px;display:flex;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:100}
-    .abtn{flex:1;text-align:center;padding:11px;border-radius:30px;font-size:.82rem;font-weight:700;color:#fff;border:none;cursor:pointer;font-family:'Poppins',sans-serif}
+    .tip-box{background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-radius:15px;padding:13px 15px;margin:8px 0 14px;border-left:4px solid var(--saffron)}
+    .tip-box p{font-size:.8rem;color:#7c4b00;font-weight:500;line-height:1.6}
+    .ctags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+    .ctag{font-size:.68rem;font-weight:600;padding:3px 10px;border-radius:20px}
+
+    /* MAPS EMBED */
+    .maps-wrap{border-radius:16px;overflow:hidden;margin:10px 0;height:180px;background:#e8f5e9;display:flex;align-items:center;justify-content:center}
+    .maps-wrap iframe{width:100%;height:100%;border:none}
+    .maps-placeholder{text-align:center;color:var(--muted);font-size:.82rem;padding:20px}
+
+    /* ACTION BAR */
+    .action-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #f0ede8;padding:12px 16px;display:flex;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:100;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+    .abtn{flex:1;text-align:center;padding:11px;border-radius:30px;font-size:.82rem;font-weight:700;color:#fff;border:none;cursor:pointer;font-family:'Poppins',sans-serif;transition:opacity .2s}
+    .abtn:active{opacity:.8}
+
+    /* MODAL SHEET (Privacy/Terms) */
+    .sheet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:800;align-items:flex-end;justify-content:center}
+    .sheet-overlay.show{display:flex}
+    .sheet{background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 50px;width:100%;max-width:430px;max-height:80vh;overflow-y:auto}
+    .sheet h2{font-family:'Baloo 2',cursive;font-size:1.3rem;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+    .sheet h3{font-family:'Baloo 2',cursive;font-size:1rem;margin:16px 0 5px;color:var(--saffron)}
+    .sheet p{font-size:.82rem;color:var(--muted);line-height:1.8;margin-bottom:8px}
+    .sheet-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999}
+
+    /* TOAST */
     .toast{display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:9px 20px;border-radius:30px;font-size:.8rem;font-weight:600;z-index:600;white-space:nowrap}
     .toast.show{display:block}
   </style>
 </head>
 <body>
 
+<!-- INSTALL BANNER -->
 <div id="install-banner">
   <p>📲 Add Byndoor app to your home screen!</p>
   <button id="ibtn">Install</button>
   <button id="dbtn">✕</button>
 </div>
 
+<!-- HEADER -->
 <div class="hdr">
   <div class="blob b1"></div><div class="blob b2"></div>
   <div class="hdr-top">
@@ -138,6 +192,7 @@
   </div>
 </div>
 
+<!-- SEARCH -->
 <div class="srch">
   <div class="srch-box">
     <span>🔍</span>
@@ -145,6 +200,7 @@
   </div>
 </div>
 
+<!-- TABS -->
 <div class="tabs">
   <button class="tab active" data-tab="attractions">🏛️ Attractions</button>
   <button class="tab" data-tab="events">🎉 Events</button>
@@ -152,6 +208,7 @@
   <button class="tab" data-tab="food">🍛 Food</button>
 </div>
 
+<!-- ATTRACTIONS -->
 <div class="sec active" id="attractions">
   <div class="banner" style="background:linear-gradient(135deg,#1AAFCC,#0D8C76);margin-top:18px">
     <div class="bdg">⭐ Explore Byndoor</div>
@@ -163,6 +220,7 @@
   <div id="attractions-grid" class="pgrid"><div class="loading" style="grid-column:1/-1"><div class="spinner"></div></div></div>
 </div>
 
+<!-- EVENTS -->
 <div class="sec" id="events">
   <div class="banner" style="background:linear-gradient(135deg,#E8397A,#E8651A);margin-top:18px">
     <div class="bdg">🎊 What's On</div>
@@ -174,6 +232,7 @@
   <div id="events-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
+<!-- HOTELS -->
 <div class="sec" id="hotels">
   <div class="banner" style="background:linear-gradient(135deg,#0D8C76,#1AAFCC);margin-top:18px">
     <div class="bdg">🛏️ Stay & Explore</div>
@@ -185,6 +244,7 @@
   <div id="hotels-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
+<!-- FOOD -->
 <div class="sec" id="food">
   <div class="banner" style="background:linear-gradient(135deg,#E8651A,#F5B731);margin-top:18px">
     <div class="bdg">🍴 Local Flavours</div>
@@ -196,6 +256,30 @@
   <div id="food-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
+<!-- FOOTER (shown at bottom of each section) -->
+<footer class="footer">
+  <div class="footer-logo">🌊 Discover Byndoor</div>
+  <div class="footer-tagline">Your official tourism guide for Byndoor, Coastal Karnataka</div>
+  <div class="footer-links">
+    <button onclick="showSheet('about')">ℹ️ About App</button>
+    <button onclick="showSheet('privacy')">🔒 Privacy Policy</button>
+    <button onclick="showSheet('terms')">📋 Terms of Use</button>
+    <button onclick="showSheet('contact')">📞 Contact Us</button>
+  </div>
+  <hr class="footer-hr"/>
+  <div class="footer-copy">
+    <strong>© 2025 Discover Byndoor.</strong> All rights reserved.<br/>
+    Information provided is for tourism guidance only.<br/>
+    Entry fees & timings may change — please verify locally.<br/>
+    Photos are property of their respective owners.
+  </div>
+  <div class="footer-badge">
+    🗺️ Powered by Google Maps · 🔥 Firebase · 🌐 Netlify<br/>
+    Made with ❤️ for Byndoor, Karnataka
+  </div>
+</footer>
+
+<!-- BOTTOM NAV -->
 <div class="bnav">
   <button class="nbtn active" data-nav="attractions"><span class="ico">🏛️</span>Attractions</button>
   <button class="nbtn" data-nav="events"><span class="ico">🎉</span>Events</button>
@@ -209,7 +293,7 @@
     <span id="detail-emoji">🏛️</span>
     <div class="ov"></div>
     <button class="back-btn" onclick="closeDetail()">← Back</button>
-    <div id="detail-name" class="hname">Loading…</div>
+    <div id="detail-name" class="hname"></div>
   </div>
   <div class="detail-body">
     <div class="rating-row">
@@ -227,17 +311,33 @@
       <div class="iitem"><div class="lbl">⌛ Duration</div><div class="val" id="di-dur">—</div></div>
     </div>
     <div id="di-tips-wrap" style="display:none">
-      <div class="dhead">💡 Tips</div>
-      <div class="tip"><p id="di-tips"></p></div>
+      <div class="dhead">💡 Visitor Tips</div>
+      <div class="tip-box"><p id="di-tips"></p></div>
     </div>
     <div id="di-tags-wrap" style="display:none">
       <div class="dhead">🏷️ Tags</div>
       <div id="di-tags" class="ctags"></div>
     </div>
+    <!-- GOOGLE MAPS EMBED -->
+    <div id="di-map-wrap" style="display:none">
+      <div class="dhead">🗺️ Location</div>
+      <div class="maps-wrap" id="di-map"></div>
+    </div>
+    <div class="dhead" style="margin-top:20px">⚠️ Disclaimer</div>
+    <p style="font-size:.75rem;color:var(--muted);line-height:1.7">Information about this place is provided for general tourism guidance. Entry fees, timings and availability may change. Please verify details locally before visiting. Discover Byndoor is not responsible for any inconvenience caused.</p>
   </div>
   <div class="action-bar">
     <button class="abtn" style="background:var(--sea)" id="dir-btn">🗺️ Directions</button>
+    <button class="abtn" style="background:var(--pink)" id="call-btn" style="display:none">📞 Call</button>
     <button class="abtn" style="background:var(--teal)" onclick="sharePlace()">📤 Share</button>
+  </div>
+</div>
+
+<!-- PRIVACY SHEET -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet(event)">
+  <div class="sheet" id="sheet-content">
+    <h2><span id="sheet-title">Title</span><button class="sheet-close" onclick="closeSheet()">✕</button></h2>
+    <div id="sheet-body"></div>
   </div>
 </div>
 
@@ -245,6 +345,14 @@
 
 <script>
 const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
+
+// Sheet content
+const SHEETS = {
+  about:{title:'ℹ️ About This App',body:`<p><strong>Discover Byndoor</strong> is the official tourism guide app for Byndoor, a beautiful coastal town in Udupi District, Karnataka, India.</p><h3>Our Mission</h3><p>To help tourists and locals explore the hidden gems of Byndoor — its beaches, temples, waterfalls, hotels, food, and festivals — all in one easy-to-use app.</p><h3>Features</h3><p>✅ Browse attractions, events, hotels & restaurants<br/>✅ Get Google Maps directions for every place<br/>✅ Search and filter places<br/>✅ Works offline after first visit<br/>✅ Install as an app on your phone</p><h3>Version</h3><p>Version 1.0 · Built with ❤️ for Byndoor</p>`},
+  privacy:{title:'🔒 Privacy Policy',body:`<p><em>Last updated: January 2025</em></p><h3>Information We Collect</h3><p>Discover Byndoor does not collect any personal information from tourists using this app. We do not require registration or login to browse places.</p><h3>Location Data</h3><p>When you tap "Directions", the app opens Google Maps. We do not store or access your location data ourselves.</p><h3>Cookies & Analytics</h3><p>This app may use basic analytics to understand how many people visit. No personally identifiable information is collected.</p><h3>Third Party Services</h3><p>We use the following services:<br/>• <strong>Firebase</strong> (Google) — for storing place data<br/>• <strong>Google Maps</strong> — for directions<br/>• <strong>Netlify</strong> — for hosting the app</p><p>Each of these services has their own privacy policies.</p><h3>Contact</h3><p>For privacy concerns, contact us at the email in the Contact section.</p>`},
+  terms:{title:'📋 Terms of Use',body:`<p><em>Last updated: January 2025</em></p><h3>Accuracy of Information</h3><p>The information provided in this app — including entry fees, timings, descriptions and photos — is for general guidance only. Details may change without notice. Always verify locally before visiting.</p><h3>Photos & Content</h3><p>Photos displayed in this app are either owned by Discover Byndoor or used with permission. Unauthorized use of content is prohibited.</p><h3>No Liability</h3><p>Discover Byndoor is not liable for any loss, inconvenience or damage arising from use of information in this app. Use at your own discretion.</p><h3>Governing Law</h3><p>These terms are governed by the laws of India. Any disputes shall be subject to the jurisdiction of courts in Udupi District, Karnataka.</p><h3>Changes</h3><p>We reserve the right to update these terms at any time. Continued use of the app means acceptance of updated terms.</p>`},
+  contact:{title:'📞 Contact Us',body:`<h3>Discover Byndoor</h3><p>📍 Byndoor, Udupi District<br/>Karnataka — 576214, India</p><h3>Get in Touch</h3><p>📧 Email: admin@byndoor.com<br/>📱 WhatsApp: +91 00000 00000</p><h3>Report Wrong Information</h3><p>Found incorrect info about a place? Please contact us and we will update it as soon as possible.</p><h3>Add Your Business</h3><p>Want to list your hotel, restaurant or attraction on Discover Byndoor? Contact us — it's free!</p>`}
+};
 </script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -253,293 +361,170 @@ const app=initializeApp(FIREBASE_CONFIG);
 const db=getFirestore(app);
 let allPlaces=[],currentTab='attractions',currentPlace=null;
 const tabs=document.querySelectorAll('.tab'),secs=document.querySelectorAll('.sec'),navBtns=document.querySelectorAll('.nbtn');
-function switchTab(n){currentTab=n;tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===n));secs.forEach(s=>s.classList.toggle('active',s.id===n));navBtns.forEach(b=>b.classList.toggle('active',b.dataset.nav===n));window.scrollTo({top:0,behavior:'smooth'});renderTab(n);}
+
+function switchTab(n){
+  currentTab=n;
+  tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===n));
+  secs.forEach(s=>s.classList.toggle('active',s.id===n));
+  navBtns.forEach(b=>b.classList.toggle('active',b.dataset.nav===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+  renderTab(n);
+}
 tabs.forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 navBtns.forEach(n=>n.addEventListener('click',()=>switchTab(n.dataset.nav)));
-async function loadPlaces(){try{const s=await getDocs(collection(db,'places'));allPlaces=s.docs.map(d=>({id:d.id,...d.data()}));renderTab(currentTab);}catch(e){document.getElementById('attractions-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">⚠️</div><p>Could not load places. Check connection.</p></div>';}}
-function renderTab(tab){const q=(document.getElementById('search-input')?.value||'').toLowerCase();const places=allPlaces.filter(p=>p.category===tab&&(!q||p.name?.toLowerCase().includes(q)||p.about?.toLowerCase().includes(q)));if(tab==='attractions')renderGrid(places);else if(tab==='events')renderEvents(places);else renderList(places,tab+'-list',tab==='hotels');}
-function renderGrid(places){const el=document.getElementById('attractions-grid');if(!places.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🏛️</div><p>No attractions yet.<br/>Admin can add them!</p></div>';return;}el.innerHTML=places.map(p=>`<div class="pcard" onclick="openDetail('${p.id}')"><div class="pcard-img" style="background:${p.cardBg||grad(p.category)}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||catEmoji(p.category)}</span>`}</div><div class="pcard-body"><div class="pcard-name">${p.name}</div><div class="pcard-stars">${'★'.repeat(Math.round(p.rating||5))}${'☆'.repeat(5-Math.round(p.rating||5))}</div><span class="pcard-cat" style="background:${catBg(p.category)};color:${catCol(p.category)}">${p.subcategory||p.category||''}</span></div></div>`).join('');}
-function renderEvents(places){const el=document.getElementById('events-list');if(!places.length){el.innerHTML='<div class="empty"><div class="ei">🎉</div><p>No events yet.</p></div>';return;}el.innerHTML=places.map(p=>{const dt=p.eventDate?new Date(p.eventDate):null;return`<div class="ecard" onclick="openDetail('${p.id}')"><div class="edate" style="background:${p.cardBg||grad('events')}"><div class="d">${dt?dt.getDate():'—'}</div><div class="m">${dt?dt.toLocaleString('default',{month:'short'}):'—'}</div></div><div class="einfo"><h3>${p.name}</h3><p>🕐 ${p.timing||'TBD'} · ${p.location||'Byndoor'}</p><span class="etag" style="background:var(--pink)">${p.subcategory||'Event'}</span></div></div>`;}).join('');}
-function renderList(places,elId,showPrice){const el=document.getElementById(elId);if(!places.length){el.innerHTML='<div class="empty"><div class="ei">📭</div><p>No places yet.</p></div>';return;}el.innerHTML=places.map(p=>`<div class="lcard" onclick="openDetail('${p.id}')"><div class="lcard-img" style="background:${p.cardBg||grad(p.category)}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||catEmoji(p.category)}</span>`}</div><div class="lcard-body"><div class="lcard-row"><div><div class="lcard-name">${p.name}</div><div class="stars">${'★'.repeat(Math.round(p.rating||4))}</div></div>${showPrice&&p.price?`<div class="lcard-price">₹${p.price}<small>/night</small></div>`:''}</div><div class="cdesc">${(p.about||'').slice(0,100)}${(p.about||'').length>100?'…':''}</div></div></div>`).join('');}
-window.openDetail=function(id){const p=allPlaces.find(x=>x.id===id);if(!p)return;currentPlace=p;const hero=document.getElementById('detail-hero');hero.style.background=p.cardBg||grad(p.category);const oi=hero.querySelector('img');if(oi)oi.remove();if(p.photoURL){const img=document.createElement('img');img.src=p.photoURL;img.alt=p.name;hero.prepend(img);document.getElementById('detail-emoji').style.display='none';}else{document.getElementById('detail-emoji').style.display='block';document.getElementById('detail-emoji').textContent=p.emoji||catEmoji(p.category);}
-document.getElementById('detail-name').textContent=p.name;const r=Math.round(p.rating||5);document.getElementById('detail-stars').textContent='★'.repeat(r)+'☆'.repeat(5-r);document.getElementById('detail-rating').textContent=`(${(p.rating||5).toFixed(1)})`;const cb=document.getElementById('detail-cat');cb.textContent=(p.emoji||'')+' '+(p.category||'');cb.style.background=catBg(p.category);cb.style.color=catCol(p.category);document.getElementById('detail-about').textContent=p.about||'No description.';document.getElementById('di-timing').textContent=p.timing||'—';document.getElementById('di-entry').textContent=p.entryFee||(p.freeEntry?'🆓 Free':'—');document.getElementById('di-best').textContent=p.bestTime||'—';document.getElementById('di-dur').textContent=p.duration||'—';
-if(p.tips){document.getElementById('di-tips-wrap').style.display='block';document.getElementById('di-tips').textContent=p.tips;}else document.getElementById('di-tips-wrap').style.display='none';
-if(p.tags?.length){document.getElementById('di-tags-wrap').style.display='block';document.getElementById('di-tags').innerHTML=p.tags.map(t=>`<span class="ctag" style="background:${catBg(p.category)};color:${catCol(p.category)}">${t}</span>`).join('');}else document.getElementById('di-tags-wrap').style.display='none';
-document.getElementById('dir-btn').onclick=()=>{const url=p.lat&&p.lng?`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' Byndoor Karnataka')}`;window.open(url,'_blank');};
-document.getElementById('detail-page').style.display='block';document.getElementById('detail-page').scrollTop=0;document.body.style.overflow='hidden';};
-window.closeDetail=function(){document.getElementById('detail-page').style.display='none';document.body.style.overflow='';};
-window.sharePlace=async function(){if(!currentPlace)return;const d={title:`${currentPlace.name} — Discover Byndoor`,text:`Check out ${currentPlace.name} in Byndoor!`,url:window.location.href};if(navigator.share){try{await navigator.share(d);}catch(e){}}else{navigator.clipboard?.writeText(window.location.href);showToast('Link copied!');}};
+
+async function loadPlaces(){
+  try{
+    const s=await getDocs(collection(db,'places'));
+    allPlaces=s.docs.map(d=>({id:d.id,...d.data()}));
+    renderTab(currentTab);
+  }catch(e){
+    document.getElementById('attractions-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">⚠️</div><p>Could not load. Check connection.</p></div>';
+  }
+}
+
+function renderTab(tab){
+  const q=(document.getElementById('search-input')?.value||'').toLowerCase();
+  const places=allPlaces.filter(p=>p.category===tab&&(!q||p.name?.toLowerCase().includes(q)||p.about?.toLowerCase().includes(q)));
+  if(tab==='attractions')renderGrid(places);
+  else if(tab==='events')renderEvents(places);
+  else renderList(places,tab+'-list',tab==='hotels');
+}
+
+function renderGrid(places){
+  const el=document.getElementById('attractions-grid');
+  if(!places.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🏛️</div><p>No attractions yet.<br/>Admin can add them!</p></div>';return;}
+  el.innerHTML=places.map(p=>`<div class="pcard" onclick="openDetail('${p.id}')">
+    <div class="pcard-img" style="background:${p.cardBg||grad(p.category)}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||catEmoji(p.category)}</span>`}</div>
+    <div class="pcard-body">
+      <div class="pcard-name">${p.name}</div>
+      <div class="pcard-stars">${'★'.repeat(Math.round(p.rating||5))}${'☆'.repeat(5-Math.round(p.rating||5))}</div>
+      <span class="pcard-cat" style="background:${catBg(p.category)};color:${catCol(p.category)}">${p.subcategory||p.category||''}</span>
+    </div></div>`).join('');
+}
+
+function renderEvents(places){
+  const el=document.getElementById('events-list');
+  if(!places.length){el.innerHTML='<div class="empty"><div class="ei">🎉</div><p>No events yet.</p></div>';return;}
+  el.innerHTML=places.map(p=>{const dt=p.eventDate?new Date(p.eventDate):null;
+    return`<div class="ecard" onclick="openDetail('${p.id}')">
+      <div class="edate" style="background:${p.cardBg||grad('events')}"><div class="d">${dt?dt.getDate():'—'}</div><div class="m">${dt?dt.toLocaleString('default',{month:'short'}):'—'}</div></div>
+      <div class="einfo"><h3>${p.name}</h3><p>🕐 ${p.timing||'TBD'} · ${p.location||'Byndoor'}</p><span class="etag" style="background:var(--pink)">${p.subcategory||'Event'}</span></div>
+    </div>`;}).join('');
+}
+
+function renderList(places,elId,showPrice){
+  const el=document.getElementById(elId);
+  if(!places.length){el.innerHTML='<div class="empty"><div class="ei">📭</div><p>No places yet.</p></div>';return;}
+  el.innerHTML=places.map(p=>`<div class="lcard" onclick="openDetail('${p.id}')">
+    <div class="lcard-img" style="background:${p.cardBg||grad(p.category)}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||catEmoji(p.category)}</span>`}</div>
+    <div class="lcard-body">
+      <div class="lcard-row"><div><div class="lcard-name">${p.name}</div><div class="stars">${'★'.repeat(Math.round(p.rating||4))}</div></div>${showPrice&&p.price?`<div class="lcard-price">₹${p.price}<small>/night</small></div>`:''}</div>
+      <div class="cdesc">${(p.about||'').slice(0,100)}${(p.about||'').length>100?'…':''}</div>
+    </div></div>`).join('');
+}
+
+window.openDetail=function(id){
+  const p=allPlaces.find(x=>x.id===id);if(!p)return;
+  currentPlace=p;
+  const hero=document.getElementById('detail-hero');
+  hero.style.background=p.cardBg||grad(p.category);
+  const oi=hero.querySelector('img');if(oi)oi.remove();
+  if(p.photoURL){const img=document.createElement('img');img.src=p.photoURL;img.alt=p.name;hero.prepend(img);document.getElementById('detail-emoji').style.display='none';}
+  else{document.getElementById('detail-emoji').style.display='block';document.getElementById('detail-emoji').textContent=p.emoji||catEmoji(p.category);}
+  document.getElementById('detail-name').textContent=p.name;
+  const r=Math.round(p.rating||5);
+  document.getElementById('detail-stars').textContent='★'.repeat(r)+'☆'.repeat(5-r);
+  document.getElementById('detail-rating').textContent=`(${(p.rating||5).toFixed(1)})`;
+  const cb=document.getElementById('detail-cat');cb.textContent=(p.emoji||'')+' '+(p.category||'');cb.style.background=catBg(p.category);cb.style.color=catCol(p.category);
+  document.getElementById('detail-about').textContent=p.about||'No description available.';
+  document.getElementById('di-timing').textContent=p.timing||'—';
+  document.getElementById('di-entry').textContent=p.entryFee||(p.freeEntry?'🆓 Free':'—');
+  document.getElementById('di-best').textContent=p.bestTime||'—';
+  document.getElementById('di-dur').textContent=p.duration||'—';
+
+  if(p.tips){document.getElementById('di-tips-wrap').style.display='block';document.getElementById('di-tips').textContent=p.tips;}
+  else document.getElementById('di-tips-wrap').style.display='none';
+
+  if(p.tags?.length){document.getElementById('di-tags-wrap').style.display='block';document.getElementById('di-tags').innerHTML=p.tags.map(t=>`<span class="ctag" style="background:${catBg(p.category)};color:${catCol(p.category)}">${t}</span>`).join('');}
+  else document.getElementById('di-tags-wrap').style.display='none';
+
+  // Google Maps embed
+  const mapWrap=document.getElementById('di-map-wrap');
+  const mapEl=document.getElementById('di-map');
+  if(p.lat&&p.lng){
+    mapWrap.style.display='block';
+    mapEl.innerHTML=`<iframe loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=${p.lat},${p.lng}&z=15&output=embed"></iframe>`;
+  } else if(p.name){
+    mapWrap.style.display='block';
+    mapEl.innerHTML=`<iframe loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=${encodeURIComponent(p.name+' Byndoor Karnataka')}&z=14&output=embed"></iframe>`;
+  } else {
+    mapWrap.style.display='none';
+  }
+
+  // Directions button
+  document.getElementById('dir-btn').onclick=()=>{
+    const url=p.lat&&p.lng
+      ?`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`
+      :`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' Byndoor Karnataka')}`;
+    window.open(url,'_blank');
+  };
+
+  // Call button
+  const callBtn=document.getElementById('call-btn');
+  if(p.phone){callBtn.style.display='block';callBtn.onclick=()=>window.open(`tel:${p.phone}`);}
+  else callBtn.style.display='none';
+
+  document.getElementById('detail-page').style.display='block';
+  document.getElementById('detail-page').scrollTop=0;
+  document.body.style.overflow='hidden';
+};
+
+window.closeDetail=function(){
+  document.getElementById('detail-page').style.display='none';
+  document.body.style.overflow='';
+  // Clear map iframe to stop loading
+  document.getElementById('di-map').innerHTML='';
+};
+
+window.sharePlace=async function(){
+  if(!currentPlace)return;
+  const d={title:`${currentPlace.name} — Discover Byndoor`,text:`Check out ${currentPlace.name} in Byndoor, Coastal Karnataka!`,url:window.location.href};
+  if(navigator.share){try{await navigator.share(d);}catch(e){}}
+  else{navigator.clipboard?.writeText(window.location.href);showToast('🔗 Link copied!');}
+};
+
+// Sheet
+window.showSheet=function(key){
+  const s=SHEETS[key];if(!s)return;
+  document.getElementById('sheet-title').textContent=s.title;
+  document.getElementById('sheet-body').innerHTML=s.body;
+  document.getElementById('sheet-overlay').classList.add('show');
+};
+window.closeSheet=function(e){
+  if(!e||e.target===document.getElementById('sheet-overlay'))
+    document.getElementById('sheet-overlay').classList.remove('show');
+};
+
+// Search
 document.getElementById('search-input')?.addEventListener('input',()=>renderTab(currentTab));
+
+// Helpers
 function grad(c){return{attractions:'linear-gradient(135deg,#1AAFCC,#0D8C76)',hotels:'linear-gradient(135deg,#1AAFCC,#283593)',food:'linear-gradient(135deg,#E8651A,#F5B731)',events:'linear-gradient(135deg,#E8397A,#E8651A)'}[c]||'linear-gradient(135deg,#1AAFCC,#0D8C76)';}
 function catBg(c){return{attractions:'#E0F7FA',hotels:'#E8F5E9',food:'#FFF3E0',events:'#FCE4EC'}[c]||'#eee';}
 function catCol(c){return{attractions:'#006064',hotels:'#2E7D32',food:'#E65100',events:'#880E4F'}[c]||'#555';}
 function catEmoji(c){return{attractions:'🏛️',hotels:'🏨',food:'🍛',events:'🎉'}[c]||'📍';}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+// PWA Install
 let dP;const banner=document.getElementById('install-banner');
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dP=e;banner?.classList.add('show');});
 document.getElementById('ibtn')?.addEventListener('click',async()=>{banner?.classList.remove('show');if(dP){dP.prompt();dP=null;}});
 document.getElementById('dbtn')?.addEventListener('click',()=>banner?.classList.remove('show'));
 window.addEventListener('offline',()=>showToast('📵 Offline — cached content'));
 if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
 loadPlaces();
 </script>
 </body>
 </html>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-  <meta name="theme-color" content="#E8651A"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-title" content="Byndoor"/>
-  <meta name="description" content="Discover Byndoor — Hidden Gem of Coastal Karnataka"/>
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-  <title>Discover Byndoor 🌊</title>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root{--saffron:#E8651A;--gold:#F5B731;--sea:#1AAFCC;--teal:#0D8C76;--pink:#E8397A;--sand:#FFF8EF;--dark:#1C1C2E;--muted:#6B7280;--r:20px}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    body{font-family:'Poppins',sans-serif;background:var(--sand);color:var(--dark);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden}
-    #install-banner{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--dark);color:#fff;padding:12px 16px;z-index:999;align-items:center;gap:10px}
-    #install-banner.show{display:flex}
-    #install-banner p{flex:1;font-size:.8rem;font-weight:600}
-    #ibtn{background:var(--saffron);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif}
-    #dbtn{background:none;border:none;color:#aaa;font-size:1.2rem;cursor:pointer}
-    .hdr{background:linear-gradient(150deg,#1AAFCC 0%,#E8651A 100%);padding:22px 18px 70px;position:relative;overflow:hidden}
-    .hdr::after{content:'';position:absolute;bottom:-2px;left:-5%;width:110%;height:52px;background:var(--sand);border-radius:55% 55% 0 0/100% 100% 0 0}
-    .blob{position:absolute;border-radius:50%;background:#fff;opacity:.12}
-    .b1{width:200px;height:200px;top:-70px;right:-60px}
-    .b2{width:110px;height:110px;top:55px;right:25px}
-    .hdr-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
-    .logo{font-family:'Baloo 2',cursive;font-size:1.5rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.2)}
-    .pill{background:rgba(255,255,255,.22);backdrop-filter:blur(6px);color:#fff;padding:5px 14px;border-radius:30px;font-size:.78rem;font-weight:600}
-    .hdr-body{margin-top:14px;position:relative;z-index:2}
-    .hdr-body h1{font-family:'Baloo 2',cursive;font-size:1.9rem;color:#fff;line-height:1.15;text-shadow:0 2px 12px rgba(0,0,0,.2)}
-    .hdr-body p{color:rgba(255,255,255,.85);font-size:.85rem;margin-top:5px;font-weight:500}
-    .srch{padding:0 16px;margin-top:-20px;position:relative;z-index:10}
-    .srch-box{display:flex;align-items:center;gap:10px;background:#fff;border-radius:50px;padding:12px 18px;box-shadow:0 8px 32px rgba(0,0,0,.13)}
-    .srch-box input{border:none;outline:none;flex:1;font-family:'Poppins',sans-serif;font-size:.9rem;color:var(--dark);background:transparent}
-    .srch-box input::placeholder{color:#bbb}
-    .tabs{display:flex;gap:8px;padding:16px 16px 0;overflow-x:auto;scrollbar-width:none}
-    .tabs::-webkit-scrollbar{display:none}
-    .tab{flex-shrink:0;border:none;cursor:pointer;padding:8px 18px;border-radius:50px;font-family:'Poppins',sans-serif;font-size:.8rem;font-weight:600;background:#ece8e2;color:#888;transition:all .25s}
-    .tab.active{color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.15);transform:translateY(-1px)}
-    .tab[data-tab="attractions"].active{background:var(--sea)}
-    .tab[data-tab="events"].active{background:var(--pink)}
-    .tab[data-tab="hotels"].active{background:var(--teal)}
-    .tab[data-tab="food"].active{background:var(--saffron)}
-    .sec{display:none;padding:16px 16px 110px;animation:fu .3s ease}
-    .sec.active{display:block}
-    @keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-    .sec-title{font-family:'Baloo 2',cursive;font-size:1.25rem;margin-bottom:12px}
-    .banner{border-radius:var(--r);padding:18px 20px;color:#fff;margin-bottom:18px;position:relative;overflow:hidden}
-    .banner .bdg{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.85;margin-bottom:5px}
-    .banner h2{font-family:'Baloo 2',cursive;font-size:1.25rem;line-height:1.2}
-    .banner p{font-size:.8rem;opacity:.88;margin-top:4px}
-    .banner .deco{position:absolute;right:12px;bottom:-10px;font-size:4.5rem;opacity:.22}
-    .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
-    .pcard{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.08);cursor:pointer;transition:transform .18s;text-decoration:none;color:inherit;display:block}
-    .pcard:active{transform:scale(.97)}
-    .pcard-img{height:110px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
-    .pcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
-    .pcard-body{padding:10px 11px 12px}
-    .pcard-name{font-family:'Baloo 2',cursive;font-size:.95rem;line-height:1.2}
-    .pcard-cat{display:inline-block;margin-top:5px;font-size:.65rem;font-weight:700;padding:3px 9px;border-radius:20px}
-    .pcard-stars{font-size:.75rem;color:var(--gold);margin-top:3px}
-    .lcard{background:#fff;border-radius:var(--r);margin-bottom:13px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,.07);cursor:pointer}
-    .lcard-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:3.2rem;position:relative;overflow:hidden}
-    .lcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
-    .lcard-body{padding:13px 15px 15px}
-    .lcard-row{display:flex;justify-content:space-between;align-items:flex-start}
-    .lcard-name{font-family:'Baloo 2',cursive;font-size:1.05rem}
-    .lcard-price{font-family:'Baloo 2',cursive;font-size:1.2rem;color:var(--teal)}
-    .lcard-price small{font-size:.72rem;color:#aaa;font-family:'Poppins',sans-serif}
-    .cdesc{font-size:.8rem;color:var(--muted);margin-top:6px;line-height:1.6}
-    .ctags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-    .ctag{font-size:.68rem;font-weight:600;padding:3px 10px;border-radius:20px}
-    .stars{color:var(--gold);font-size:.82rem;margin-top:2px}
-    .ecard{display:flex;align-items:center;gap:13px;background:#fff;border-radius:var(--r);padding:14px;margin-bottom:11px;box-shadow:0 3px 14px rgba(0,0,0,.07);cursor:pointer}
-    .edate{flex-shrink:0;width:50px;height:56px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
-    .edate .d{font-family:'Baloo 2',cursive;font-size:1.4rem;line-height:1}
-    .edate .m{font-size:.62rem;font-weight:700;text-transform:uppercase}
-    .einfo h3{font-family:'Baloo 2',cursive;font-size:.95rem}
-    .einfo p{font-size:.74rem;color:var(--muted);margin-top:2px}
-    .etag{display:inline-block;margin-top:5px;font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:20px;color:#fff}
-    .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #f0ede8;display:flex;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}
-    .nbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 4px 13px;gap:2px;cursor:pointer;border:none;background:transparent;font-family:'Poppins',sans-serif;font-size:.6rem;font-weight:700;color:#bbb;transition:color .2s}
-    .nbtn .ico{font-size:1.3rem;transition:transform .2s}
-    .nbtn.active{color:var(--saffron)}
-    .nbtn.active .ico{transform:scale(1.2)}
-    .tip{background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-radius:15px;padding:13px 15px;margin-bottom:14px;border-left:4px solid var(--saffron)}
-    .tip p{font-size:.8rem;color:#7c4b00;font-weight:500;line-height:1.6}
-    .tip strong{color:var(--saffron)}
-    .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px;gap:14px}
-    .spinner{width:36px;height:36px;border:4px solid #f0ede8;border-top-color:var(--saffron);border-radius:50%;animation:spin .8s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .empty{text-align:center;padding:50px 20px;color:var(--muted);grid-column:1/-1}
-    .empty .ei{font-size:3.5rem;margin-bottom:12px}
-    #detail-page{display:none;position:fixed;inset:0;background:var(--sand);z-index:500;overflow-y:auto;max-width:430px;margin:0 auto}
-    .detail-hero{height:260px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:5rem}
-    .detail-hero img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
-    .detail-hero .ov{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(transparent,rgba(28,28,46,.8))}
-    .detail-hero .hname{position:absolute;bottom:16px;left:16px;right:16px;font-family:'Baloo 2',cursive;font-size:1.6rem;color:#fff;line-height:1.2;text-shadow:0 2px 10px rgba(0,0,0,.4)}
-    .back-btn{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);border:none;color:#fff;padding:8px 16px;border-radius:25px;font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;z-index:2}
-    .detail-body{padding:16px 16px 100px}
-    .rating-row{display:flex;align-items:center;gap:10px;margin:14px 0 6px}
-    .big-stars{color:var(--gold);font-size:1.1rem}
-    .catbdg{display:inline-block;font-size:.72rem;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:14px}
-    .dhead{font-family:'Baloo 2',cursive;font-size:1.1rem;margin:18px 0 8px;padding-bottom:6px;border-bottom:2px solid #f0ede8}
-    .about-txt{font-size:.88rem;color:var(--dark);line-height:1.75}
-    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
-    .iitem{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-    .iitem .lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-    .iitem .val{font-family:'Baloo 2',cursive;font-size:1rem;margin-top:3px}
-    .action-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #f0ede8;padding:12px 16px;display:flex;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:100}
-    .abtn{flex:1;text-align:center;padding:11px;border-radius:30px;font-size:.82rem;font-weight:700;color:#fff;border:none;cursor:pointer;font-family:'Poppins',sans-serif}
-    .toast{display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:9px 20px;border-radius:30px;font-size:.8rem;font-weight:600;z-index:600;white-space:nowrap}
-    .toast.show{display:block}
-  </style>
-</head>
-<body>
-
-<div id="install-banner">
-  <p>📲 Add Byndoor app to your home screen!</p>
-  <button id="ibtn">Install</button>
-  <button id="dbtn">✕</button>
-</div>
-
-<div class="hdr">
-  <div class="blob b1"></div><div class="blob b2"></div>
-  <div class="hdr-top">
-    <div class="logo">🌊 Discover Byndoor</div>
-    <div class="pill">☀️ 29°C</div>
-  </div>
-  <div class="hdr-body">
-    <h1>Karnataka's<br/>Hidden Pearl</h1>
-    <p>📍 Udupi District · Coastal Karnataka</p>
-  </div>
-</div>
-
-<div class="srch">
-  <div class="srch-box">
-    <span>🔍</span>
-    <input id="search-input" type="text" placeholder="Search beaches, temples, food…"/>
-  </div>
-</div>
-
-<div class="tabs">
-  <button class="tab active" data-tab="attractions">🏛️ Attractions</button>
-  <button class="tab" data-tab="events">🎉 Events</button>
-  <button class="tab" data-tab="hotels">🏨 Hotels</button>
-  <button class="tab" data-tab="food">🍛 Food</button>
-</div>
-
-<div class="sec active" id="attractions">
-  <div class="banner" style="background:linear-gradient(135deg,#1AAFCC,#0D8C76);margin-top:18px">
-    <div class="bdg">⭐ Explore Byndoor</div>
-    <h2>Beautiful Coastal Attractions</h2>
-    <p>Beaches, temples, waterfalls & more</p>
-    <div class="deco">🌅</div>
-  </div>
-  <div class="sec-title" style="color:var(--sea)">🗺️ All Attractions</div>
-  <div id="attractions-grid" class="pgrid"><div class="loading" style="grid-column:1/-1"><div class="spinner"></div></div></div>
-</div>
-
-<div class="sec" id="events">
-  <div class="banner" style="background:linear-gradient(135deg,#E8397A,#E8651A);margin-top:18px">
-    <div class="bdg">🎊 What's On</div>
-    <h2>Byndoor Celebrates!</h2>
-    <p>Festivals, clean-ups & cultural nights</p>
-    <div class="deco">🎉</div>
-  </div>
-  <div class="sec-title" style="color:var(--pink)">📅 Upcoming Events</div>
-  <div id="events-list"><div class="loading"><div class="spinner"></div></div></div>
-</div>
-
-<div class="sec" id="hotels">
-  <div class="banner" style="background:linear-gradient(135deg,#0D8C76,#1AAFCC);margin-top:18px">
-    <div class="bdg">🛏️ Stay & Explore</div>
-    <h2>Rest in Coastal Comfort</h2>
-    <p>Forest retreats to beachside stays</p>
-    <div class="deco">🌴</div>
-  </div>
-  <div class="sec-title" style="color:var(--teal)">🏨 Where to Stay</div>
-  <div id="hotels-list"><div class="loading"><div class="spinner"></div></div></div>
-</div>
-
-<div class="sec" id="food">
-  <div class="banner" style="background:linear-gradient(135deg,#E8651A,#F5B731);margin-top:18px">
-    <div class="bdg">🍴 Local Flavours</div>
-    <h2>Taste Coastal Karnataka!</h2>
-    <p>Fresh seafood, coconut curries & more</p>
-    <div class="deco">🦐</div>
-  </div>
-  <div class="sec-title" style="color:var(--saffron)">🍽️ Where to Eat</div>
-  <div id="food-list"><div class="loading"><div class="spinner"></div></div></div>
-</div>
-
-<div class="bnav">
-  <button class="nbtn active" data-nav="attractions"><span class="ico">🏛️</span>Attractions</button>
-  <button class="nbtn" data-nav="events"><span class="ico">🎉</span>Events</button>
-  <button class="nbtn" data-nav="hotels"><span class="ico">🏨</span>Hotels</button>
-  <button class="nbtn" data-nav="food"><span class="ico">🍛</span>Food</button>
-</div>
-
-<!-- DETAIL PAGE -->
-<div id="detail-page">
-  <div id="detail-hero" class="detail-hero">
-    <span id="detail-emoji">🏛️</span>
-    <div class="ov"></div>
-    <button class="back-btn" onclick="closeDetail()">← Back</button>
-    <div id="detail-name" class="hname">Loading…</div>
-  </div>
-  <div class="detail-body">
-    <div class="rating-row">
-      <div id="detail-stars" class="big-stars">★★★★★</div>
-      <div id="detail-rating" style="font-size:.82rem;color:var(--muted)">(5.0)</div>
-    </div>
-    <span id="detail-cat" class="catbdg"></span>
-    <div class="dhead">📖 About</div>
-    <p id="detail-about" class="about-txt"></p>
-    <div class="dhead">ℹ️ Quick Info</div>
-    <div class="info-grid">
-      <div class="iitem"><div class="lbl">⏰ Timing</div><div class="val" id="di-timing">—</div></div>
-      <div class="iitem"><div class="lbl">🎟️ Entry Fee</div><div class="val" id="di-entry">—</div></div>
-      <div class="iitem"><div class="lbl">🌤️ Best Time</div><div class="val" id="di-best">—</div></div>
-      <div class="iitem"><div class="lbl">⌛ Duration</div><div class="val" id="di-dur">—</div></div>
-    </div>
-    <div id="di-tips-wrap" style="display:none">
-      <div class="dhead">💡 Tips</div>
-      <div class="tip"><p id="di-tips"></p></div>
-    </div>
-    <div id="di-tags-wrap" style="display:none">
-      <div class="dhead">🏷️ Tags</div>
-      <div id="di-tags" class="ctags"></div>
-    </div>
-  </div>
-  <div class="action-bar">
-    <button class="abtn" style="background:var(--sea)" id="dir-btn">🗺️ Directions</button>
-    <button class="abtn" style="background:var(--teal)" onclick="sharePlace()">📤 Share</button>
-  </div>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script>
-const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
-</script>
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const app=initializeApp(FIREBASE_CONFIG);
-const db=getFirestore(app);
-let allPlaces=[],currentTab='attractions',currentPlace=null;
-const tabs=document.querySelectorAll('.tab'),secs=document.querySelectorAll('.sec'),navBtns=document.querySelectorAll('.nbtn');
-function switchTab(n){currentTab=n;tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===n));secs.forEach(s=>s.classList.toggle('active',s.id===n));navBtns.forEach(b=>b.classList.toggle('active',b.dataset.nav===n));window.scrollTo({top:0,behavior:'smooth'});renderTab(n);}
-tabs.forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
-navBtns.forEach(n=>n.addEventListener('click',()=>switchTab(n.dataset.nav)));
-async function loadPlaces(){try{const s=await getDocs(collection(db,'places'));allPlaces=s.docs.map(d=>({id:d.id,...d.data()}));renderTab(currentTab);}catch(e){document.getElementById('attractions-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">⚠️</div><p>Could not load places. Check connection.</p></div>';}}
-function renderTab(tab){const q=(document.getElementById('search-input')?.value||'').toLowerCase();const places=allPlaces.filter(p=>p.category===tab&&(!q||p.name?.toLowerCase().includes(q)||p.about?.toLowerCase().includes(q)));if(tab==='attractions')renderGrid(places);else if(tab==='events')renderEvents(places);else renderList(places,tab+'-list',tab==='hotels');}
-function renderGrid(places){const el=document.getElementById('attractions-grid');if(!places.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🏛️</div><p>No attractions yet.<br/>Admin can add them!</p></div>';return;}el.innerHTML=places.map(p=>`<div class="pcard" onclick="openDetail('${p.id}')"><div class="pcard-img" style="background:${p.cardBg||grad(p.category)}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||catEmoji(p.category)}</span>`}</div><div class="pcard-body"><div class="pcard-name">${p.name}</div><div class="pcard-stars">${'★'.repeat(Math.round(p.rating||5))}${'☆'.repeat(5-Math.round(p.rating||5))}</div><span class="pcard-cat" style="background:${catBg(p.category)};color:${catCol(p.category)}">${p.subcategory||p.category||''}</span></div></div>`).join('');}
-function renderEvents(places){const el=document.getElementById('events-list');if(!places.length){el.innerHTML='<div class="empty"><div class="ei">🎉</div><p>No events yet.</p></div>';return;}el.innerHTML=places.map(p=>{const dt=p.eventDate?new Date(p.eventDate):null;return`<div class="ecard" onclick="openDetail('${p.id}')"><div class="edate" style="background:${p.cardBg||grad('events')}"><div class="d">${dt?dt.getDate():'—'}</div><div class="m">${dt?dt.toLocaleString('default',{month:'short'}):'—'}</div></div><div class="einfo"><h3>${p.name}</h3><p>🕐 ${p.timing||'TBD'} · ${p.location||'Byndoor'}</p><span class="etag" style="background:var(--pink)">${p.subcategory||'Event'}</span></div></div>`;}).join('');}
-function renderList(places,elId,showPrice){const el=document.getElementById(elId);if(!places.length){el.innerHTML='<div class="empty"><div class="ei">📭</div><p>No places yet.</p></div>';return;}el.innerHTML=places.map(p=>`<div class="lcard" onclick="openDetail('${p.id}')"><div class="lcard-img" style="background:${p.cardBg||grad(p.category)}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||catEmoji(p.category)}</
