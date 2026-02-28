@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="theme-color" content="#E8651A"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <title>Place Details — Discover Byndoor</title>
+  <style>
+    .back-btn {
+      display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.22); backdrop-filter:blur(6px);
+      border:none; color:#fff; padding:7px 15px; border-radius:25px;
+      font-family:'Poppins',sans-serif; font-size:.82rem; font-weight:600;
+      cursor:pointer; margin-bottom:14px;
+    }
+    .place-hero {
+      height:260px; position:relative; overflow:hidden;
+      display:flex; align-items:center; justify-content:center; font-size:5rem;
+    }
+    .place-hero img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; }
+    .place-hero .overlay {
+      position:absolute; bottom:0; left:0; right:0; height:120px;
+      background:linear-gradient(transparent,rgba(28,28,46,.8));
+    }
+    .hero-badge {
+      position:absolute; top:16px; right:16px;
+      background:rgba(255,255,255,.9); border-radius:20px;
+      padding:5px 13px; font-size:.72rem; font-weight:700; color:var(--dark);
+    }
+    .hero-name {
+      position:absolute; bottom:16px; left:16px; right:16px;
+      font-family:'Baloo 2',cursive; font-size:1.6rem; color:#fff; line-height:1.2;
+      text-shadow:0 2px 10px rgba(0,0,0,.4);
+    }
+    .detail-body { padding:0 16px 100px; }
+    .rating-row { display:flex; align-items:center; gap:10px; margin:14px 0 6px; }
+    .big-stars { color:var(--gold); font-size:1.1rem; }
+    .rating-count { color:var(--muted); font-size:.82rem; }
+    .cat-badge {
+      display:inline-block; font-size:.72rem; font-weight:700;
+      padding:4px 14px; border-radius:20px; margin-bottom:14px;
+    }
+    .section-head {
+      font-family:'Baloo 2',cursive; font-size:1.1rem; margin:18px 0 8px;
+      padding-bottom:6px; border-bottom:2px solid #f0ede8;
+    }
+    .about-text { font-size:.88rem; color:var(--dark); line-height:1.75; }
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0; }
+    .info-item {
+      background:#fff; border-radius:14px; padding:12px 14px;
+      box-shadow:0 2px 12px rgba(0,0,0,.06);
+    }
+    .info-item .label { font-size:.68rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+    .info-item .value { font-family:'Baloo 2',cursive; font-size:1rem; margin-top:3px; }
+    .gallery { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0; }
+    .gallery img { width:100%; height:110px; object-fit:cover; border-radius:12px; }
+    .action-bar {
+      position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+      width:100%; max-width:430px; background:#fff;
+      border-top:1px solid #f0ede8;
+      padding:12px 16px calc(12px + var(--safe-bottom));
+      display:flex; gap:10px;
+      box-shadow:0 -4px 20px rgba(0,0,0,.08); z-index:100;
+    }
+    .action-bar .btn { flex:1; text-align:center; margin-top:0; }
+    .nearby-section { margin-top:18px; }
+    .tag-list { display:flex; flex-wrap:wrap; gap:7px; margin:8px 0; }
+    .tag-list .tag { font-size:.73rem; }
+    .reviews-placeholder {
+      background:#fff; border-radius:14px; padding:16px;
+      box-shadow:0 2px 12px rgba(0,0,0,.06); text-align:center;
+    }
+    .reviews-placeholder p { color:var(--muted); font-size:.82rem; margin-top:4px; }
+  </style>
+</head>
+<body>
+
+<div id="page-loading" class="loading" style="height:100vh">
+  <div class="spinner"></div>
+</div>
+
+<div id="place-content" style="display:none">
+
+  <!-- HERO with back btn -->
+  <div class="app-header" style="padding:20px 18px 22px" id="hero-header">
+    <button class="back-btn" onclick="history.back()">← Back</button>
+    <div id="place-hero" class="place-hero">
+      <span id="hero-emoji">🏛️</span>
+      <div class="overlay"></div>
+      <div id="hero-badge" class="hero-badge">Loading...</div>
+      <div id="hero-name" class="hero-name">Loading...</div>
+    </div>
+  </div>
+
+  <div class="detail-body">
+
+    <div class="rating-row">
+      <div id="big-stars" class="big-stars">★★★★★</div>
+      <div id="rating-count" class="rating-count">(5.0)</div>
+    </div>
+    <span id="cat-badge" class="cat-badge">Category</span>
+
+    <div class="section-head">📖 About</div>
+    <p id="about-text" class="about-text">Loading...</p>
+
+    <div class="section-head">ℹ️ Quick Info</div>
+    <div class="info-grid">
+      <div class="info-item" id="timing-item">
+        <div class="label">⏰ Timing</div>
+        <div class="value" id="timing-val">—</div>
+      </div>
+      <div class="info-item" id="entry-item">
+        <div class="label">🎟️ Entry Fee</div>
+        <div class="value" id="entry-val">—</div>
+      </div>
+      <div class="info-item" id="best-time-item">
+        <div class="label">🌤️ Best Time</div>
+        <div class="value" id="best-time-val">—</div>
+      </div>
+      <div class="info-item" id="duration-item">
+        <div class="label">⌛ Duration</div>
+        <div class="value" id="duration-val">—</div>
+      </div>
+      <div class="info-item" id="phone-item" style="display:none">
+        <div class="label">📞 Contact</div>
+        <div class="value" id="phone-val">—</div>
+      </div>
+      <div class="info-item" id="website-item" style="display:none">
+        <div class="label">🌐 Website</div>
+        <div class="value" id="website-val">—</div>
+      </div>
+    </div>
+
+    <div id="tags-section">
+      <div class="section-head">🏷️ Tags</div>
+      <div id="tags-list" class="tag-list"></div>
+    </div>
+
+    <div id="tips-section" style="display:none">
+      <div class="section-head">💡 Tips & Notes</div>
+      <div class="tip-box"><p id="tips-text"></p></div>
+    </div>
+
+    <div id="gallery-section" style="display:none">
+      <div class="section-head">📸 Gallery</div>
+      <div id="gallery-grid" class="gallery"></div>
+    </div>
+
+    <div class="section-head">⭐ Reviews</div>
+    <div class="reviews-placeholder">
+      <div style="font-size:2rem">💬</div>
+      <p>Reviews coming soon!<br/>Be the first to share your experience.</p>
+    </div>
+
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <button class="btn" style="background:var(--sea)" id="directions-btn" onclick="openDirections()">🗺️ Directions</button>
+    <button class="btn" style="background:var(--teal)" onclick="sharePlace()">📤 Share</button>
+  </div>
+</div>
+
+<div id="error-state" style="display:none" class="empty-state" style="height:100vh">
+  <div class="icon">⚠️</div>
+  <p>Place not found.</p>
+  <br/>
+  <button class="btn" style="background:var(--saffron)" onclick="history.back()">← Go Back</button>
+</div>
+
+<!-- Firebase -->
+<script src="../js/firebase-config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp(FIREBASE_CONFIG);
+const db  = getFirestore(app);
+
+// ── Get place ID from URL ──
+const params = new URLSearchParams(location.search);
+const placeId = params.get('id') || localStorage.getItem('selectedPlace');
+
+let currentPlace = null;
+
+async function loadPlace() {
+  if (!placeId) { showError(); return; }
+  try {
+    const snap = await getDoc(doc(db, 'places', placeId));
+    if (!snap.exists()) { showError(); return; }
+    currentPlace = { id: snap.id, ...snap.data() };
+    renderPlace(currentPlace);
+  } catch(e) {
+    console.error(e);
+    showError();
+  }
+}
+
+function renderPlace(p) {
+  document.title = `${p.name} — Discover Byndoor`;
+
+  // Hero
+  const heroEl = document.getElementById('place-hero');
+  if (p.photoURL) {
+    const img = document.createElement('img');
+    img.src = p.photoURL; img.alt = p.name;
+    heroEl.prepend(img);
+    document.getElementById('hero-emoji').style.display = 'none';
+  } else {
+    document.getElementById('hero-emoji').textContent = p.emoji || categoryEmoji(p.category);
+  }
+
+  // Header background
+  document.getElementById('hero-header').style.background = p.cardBg || gradientFor(p.category);
+
+  document.getElementById('hero-badge').textContent = p.subcategory || p.category || '';
+  document.getElementById('hero-name').textContent = p.name;
+
+  // Rating
+  const r = Math.round(p.rating || 5);
+  document.getElementById('big-stars').textContent = '★'.repeat(r) + '☆'.repeat(5-r);
+  document.getElementById('rating-count').textContent = `(${(p.rating||5).toFixed(1)})`;
+
+  // Category badge
+  const cb = document.getElementById('cat-badge');
+  cb.textContent = (p.emoji || '') + ' ' + (p.category || '');
+  cb.style.background = catBg(p.category);
+  cb.style.color = catColor(p.category);
+
+  // About
+  document.getElementById('about-text').textContent = p.about || 'No description available.';
+
+  // Info grid
+  setVal('timing-val', p.timing, 'timing-item');
+  setVal('entry-val', p.entryFee || (p.freeEntry ? '🆓 Free' : null), 'entry-item');
+  setVal('best-time-val', p.bestTime, 'best-time-item');
+  setVal('duration-val', p.duration, 'duration-item');
+
+  if (p.phone) {
+    document.getElementById('phone-item').style.display = 'block';
+    document.getElementById('phone-val').innerHTML = `<a href="tel:${p.phone}" style="color:var(--sea)">${p.phone}</a>`;
+  }
+  if (p.website) {
+    document.getElementById('website-item').style.display = 'block';
+    document.getElementById('website-val').innerHTML = `<a href="${p.website}" target="_blank" style="color:var(--sea)">Visit</a>`;
+  }
+
+  // Tags
+  if (p.tags && p.tags.length) {
+    document.getElementById('tags-list').innerHTML = p.tags.map(t =>
+      `<span class="tag" style="background:${catBg(p.category)};color:${catColor(p.category)}">${t}</span>`
+    ).join('');
+  } else {
+    document.getElementById('tags-section').style.display = 'none';
+  }
+
+  // Tips
+  if (p.tips) {
+    document.getElementById('tips-section').style.display = 'block';
+    document.getElementById('tips-text').innerHTML = `<strong>💡 Tip:</strong> ${p.tips}`;
+  }
+
+  // Gallery
+  if (p.gallery && p.gallery.length) {
+    document.getElementById('gallery-section').style.display = 'block';
+    document.getElementById('gallery-grid').innerHTML = p.gallery.map(url =>
+      `<img src="${url}" alt="Gallery" loading="lazy"/>`
+    ).join('');
+  }
+
+  document.getElementById('page-loading').style.display = 'none';
+  document.getElementById('place-content').style.display = 'block';
+}
+
+function setVal(valId, val, itemId) {
+  if (val) {
+    document.getElementById(valId).textContent = val;
+  } else {
+    const item = document.getElementById(itemId);
+    if (item) item.style.display = 'none';
+  }
+}
+
+function showError() {
+  document.getElementById('page-loading').style.display = 'none';
+  document.getElementById('error-state').style.display = 'flex';
+}
+
+// ── Directions ──
+window.openDirections = function() {
+  if (!currentPlace) return;
+  const { lat, lng, name } = currentPlace;
+  if (lat && lng) {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(name||'')}`, '_blank');
+  } else if (name) {
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' Byndoor Karnataka')}`, '_blank');
+  }
+};
+
+// ── Share ──
+window.sharePlace = async function() {
+  const p = currentPlace;
+  if (!p) return;
+  const shareData = {
+    title: `${p.name} — Discover Byndoor`,
+    text: `Check out ${p.name} in Byndoor, Karnataka! ${p.about?.slice(0,100)||''}`,
+    url: window.location.href
+  };
+  if (navigator.share) {
+    try { await navigator.share(shareData); } catch(e) {}
+  } else {
+    navigator.clipboard?.writeText(window.location.href);
+    alert('Link copied to clipboard!');
+  }
+};
+
+function gradientFor(cat) {
+  return { attractions:'linear-gradient(135deg,#1AAFCC,#0D8C76)', hotels:'linear-gradient(135deg,#1AAFCC,#283593)', food:'linear-gradient(135deg,#E8651A,#F5B731)', events:'linear-gradient(135deg,#E8397A,#E8651A)' }[cat] || 'linear-gradient(135deg,#1AAFCC,#0D8C76)';
+}
+function catBg(cat) {
+  return { attractions:'#E0F7FA', hotels:'#E8F5E9', food:'#FFF3E0', events:'#FCE4EC' }[cat] || '#eee';
+}
+function catColor(cat) {
+  return { attractions:'#006064', hotels:'#2E7D32', food:'#E65100', events:'#880E4F' }[cat] || '#555';
+}
+function categoryEmoji(cat) {
+  return { attractions:'🏛️', hotels:'🏨', food:'🍛', events:'🎉' }[cat] || '📍';
+}
+
+loadPlace();
+</script>
+</body>
+</html>
