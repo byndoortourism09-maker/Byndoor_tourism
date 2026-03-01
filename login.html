@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Login — Byndoor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(150deg,#1AAFCC,#E8651A);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .card{background:#fff;border-radius:24px;padding:36px 28px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+    .logo{font-family:'Baloo 2',cursive;font-size:1.8rem;color:#E8651A;text-align:center;margin-bottom:4px}
+    .subtitle{text-align:center;color:#888;font-size:.85rem;margin-bottom:28px}
+    label{display:block;font-size:.8rem;font-weight:600;color:#555;margin-bottom:5px}
+    input{width:100%;border:2px solid #f0ede8;border-radius:12px;padding:12px 15px;font-family:'Poppins',sans-serif;font-size:.9rem;outline:none;transition:border .2s;margin-bottom:16px}
+    input:focus{border-color:#E8651A}
+    .btn{width:100%;background:linear-gradient(135deg,#E8651A,#F5B731);color:#fff;border:none;border-radius:12px;padding:14px;font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .2s}
+    .btn:hover{opacity:.9}
+    .error{background:#FFF0F0;color:#c0392b;border-radius:10px;padding:10px 14px;font-size:.82rem;margin-bottom:14px;display:none}
+    .back{text-align:center;margin-top:16px;font-size:.82rem;color:#888}
+    .back a{color:#E8651A;text-decoration:none;font-weight:600}
+    .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🌊 Byndoor Admin</div>
+    <div class="subtitle">Tourism Management Panel</div>
+    <div class="error" id="error-msg"></div>
+    <label>Email Address</label>
+    <input type="email" id="email" placeholder="admin@byndoor.com"/>
+    <label>Password</label>
+    <input type="password" id="password" placeholder="••••••••"/>
+    <button class="btn" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="back"><a href="index.html">← Back to Public App</a></div>
+  </div>
+
+  <script>
+  const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
+  </script>
+  <script type="module">
+  import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import{getAuth,signInWithEmailAndPassword,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const app=initializeApp(FIREBASE_CONFIG);
+  const auth=getAuth(app);
+
+  onAuthStateChanged(auth,user=>{
+    if(user) location.href='dashboard.html';
+  });
+
+  window.doLogin=async function(){
+    const email=document.getElementById('email').value.trim();
+    const pass=document.getElementById('password').value;
+    const btn=document.getElementById('login-btn');
+    const err=document.getElementById('error-msg');
+    if(!email||!pass){showError('Please enter email and password.');return;}
+    btn.innerHTML='<span class="spinner"></span>Signing in…';
+    btn.disabled=true;
+    err.style.display='none';
+    try{
+      await signInWithEmailAndPassword(auth,email,pass);
+      location.href='dashboard.html';
+    }catch(e){
+      btn.innerHTML='Sign In';
+      btn.disabled=false;
+      showError('Wrong email or password. Please try again.');
+    }
+  };
+
+  function showError(msg){
+    const err=document.getElementById('error-msg');
+    err.textContent=msg;
+    err.style.display='block';
+  }
+
+  document.getElementById('password').addEventListener('keypress',e=>{
+    if(e.key==='Enter') window.doLogin();
+  });
+  </script>
+</body>
+</html>
