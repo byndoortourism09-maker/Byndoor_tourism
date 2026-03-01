@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — Byndoor Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--saffron:#E8651A;--sea:#1AAFCC;--teal:#0D8C76;--pink:#E8397A;--dark:#1C1C2E;--muted:#6B7280;--bg:#F8F9FF}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh}
+    .topbar{background:linear-gradient(135deg,#1AAFCC,#E8651A);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+    .topbar-logo{font-family:'Baloo 2',cursive;font-size:1.3rem;color:#fff}
+    .topbar-right{display:flex;gap:10px;align-items:center}
+    .topbar-user{background:rgba(255,255,255,.2);color:#fff;padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .logout-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:5px 14px;border-radius:20px;font-size:.78rem;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px;max-width:900px;margin:0 auto}
+    .stat-card{background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .stat-card .num{font-family:'Baloo 2',cursive;font-size:1.6rem}
+    .stat-card .lbl{font-size:.7rem;color:var(--muted);font-weight:600;margin-top:2px}
+    .container{max-width:900px;margin:0 auto;padding:0 16px 80px}
+    .sec-header{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}
+    .sec-header h2{font-family:'Baloo 2',cursive;font-size:1.2rem}
+    .add-btn{background:var(--saffron);color:#fff;border:none;border-radius:25px;padding:9px 20px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif}
+    .filter-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px}
+    .filter-tabs::-webkit-scrollbar{display:none}
+    .ftab{flex-shrink:0;border:none;cursor:pointer;padding:7px 16px;border-radius:25px;font-size:.78rem;font-weight:600;background:#ece8e2;color:#888;transition:all .2s;font-family:'Poppins',sans-serif}
+    .ftab.active{background:var(--saffron);color:#fff}
+    .place-row{background:#fff;border-radius:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .place-row-thumb{width:56px;height:56px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;overflow:hidden}
+    .place-row-thumb img{width:100%;height:100%;object-fit:cover}
+    .place-row-info{flex:1;min-width:0}
+    .place-row-name{font-family:'Baloo 2',cursive;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .place-row-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
+    .place-row-actions{display:flex;gap:7px;flex-shrink:0}
+    .icon-btn{width:34px;height:34px;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+    .edit-btn{background:#E3F2FD;color:#1565C0}
+    .del-btn{background:#FFEBEE;color:#C62828}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;overflow-y:auto;padding:20px}
+    .modal-overlay.show{display:flex;align-items:flex-start;justify-content:center}
+    .modal{background:#fff;border-radius:20px;width:100%;max-width:560px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto}
+    .modal-title{font-family:'Baloo 2',cursive;font-size:1.3rem;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+    .close-modal{background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-full{grid-column:1/-1}
+    .form-group{display:flex;flex-direction:column;gap:5px}
+    .form-group label{font-size:.78rem;font-weight:600;color:#555}
+    .form-group input,.form-group select,.form-group textarea{border:2px solid #f0ede8;border-radius:10px;padding:10px 13px;font-family:'Poppins',sans-serif;font-size:.85rem;outline:none;transition:border .2s;width:100%;background:#fff}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--saffron)}
+    .form-group textarea{resize:vertical;min-height:90px}
+    .photo-upload-area{border:2px dashed #f0ede8;border-radius:12px;padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden}
+    .photo-upload-area input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .photo-preview{width:100%;height:160px;object-fit:cover;border-radius:10px;display:none;margin-top:10px}
+    .upload-bar-wrap{display:none;margin-top:8px;background:#f0f0f0;border-radius:10px;height:6px;overflow:hidden}
+    .upload-bar{height:100%;background:var(--saffron);width:0%;transition:width .3s;border-radius:10px}
+    .upload-status{font-size:.75rem;color:var(--muted);margin-top:4px;min-height:18px}
+    .notice{background:#E8F5E9;border-radius:10px;padding:8px 12px;font-size:.73rem;color:#2E7D32;margin-top:6px;border-left:3px solid #4CAF50}
+    .form-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+    .cancel-btn{background:#f0ede8;color:var(--dark);border:none;border-radius:12px;padding:11px 24px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif}
+    .save-btn{background:var(--saffron);color:#fff;border:none;border-radius:12px;padding:11px 24px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:7px}
+    .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .color-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}
+    .color-swatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .15s}
+    .color-swatch.selected{border-color:var(--dark);transform:scale(1.15)}
+    .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:12px;color:var(--muted)}
+    .loading .spinner{border-color:#f0ede8;border-top-color:var(--saffron)}
+    .empty-state{text-align:center;padding:40px;color:var(--muted)}
+    .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px}
+    .confirm-overlay.show{display:flex}
+    .confirm-box{background:#fff;border-radius:18px;padding:24px;max-width:320px;width:100%;text-align:center}
+    .confirm-box h3{font-family:'Baloo 2',cursive;font-size:1.2rem;margin-bottom:8px}
+    .confirm-box p{font-size:.85rem;color:var(--muted);margin-bottom:20px}
+    .confirm-btns{display:flex;gap:10px}
+    .confirm-btns button{flex:1;padding:11px;border:none;border-radius:12px;font-family:'Poppins',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}
+    .confirm-cancel{background:#f0ede8;color:var(--dark)}
+    .confirm-delete{background:#C62828;color:#fff}
+    @media(max-width:500px){.form-grid{grid-template-columns:1fr}.form-full{grid-column:1}.stats{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">🌊 Byndoor Admin</div>
+  <div class="topbar-right">
+    <div class="topbar-user" id="user-email">Admin</div>
+    <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num" id="stat-total" style="color:var(--saffron)">0</div><div class="lbl">Total</div></div>
+  <div class="stat-card"><div class="num" id="stat-attractions" style="color:var(--sea)">0</div><div class="lbl">Attractions</div></div>
+  <div class="stat-card"><div class="num" id="stat-hotels" style="color:var(--teal)">0</div><div class="lbl">Hotels</div></div>
+  <div class="stat-card"><div class="num" id="stat-food" style="color:var(--pink)">0</div><div class="lbl">Food</div></div>
+</div>
+
+<div class="container">
+  <div class="sec-header">
+    <h2>📍 All Places</h2>
+    <button class="add-btn" onclick="openAddModal()">＋ Add Place</button>
+  </div>
+  <div class="filter-tabs">
+    <button class="ftab active" data-f="all">All</button>
+    <button class="ftab" data-f="attractions">🏛️ Attractions</button>
+    <button class="ftab" data-f="events">🎉 Events</button>
+    <button class="ftab" data-f="hotels">🏨 Hotels</button>
+    <button class="ftab" data-f="food">🍛 Food</button>
+  </div>
+  <div id="places-list">
+    <div class="loading"><div class="spinner"></div> Loading…</div>
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="place-modal">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="modal-title-text">Add New Place</span>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group form-full">
+        <label>📸 Photo</label>
+        <div class="photo-upload-area">
+          <div id="upload-placeholder"><div style="font-size:2rem">📷</div><div style="font-size:.82rem;color:#999;margin-top:6px">Tap to pick photo from phone</div></div>
+          <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(this)"/>
+          <img id="photo-preview" class="photo-preview"/>
+        </div>
+        <div class="upload-bar-wrap" id="upload-bar-wrap"><div class="upload-bar" id="upload-bar"></div></div>
+        <div class="upload-status" id="upload-status"></div>
+        <div class="notice">📤 Photos stored free via Cloudinary — set up after deployment</div>
+      </div>
+      <div class="form-group form-full">
+        <label>Place Name *</label>
+        <input type="text" id="f-name" placeholder="e.g. Byndoor Beach"/>
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select id="f-category">
+          <option value="">Select…</option>
+          <option value="attractions">🏛️ Attractions</option>
+          <option value="events">🎉 Events</option>
+          <option value="hotels">🏨 Hotels</option>
+          <option value="food">🍛 Food</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sub-category / Type</label>
+        <input type="text" id="f-subcategory" placeholder="e.g. Beach, Temple, Café"/>
+      </div>
+      <div class="form-group form-full">
+        <label>About *</label>
+        <textarea id="f-about" placeholder="Describe this place…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>⏰ Timing</label>
+        <input type="text" id="f-timing" placeholder="e.g. 9am – 6pm"/>
+      </div>
+      <div class="form-group">
+        <label>🎟️ Entry Fee</label>
+        <input type="text" id="f-entry" placeholder="e.g. ₹50 or Free"/>
+      </div>
+      <div class="form-group">
+        <label>🌤️ Best Time to Visit</label>
+        <input type="text" id="f-besttime" placeholder="e.g. Oct – Mar"/>
+      </div>
+      <div class="form-group">
+        <label>⌛ Visit Duration</label>
+        <input type="text" id="f-duration" placeholder="e.g. 1–2 hours"/>
+      </div>
+      <div class="form-group">
+        <label>📞 Phone (optional)</label>
+        <input type="tel" id="f-phone" placeholder="+91 98000 00000"/>
+      </div>
+      <div class="form-group">
+        <label>💰 Price (₹)</label>
+        <input type="text" id="f-price" placeholder="e.g. 1500"/>
+      </div>
+      <div class="form-group">
+        <label>📍 Latitude (Google Maps)</label>
+        <input type="number" id="f-lat" placeholder="e.g. 13.8785" step="any"/>
+      </div>
+      <div class="form-group">
+        <label>📍 Longitude (Google Maps)</label>
+        <input type="number" id="f-lng" placeholder="e.g. 74.7313" step="any"/>
+      </div>
+      <div class="form-group">
+        <label>⭐ Rating (1–5)</label>
+        <input type="number" id="f-rating" placeholder="5" min="1" max="5" step="0.1"/>
+      </div>
+      <div class="form-group">
+        <label>Emoji Icon</label>
+        <input type="text" id="f-emoji" placeholder="e.g. 🏖️"/>
+      </div>
+      <div class="form-group form-full">
+        <label>🏷️ Tags (comma separated)</label>
+        <input type="text" id="f-tags" placeholder="Beach, Swimming, Sunset, Family"/>
+      </div>
+      <div class="form-group form-full">
+        <label>💡 Tips for Visitors</label>
+        <textarea id="f-tips" placeholder="Helpful tips for tourists…" style="min-height:60px"></textarea>
+      </div>
+      <div class="form-group form-full">
+        <label>🎨 Card Background Color</label>
+        <div class="color-row" id="color-row"></div>
+        <input type="hidden" id="f-cardbg"/>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" id="save-btn" onclick="savePlace()">
+        <span id="save-spinner" class="spinner" style="display:none"></span>
+        <span id="save-label">Save Place</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="confirm-overlay" id="confirm-modal">
+  <div class="confirm-box">
+    <h3>🗑️ Delete Place?</h3>
+    <p>This cannot be undone.</p>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-delete" id="confirm-delete-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
+const CLOUDINARY_CLOUD_NAME="YOUR_CLOUD_NAME";
+const CLOUDINARY_UPLOAD_PRESET="byndoor_unsigned";
+const GRADIENTS=['linear-gradient(135deg,#1AAFCC,#0D8C76)','linear-gradient(135deg,#E8651A,#F5B731)','linear-gradient(135deg,#E8397A,#E8651A)','linear-gradient(135deg,#5C6BC0,#283593)','linear-gradient(135deg,#388E3C,#1B5E20)','linear-gradient(135deg,#FF7043,#BF360C)','linear-gradient(135deg,#7E57C2,#311B92)','linear-gradient(135deg,#26C6DA,#006064)'];
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,getDocs,addDoc,updateDoc,deleteDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app=initializeApp(FIREBASE_CONFIG);
+const db=getFirestore(app);
+const auth=getAuth(app);
+
+let allPlaces=[],currentFilter='all',editingId=null,deleteId=null;
+let selectedBg=null,selectedPhotoFile=null,existingPhotoURL=null;
+
+// Auth guard
+onAuthStateChanged(auth,user=>{
+  if(!user){location.href='login.html';return;}
+  document.getElementById('user-email').textContent=user.email;
+  loadPlaces();
+  buildSwatches();
+});
+
+window.doLogout=async()=>{await signOut(auth);location.href='login.html';};
+
+async function loadPlaces(){
+  try{
+    const snap=await getDocs(collection(db,'places'));
+    allPlaces=snap.docs.map(d=>({id:d.id,...d.data()}));
+    updateStats();renderList();
+  }catch(e){
+    document.getElementById('places-list').innerHTML='<div class="empty-state">⚠️ Cannot load. Check internet connection.</div>';
+  }
+}
+
+function updateStats(){
+  document.getElementById('stat-total').textContent=allPlaces.length;
+  document.getElementById('stat-attractions').textContent=allPlaces.filter(p=>p.category==='attractions').length;
+  document.getElementById('stat-hotels').textContent=allPlaces.filter(p=>p.category==='hotels').length;
+  document.getElementById('stat-food').textContent=allPlaces.filter(p=>p.category==='food').length;
+}
+
+function renderList(){
+  const list=currentFilter==='all'?allPlaces:allPlaces.filter(p=>p.category===currentFilter);
+  const el=document.getElementById('places-list');
+  if(!list.length){el.innerHTML='<div class="empty-state">📭 No places yet. Tap "+ Add Place" to get started!</div>';return;}
+  el.innerHTML=list.map(p=>`
+    <div class="place-row">
+      <div class="place-row-thumb" style="background:${p.cardBg||'#eee'}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}"/>`:`<span>${p.emoji||'📍'}</span>`}</div>
+      <div class="place-row-info">
+        <div class="place-row-name">${p.name}</div>
+        <div class="place-row-sub">${p.category||''} ${p.subcategory?'· '+p.subcategory:''} ${p.timing?'· '+p.timing:''}</div>
+      </div>
+      <div class="place-row-actions">
+        <button class="icon-btn edit-btn" onclick="openEditModal('${p.id}')">✏️</button>
+        <button class="icon-btn del-btn" onclick="confirmDelete('${p.id}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+document.querySelectorAll('.ftab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.ftab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');currentFilter=t.dataset.f;renderList();
+}));
+
+function buildSwatches(){
+  document.getElementById('color-row').innerHTML=GRADIENTS.map(g=>`<div class="color-swatch" data-g="${g}" style="background:${g}" onclick="selectBg(this,'${g}')"></div>`).join('');
+}
+window.selectBg=(el,g)=>{document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');selectedBg=g;};
+
+window.handlePhoto=(input)=>{
+  const file=input.files[0];if(!file)return;
+  selectedPhotoFile=file;
+  const preview=document.getElementById('photo-preview');
+  preview.src=URL.createObjectURL(file);preview.style.display='block';
+  document.getElementById('upload-placeholder').style.display='none';
+  document.getElementById('upload-status').textContent='✅ Photo ready — uploads when you save';
+};
+
+async function uploadPhoto(file){
+  if(CLOUDINARY_CLOUD_NAME==='YOUR_CLOUD_NAME')return null;
+  const fd=new FormData();fd.append('file',file);fd.append('upload_preset',CLOUDINARY_UPLOAD_PRESET);
+  document.getElementById('upload-bar-wrap').style.display='block';
+  document.getElementById('upload-status').textContent='⬆️ Uploading photo…';
+  return new Promise(resolve=>{
+    const xhr=new XMLHttpRequest();
+    xhr.open('POST',`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`);
+    xhr.upload.onprogress=e=>{if(e.lengthComputable)document.getElementById('upload-bar').style.width=Math.round(e.loaded/e.total*100)+'%';};
+    xhr.onload=()=>{if(xhr.status===200){const r=JSON.parse(xhr.responseText);document.getElementById('upload-status').textContent='✅ Uploaded!';resolve(r.secure_url);}else{document.getElementById('upload-status').textContent='⚠️ Upload failed';resolve(null);}};
+    xhr.onerror=()=>{document.getElementById('upload-status').textContent='⚠️ Error';resolve(null);};
+    xhr.send(fd);
+  });
+}
+
+window.openAddModal=()=>{editingId=null;resetForm();document.getElementById('modal-title-text').textContent='➕ Add New Place';document.getElementById('save-label').textContent='Save Place';document.getElementById('place-modal').classList.add('show');};
+
+window.openEditModal=(id)=>{
+  const p=allPlaces.find(x=>x.id===id);if(!p)return;
+  editingId=id;resetForm();
+  const flds={name:'f-name',category:'f-category',subcategory:'f-subcategory',about:'f-about',timing:'f-timing',entryFee:'f-entry',bestTime:'f-besttime',duration:'f-duration',phone:'f-phone',price:'f-price',lat:'f-lat',lng:'f-lng',rating:'f-rating',emoji:'f-emoji',tips:'f-tips'};
+  Object.entries(flds).forEach(([k,id])=>{const el=document.getElementById(id);if(el&&p[k]!=null)el.value=p[k];});
+  document.getElementById('f-tags').value=(p.tags||[]).join(', ');
+  if(p.cardBg){selectedBg=p.cardBg;document.querySelectorAll('.color-swatch').forEach(s=>s.classList.toggle('selected',s.dataset.g===p.cardBg));}
+  if(p.photoURL){existingPhotoURL=p.photoURL;document.getElementById('photo-preview').src=p.photoURL;document.getElementById('photo-preview').style.display='block';document.getElementById('upload-placeholder').style.display='none';document.getElementById('upload-status').textContent='✅ Existing photo';}
+  document.getElementById('modal-title-text').textContent='✏️ Edit Place';
+  document.getElementById('save-label').textContent='Update Place';
+  document.getElementById('place-modal').classList.add('show');
+};
+
+window.closeModal=()=>{document.getElementById('place-modal').classList.remove('show');resetForm();};
+
+function resetForm(){
+  ['f-name','f-category','f-subcategory','f-about','f-timing','f-entry','f-besttime','f-duration','f-phone','f-price','f-lat','f-lng','f-rating','f-tags','f-tips','f-emoji'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('photo-preview').style.display='none';document.getElementById('photo-preview').src='';
+  document.getElementById('upload-placeholder').style.display='block';document.getElementById('photo-input').value='';
+  document.getElementById('upload-bar-wrap').style.display='none';document.getElementById('upload-bar').style.width='0%';
+  document.getElementById('upload-status').textContent='';
+  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));
+  selectedBg=null;selectedPhotoFile=null;existingPhotoURL=null;editingId=null;
+}
+
+window.savePlace=async()=>{
+  const name=document.getElementById('f-name').value.trim();
+  const cat=document.getElementById('f-category').value;
+  if(!name||!cat){alert('Name and Category are required!');return;}
+  const btn=document.getElementById('save-btn'),spinner=document.getElementById('save-spinner'),label=document.getElementById('save-label');
+  btn.disabled=true;spinner.style.display='inline-block';label.textContent='Saving…';
+  try{
+    let photoURL=existingPhotoURL;
+    if(selectedPhotoFile)photoURL=await uploadPhoto(selectedPhotoFile)||existingPhotoURL;
+    const data={
+      name,category:cat,
+      subcategory:document.getElementById('f-subcategory').value.trim()||null,
+      about:document.getElementById('f-about').value.trim()||null,
+      timing:document.getElementById('f-timing').value.trim()||null,
+      entryFee:document.getElementById('f-entry').value.trim()||null,
+      bestTime:document.getElementById('f-besttime').value.trim()||null,
+      duration:document.getElementById('f-duration').value.trim()||null,
+      phone:document.getElementById('f-phone').value.trim()||null,
+      price:document.getElementById('f-price').value.trim()||null,
+      lat:parseFloat(document.getElementById('f-lat').value)||null,
+      lng:parseFloat(document.getElementById('f-lng').value)||null,
+      rating:parseFloat(document.getElementById('f-rating').value)||5,
+      tags:document.getElementById('f-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+      tips:document.getElementById('f-tips').value.trim()||null,
+      emoji:document.getElementById('f-emoji').value.trim()||null,
+      cardBg:selectedBg||GRADIENTS[0],
+      photoURL,updatedAt:serverTimestamp(),
+    };
+    if(editingId)await updateDoc(doc(db,'places',editingId),data);
+    else{data.createdAt=serverTimestamp();await addDoc(collection(db,'places'),data);}
+    closeModal();await loadPlaces();
+  }catch(e){alert('Error saving: '+e.message);}
+  finally{btn.disabled=false;spinner.style.display='none';label.textContent=editingId?'Update Place':'Save Place';}
+};
+
+window.confirmDelete=(id)=>{deleteId=id;document.getElementById('confirm-modal').classList.add('show');};
+window.closeConfirm=()=>{document.getElementById('confirm-modal').classList.remove('show');deleteId=null;};
+document.getElementById('confirm-delete-btn').addEventListener('click',async()=>{
+  if(!deleteId)return;
+  try{await deleteDoc(doc(db,'places',deleteId));closeConfirm();await loadPlaces();}
+  catch(e){alert('Delete failed: '+e.message);}
+});
+</script>
+</body>
+</html>
