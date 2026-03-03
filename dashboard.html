@@ -3,228 +3,337 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Dashboard — Byndoor Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <title>Admin — Discover Byndoor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    :root{--saffron:#E8651A;--sea:#1AAFCC;--teal:#0D8C76;--pink:#E8397A;--dark:#1C1C2E;--muted:#6B7280;--bg:#F8F9FF}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh}
-    .topbar{background:linear-gradient(135deg,#1AAFCC,#E8651A);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.15)}
-    .topbar-logo{font-family:'Baloo 2',cursive;font-size:1.3rem;color:#fff}
-    .topbar-right{display:flex;gap:10px;align-items:center}
-    .topbar-user{background:rgba(255,255,255,.2);color:#fff;padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .logout-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:5px 14px;border-radius:20px;font-size:.78rem;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px;max-width:900px;margin:0 auto}
-    .stat-card{background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-    .stat-card .num{font-family:'Baloo 2',cursive;font-size:1.6rem}
-    .stat-card .lbl{font-size:.7rem;color:var(--muted);font-weight:600;margin-top:2px}
-    .container{max-width:900px;margin:0 auto;padding:0 16px 80px}
-    .sec-header{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}
-    .sec-header h2{font-family:'Baloo 2',cursive;font-size:1.2rem}
-    .add-btn{background:var(--saffron);color:#fff;border:none;border-radius:25px;padding:9px 20px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif}
-    .filter-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px}
-    .filter-tabs::-webkit-scrollbar{display:none}
-    .ftab{flex-shrink:0;border:none;cursor:pointer;padding:7px 16px;border-radius:25px;font-size:.78rem;font-weight:600;background:#ece8e2;color:#888;transition:all .2s;font-family:'Poppins',sans-serif}
-    .ftab.active{background:var(--saffron);color:#fff}
-    .place-row{background:#fff;border-radius:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-    .place-row-thumb{width:56px;height:56px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;overflow:hidden}
-    .place-row-thumb img{width:100%;height:100%;object-fit:cover}
-    .place-row-info{flex:1;min-width:0}
-    .place-row-name{font-family:'Baloo 2',cursive;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .place-row-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
-    .place-row-actions{display:flex;gap:7px;flex-shrink:0}
-    .icon-btn{width:34px;height:34px;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center}
-    .edit-btn{background:#E3F2FD;color:#1565C0}
-    .del-btn{background:#FFEBEE;color:#C62828}
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;overflow-y:auto;padding:20px}
-    .modal-overlay.show{display:flex;align-items:flex-start;justify-content:center}
-    .modal{background:#fff;border-radius:20px;width:100%;max-width:560px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto}
-    .modal-title{font-family:'Baloo 2',cursive;font-size:1.3rem;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
-    .close-modal{background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .form-full{grid-column:1/-1}
-    .form-group{display:flex;flex-direction:column;gap:5px}
-    .form-group label{font-size:.78rem;font-weight:600;color:#555}
-    .form-group input,.form-group select,.form-group textarea{border:2px solid #f0ede8;border-radius:10px;padding:10px 13px;font-family:'Poppins',sans-serif;font-size:.85rem;outline:none;transition:border .2s;width:100%;background:#fff}
-    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--saffron)}
-    .form-group textarea{resize:vertical;min-height:90px}
-    .photo-upload-area{border:2px dashed #f0ede8;border-radius:12px;padding:20px;text-align:center;cursor:pointer;position:relative;overflow:hidden}
-    .photo-upload-area input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-    .photo-preview{width:100%;height:160px;object-fit:cover;border-radius:10px;display:none;margin-top:10px}
-    .upload-bar-wrap{display:none;margin-top:8px;background:#f0f0f0;border-radius:10px;height:6px;overflow:hidden}
-    .upload-bar{height:100%;background:var(--saffron);width:0%;transition:width .3s;border-radius:10px}
-    .upload-status{font-size:.75rem;color:var(--muted);margin-top:4px;min-height:18px}
-    .notice{background:#E8F5E9;border-radius:10px;padding:8px 12px;font-size:.73rem;color:#2E7D32;margin-top:6px;border-left:3px solid #4CAF50}
-    .form-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
-    .cancel-btn{background:#f0ede8;color:var(--dark);border:none;border-radius:12px;padding:11px 24px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif}
-    .save-btn{background:var(--saffron);color:#fff;border:none;border-radius:12px;padding:11px 24px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:7px}
-    .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .color-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}
-    .color-swatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .15s}
-    .color-swatch.selected{border-color:var(--dark);transform:scale(1.15)}
-    .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:12px;color:var(--muted)}
-    .loading .spinner{border-color:#f0ede8;border-top-color:var(--saffron)}
-    .empty-state{text-align:center;padding:40px;color:var(--muted)}
-    .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px}
-    .confirm-overlay.show{display:flex}
-    .confirm-box{background:#fff;border-radius:18px;padding:24px;max-width:320px;width:100%;text-align:center}
-    .confirm-box h3{font-family:'Baloo 2',cursive;font-size:1.2rem;margin-bottom:8px}
-    .confirm-box p{font-size:.85rem;color:var(--muted);margin-bottom:20px}
-    .confirm-btns{display:flex;gap:10px}
-    .confirm-btns button{flex:1;padding:11px;border:none;border-radius:12px;font-family:'Poppins',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}
-    .confirm-cancel{background:#f0ede8;color:var(--dark)}
-    .confirm-delete{background:#C62828;color:#fff}
-    @media(max-width:500px){.form-grid{grid-template-columns:1fr}.form-full{grid-column:1}.stats{grid-template-columns:1fr 1fr}}
+  :root{--p:#0a7c6e;--acc:#f97316;--dark:#0f172a;--muted:#64748b;--bdr:#e8e4de;--bg:#f8f9ff;--r:16px}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh}
+  .topbar{background:linear-gradient(135deg,#0a7c6e,#0ea5e9);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+  .tb-logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff}
+  .tb-right{display:flex;gap:10px;align-items:center}
+  .tb-user{background:rgba(255,255,255,.2);color:#fff;padding:4px 13px;border-radius:20px;font-size:.75rem;font-weight:600;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tb-out{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:4px 13px;border-radius:20px;font-size:.75rem;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px;max-width:960px;margin:0 auto}
+  .stat{background:#fff;border-radius:var(--r);padding:13px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .stat-n{font-family:'Playfair Display',serif;font-size:1.5rem}
+  .stat-l{font-size:.68rem;color:var(--muted);font-weight:600;margin-top:2px}
+  .wrap{max-width:960px;margin:0 auto;padding:0 14px 100px}
+  .sec-hd{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px}
+  .sec-hd h2{font-family:'Playfair Display',serif;font-size:1.1rem}
+
+  /* CATEGORY PILLS */
+  .cat-pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px}
+  .cat-pills::-webkit-scrollbar{display:none}
+  .cpill{flex-shrink:0;border:2px solid var(--bdr);cursor:pointer;padding:7px 16px;border-radius:25px;font-size:.76rem;font-weight:600;background:#fff;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif}
+  .cpill.active{background:var(--p);color:#fff;border-color:var(--p)}
+
+  /* ADD BUTTON */
+  .add-btn{background:var(--acc);color:#fff;border:none;border-radius:25px;padding:8px 18px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px}
+
+  /* PLACE ROWS */
+  .place-row{background:#fff;border-radius:var(--r);margin-bottom:9px;display:flex;align-items:center;gap:11px;padding:11px 13px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .pr-thumb{width:52px;height:52px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem;overflow:hidden}
+  .pr-thumb img{width:100%;height:100%;object-fit:cover}
+  .pr-info{flex:1;min-width:0}
+  .pr-name{font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pr-sub{font-size:.7rem;color:var(--muted);margin-top:2px}
+  .pr-acts{display:flex;gap:6px;flex-shrink:0}
+  .ico-btn{width:33px;height:33px;border:none;border-radius:9px;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .btn-e{background:#E3F2FD;color:#1565C0}
+  .btn-d{background:#FFEBEE;color:#C62828}
+
+  /* MODAL */
+  .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;overflow-y:auto;padding:20px;align-items:flex-start;justify-content:center}
+  .modal-ov.open{display:flex}
+  .modal{background:#fff;border-radius:20px;width:100%;max-width:580px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25);margin:auto}
+  .modal-hd{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+  .modal-x{background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999}
+
+  /* FORM TABS */
+  .ftabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+  .ftab{border:2px solid var(--bdr);cursor:pointer;padding:7px 14px;border-radius:25px;font-size:.74rem;font-weight:600;background:#fff;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif}
+  .ftab.active{background:var(--p);color:#fff;border-color:var(--p)}
+
+  /* FORM PANELS */
+  .fpanel{display:none}
+  .fpanel.active{display:block}
+  .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .fc{grid-column:1/-1}
+  .fl{display:flex;flex-direction:column;gap:4px;margin-bottom:2px}
+  .fl label{font-size:.74rem;font-weight:600;color:#555}
+  .fi{border:2px solid var(--bdr);border-radius:9px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;width:100%;background:#fff;color:var(--dark);transition:border .2s}
+  .fi:focus{border-color:var(--p)}
+  textarea.fi{min-height:80px;resize:vertical}
+
+  /* PHOTO */
+  .photo-area{border:2px dashed var(--bdr);border-radius:11px;padding:18px;text-align:center;cursor:pointer;position:relative;overflow:hidden;transition:border .2s}
+  .photo-area:hover{border-color:var(--p)}
+  .photo-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+  .ph-prev{width:100%;height:150px;object-fit:cover;border-radius:9px;display:none;margin-top:10px}
+  .upload-wrap{display:none;margin-top:8px}
+  .upload-bar-bg{background:#f0f0f0;border-radius:6px;height:5px;overflow:hidden}
+  .upload-bar{height:100%;background:var(--p);width:0%;border-radius:6px;transition:width .3s}
+  .upload-st{font-size:.72rem;color:var(--muted);margin-top:4px;min-height:16px}
+  .notice{background:#E8F5E9;border-radius:9px;padding:7px 11px;font-size:.7rem;color:#2E7D32;margin-top:6px;border-left:3px solid #4CAF50}
+
+  /* COLOR ROW */
+  .cswatches{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
+  .cswatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .15s}
+  .cswatch.on{border-color:var(--dark);transform:scale(1.15)}
+
+  /* FORM ACTIONS */
+  .f-acts{display:flex;gap:10px;margin-top:18px;justify-content:flex-end}
+  .f-cancel{background:#f0ede8;color:var(--dark);border:none;border-radius:11px;padding:10px 22px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .f-save{background:var(--p);color:#fff;border:none;border-radius:11px;padding:10px 22px;font-size:.83rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* CONFIRM */
+  .conf-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px}
+  .conf-ov.open{display:flex}
+  .conf-box{background:#fff;border-radius:18px;padding:22px;max-width:300px;width:100%;text-align:center}
+  .conf-box h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:7px}
+  .conf-box p{font-size:.82rem;color:var(--muted);margin-bottom:18px}
+  .conf-btns{display:flex;gap:10px}
+  .conf-btns button{flex:1;padding:10px;border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:700;cursor:pointer}
+  .conf-no{background:#f0ede8;color:var(--dark)}
+  .conf-yes{background:#C62828;color:#fff}
+
+  .loading{display:flex;align-items:center;justify-content:center;padding:36px;gap:10px;color:var(--muted)}
+  .loading .spinner{border-color:#f0ede8;border-top-color:var(--p)}
+  .empty-st{text-align:center;padding:36px;color:var(--muted);font-size:.82rem}
+  @media(max-width:500px){.fg{grid-template-columns:1fr}.fc{grid-column:1}.stats{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-logo">🌊 Byndoor Admin</div>
-  <div class="topbar-right">
-    <div class="topbar-user" id="user-email">Admin</div>
-    <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+  <div class="tb-logo">🌊 Byndoor Admin</div>
+  <div class="tb-right">
+    <div class="tb-user" id="tb-user">Admin</div>
+    <button class="tb-out" onclick="doLogout()">Sign Out</button>
   </div>
 </div>
 
 <div class="stats">
-  <div class="stat-card"><div class="num" id="stat-total" style="color:var(--saffron)">0</div><div class="lbl">Total</div></div>
-  <div class="stat-card"><div class="num" id="stat-attractions" style="color:var(--sea)">0</div><div class="lbl">Attractions</div></div>
-  <div class="stat-card"><div class="num" id="stat-hotels" style="color:var(--teal)">0</div><div class="lbl">Hotels</div></div>
-  <div class="stat-card"><div class="num" id="stat-food" style="color:var(--pink)">0</div><div class="lbl">Food</div></div>
+  <div class="stat"><div class="stat-n" id="s-total" style="color:var(--acc)">0</div><div class="stat-l">Total</div></div>
+  <div class="stat"><div class="stat-n" id="s-att" style="color:#0a7c6e">0</div><div class="stat-l">Attractions</div></div>
+  <div class="stat"><div class="stat-n" id="s-stay" style="color:#7c3aed">0</div><div class="stat-l">Stay</div></div>
+  <div class="stat"><div class="stat-n" id="s-food" style="color:var(--acc)">0</div><div class="stat-l">Food</div></div>
 </div>
 
-<div class="container">
-  <div class="sec-header">
-    <h2>📍 All Places</h2>
-    <button class="add-btn" onclick="openAddModal()">＋ Add Place</button>
+<div class="wrap">
+  <div class="sec-hd">
+    <h2>📍 Manage Places</h2>
+    <button class="add-btn" onclick="openModal(null)">＋ Add Place</button>
   </div>
-  <div class="filter-tabs">
-    <button class="ftab active" data-f="all">All</button>
-    <button class="ftab" data-f="attractions">🏛️ Attractions</button>
-    <button class="ftab" data-f="events">🎉 Events</button>
-    <button class="ftab" data-f="hotels">🏨 Hotels</button>
-    <button class="ftab" data-f="food">🍛 Food</button>
+  <div class="cat-pills">
+    <button class="cpill active" data-f="all">All</button>
+    <button class="cpill" data-f="attractions">🏛️ Attractions</button>
+    <button class="cpill" data-f="events">🎉 Events</button>
+    <button class="cpill" data-f="stay">🏨 Stay</button>
+    <button class="cpill" data-f="food">🍛 Food</button>
+    <button class="cpill" data-f="transport">🚌 Transport</button>
   </div>
-  <div id="places-list">
-    <div class="loading"><div class="spinner"></div> Loading…</div>
-  </div>
+  <div id="places-list"><div class="loading"><div class="spinner"></div> Loading…</div></div>
 </div>
 
-<!-- ADD/EDIT MODAL -->
-<div class="modal-overlay" id="place-modal">
+<!-- MODAL -->
+<div class="modal-ov" id="modal">
   <div class="modal">
-    <div class="modal-title">
-      <span id="modal-title-text">Add New Place</span>
-      <button class="close-modal" onclick="closeModal()">✕</button>
+    <div class="modal-hd"><span id="modal-title">Add Place</span><button class="modal-x" onclick="closeModal()">✕</button></div>
+
+    <!-- FORM TYPE SELECTOR -->
+    <div class="ftabs" id="ftabs">
+      <button class="ftab active" data-form="attractions">🏛️ Attraction</button>
+      <button class="ftab" data-form="events">🎉 Event</button>
+      <button class="ftab" data-form="stay">🏨 Stay</button>
+      <button class="ftab" data-form="food">🍛 Food</button>
+      <button class="ftab" data-form="transport">🚌 Transport</button>
     </div>
-    <div class="form-grid">
-      <div class="form-group form-full">
-        <label>📸 Photo</label>
-        <div class="photo-upload-area">
-          <div id="upload-placeholder"><div style="font-size:2rem">📷</div><div style="font-size:.82rem;color:#999;margin-top:6px">Tap to pick photo from phone</div></div>
-          <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(this)"/>
-          <img id="photo-preview" class="photo-preview"/>
+
+    <!-- ATTRACTION FORM -->
+    <div class="fpanel active" id="fp-attractions">
+      <div class="fg">
+        <div class="fl fc"><label>📸 Photo</label>
+          <div class="photo-area"><div id="ph-att-ph"><div style="font-size:1.8rem">📷</div><div style="font-size:.78rem;color:#aaa;margin-top:5px">Tap to upload photo</div></div><input type="file" id="ph-att" accept="image/*" onchange="handlePhoto(this,'att')"/><img id="ph-att-prev" class="ph-prev"/></div>
+          <div class="upload-wrap" id="uw-att"><div class="upload-bar-bg"><div class="upload-bar" id="ub-att"></div></div></div>
+          <div class="upload-st" id="us-att"></div>
+          <div class="notice">📤 Photos uploaded free via Cloudinary</div>
         </div>
-        <div class="upload-bar-wrap" id="upload-bar-wrap"><div class="upload-bar" id="upload-bar"></div></div>
-        <div class="upload-status" id="upload-status"></div>
-        <div class="notice">📤 Photos stored free via Cloudinary — set up after deployment</div>
-      </div>
-      <div class="form-group form-full">
-        <label>Place Name *</label>
-        <input type="text" id="f-name" placeholder="e.g. Byndoor Beach"/>
-      </div>
-      <div class="form-group">
-        <label>Category *</label>
-        <select id="f-category">
-          <option value="">Select…</option>
-          <option value="attractions">🏛️ Attractions</option>
-          <option value="events">🎉 Events</option>
-          <option value="hotels">🏨 Hotels</option>
-          <option value="food">🍛 Food</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Sub-category / Type</label>
-        <input type="text" id="f-subcategory" placeholder="e.g. Beach, Temple, Café"/>
-      </div>
-      <div class="form-group form-full">
-        <label>About *</label>
-        <textarea id="f-about" placeholder="Describe this place…"></textarea>
-      </div>
-      <div class="form-group">
-        <label>⏰ Timing</label>
-        <input type="text" id="f-timing" placeholder="e.g. 9am – 6pm"/>
-      </div>
-      <div class="form-group">
-        <label>🎟️ Entry Fee</label>
-        <input type="text" id="f-entry" placeholder="e.g. ₹50 or Free"/>
-      </div>
-      <div class="form-group">
-        <label>🌤️ Best Time to Visit</label>
-        <input type="text" id="f-besttime" placeholder="e.g. Oct – Mar"/>
-      </div>
-      <div class="form-group">
-        <label>⌛ Visit Duration</label>
-        <input type="text" id="f-duration" placeholder="e.g. 1–2 hours"/>
-      </div>
-      <div class="form-group">
-        <label>📞 Phone (optional)</label>
-        <input type="tel" id="f-phone" placeholder="+91 98000 00000"/>
-      </div>
-      <div class="form-group">
-        <label>💰 Price (₹)</label>
-        <input type="text" id="f-price" placeholder="e.g. 1500"/>
-      </div>
-      <div class="form-group">
-        <label>📍 Latitude (Google Maps)</label>
-        <input type="number" id="f-lat" placeholder="e.g. 13.8785" step="any"/>
-      </div>
-      <div class="form-group">
-        <label>📍 Longitude (Google Maps)</label>
-        <input type="number" id="f-lng" placeholder="e.g. 74.7313" step="any"/>
-      </div>
-      <div class="form-group">
-        <label>⭐ Rating (1–5)</label>
-        <input type="number" id="f-rating" placeholder="5" min="1" max="5" step="0.1"/>
-      </div>
-      <div class="form-group">
-        <label>Emoji Icon</label>
-        <input type="text" id="f-emoji" placeholder="e.g. 🏖️"/>
-      </div>
-      <div class="form-group form-full">
-        <label>🏷️ Tags (comma separated)</label>
-        <input type="text" id="f-tags" placeholder="Beach, Swimming, Sunset, Family"/>
-      </div>
-      <div class="form-group form-full">
-        <label>💡 Tips for Visitors</label>
-        <textarea id="f-tips" placeholder="Helpful tips for tourists…" style="min-height:60px"></textarea>
-      </div>
-      <div class="form-group form-full">
-        <label>🎨 Card Background Color</label>
-        <div class="color-row" id="color-row"></div>
-        <input type="hidden" id="f-cardbg"/>
+        <div class="fl fc"><label>Place Name *</label><input class="fi" id="att-name" placeholder="e.g. Byndoor Beach"/></div>
+        <div class="fl"><label>Sub-type *</label>
+          <select class="fi" id="att-subtype">
+            <option value="">Select…</option>
+            <option value="beaches">🏖️ Beach</option>
+            <option value="temples">🛕 Temple</option>
+            <option value="waterfalls">💧 Waterfall / Lake</option>
+            <option value="hills">⛰️ Hill</option>
+            <option value="rivers">🌊 River Activity</option>
+            <option value="sea-sports">🤿 Sea Sports</option>
+            <option value="wildlife">🦋 Wildlife</option>
+            <option value="historical">🏛️ Historical</option>
+            <option value="cultural">🎭 Cultural</option>
+            <option value="others">📍 Others</option>
+          </select>
+        </div>
+        <div class="fl"><label>⭐ Rating (1–5)</label><input class="fi" type="number" id="att-rating" placeholder="5" min="1" max="5" step="0.1"/></div>
+        <div class="fl fc"><label>About *</label><textarea class="fi" id="att-about" placeholder="Describe this attraction…"></textarea></div>
+        <div class="fl"><label>⏰ Timing</label><input class="fi" id="att-timing" placeholder="e.g. 6am – 6pm"/></div>
+        <div class="fl"><label>🎟️ Entry Fee</label><input class="fi" id="att-entry" placeholder="e.g. ₹50 or Free"/></div>
+        <div class="fl"><label>🌤️ Best Time</label><input class="fi" id="att-best" placeholder="e.g. Oct – Mar"/></div>
+        <div class="fl"><label>🚌 Transport from Byndoor Town</label><input class="fi" id="att-transport" placeholder="e.g. 5km by auto ₹50"/></div>
+        <div class="fl"><label>⚠️ Risk / Restrictions</label><input class="fi" id="att-risk" placeholder="e.g. No swimming during monsoon"/></div>
+        <div class="fl"><label>📍 Latitude</label><input class="fi" type="number" id="att-lat" placeholder="e.g. 13.8785" step="any"/></div>
+        <div class="fl"><label>📍 Longitude</label><input class="fi" type="number" id="att-lng" placeholder="e.g. 74.7313" step="any"/></div>
+        <div class="fl fc"><label>💡 Visitor Tips</label><textarea class="fi" id="att-tips" placeholder="Helpful tips…" style="min-height:60px"></textarea></div>
+        <div class="fl fc"><label>🏷️ Tags (comma separated)</label><input class="fi" id="att-tags" placeholder="Beach, Sunset, Swimming, Family"/></div>
+        <div class="fl"><label>Emoji</label><input class="fi" id="att-emoji" placeholder="🏖️"/></div>
+        <div class="fl fc"><label>🎨 Card Color</label><div class="cswatches" id="cs-att"></div><input type="hidden" id="att-bg"/></div>
       </div>
     </div>
-    <div class="form-actions">
-      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-      <button class="save-btn" id="save-btn" onclick="savePlace()">
-        <span id="save-spinner" class="spinner" style="display:none"></span>
-        <span id="save-label">Save Place</span>
+
+    <!-- EVENT FORM -->
+    <div class="fpanel" id="fp-events">
+      <div class="fg">
+        <div class="fl fc"><label>📸 Event Photo</label>
+          <div class="photo-area"><div id="ph-evt-ph"><div style="font-size:1.8rem">📷</div><div style="font-size:.78rem;color:#aaa;margin-top:5px">Tap to upload</div></div><input type="file" id="ph-evt" accept="image/*" onchange="handlePhoto(this,'evt')"/><img id="ph-evt-prev" class="ph-prev"/></div>
+          <div class="upload-wrap" id="uw-evt"><div class="upload-bar-bg"><div class="upload-bar" id="ub-evt"></div></div></div>
+          <div class="upload-st" id="us-evt"></div>
+        </div>
+        <div class="fl fc"><label>Event Name *</label><input class="fi" id="evt-name" placeholder="e.g. Byndoor Beach Festival"/></div>
+        <div class="fl"><label>📅 Event Date</label><input class="fi" type="date" id="evt-date"/></div>
+        <div class="fl"><label>🕐 Time</label><input class="fi" id="evt-time" placeholder="e.g. 5:00 PM onwards"/></div>
+        <div class="fl fc"><label>📍 Place / Venue</label><input class="fi" id="evt-location" placeholder="e.g. Byndoor Beach, Main Ground"/></div>
+        <div class="fl"><label>🎟️ Entry Fee</label><input class="fi" id="evt-entry" placeholder="e.g. Free or ₹100"/></div>
+        <div class="fl"><label>Type</label>
+          <select class="fi" id="evt-subtype">
+            <option value="">Select…</option>
+            <option>Festival</option><option>Cultural Night</option><option>Sports</option>
+            <option>Religious</option><option>Beach Event</option><option>Others</option>
+          </select>
+        </div>
+        <div class="fl fc"><label>About the Event</label><textarea class="fi" id="evt-about" placeholder="Brief description…"></textarea></div>
+        <div class="fl fc"><label>🎨 Card Color</label><div class="cswatches" id="cs-evt"></div><input type="hidden" id="evt-bg"/></div>
+      </div>
+    </div>
+
+    <!-- STAY FORM -->
+    <div class="fpanel" id="fp-stay">
+      <div class="fg">
+        <div class="fl fc"><label>📸 Photo</label>
+          <div class="photo-area"><div id="ph-stay-ph"><div style="font-size:1.8rem">📷</div><div style="font-size:.78rem;color:#aaa;margin-top:5px">Tap to upload</div></div><input type="file" id="ph-stay" accept="image/*" onchange="handlePhoto(this,'stay')"/><img id="ph-stay-prev" class="ph-prev"/></div>
+          <div class="upload-wrap" id="uw-stay"><div class="upload-bar-bg"><div class="upload-bar" id="ub-stay"></div></div></div>
+          <div class="upload-st" id="us-stay"></div>
+        </div>
+        <div class="fl fc"><label>Name *</label><input class="fi" id="stay-name" placeholder="e.g. Coastal Breeze Resort"/></div>
+        <div class="fl fc"><label>📍 Address</label><input class="fi" id="stay-address" placeholder="e.g. Near Byndoor Beach, NH 66"/></div>
+        <div class="fl"><label>Type</label>
+          <select class="fi" id="stay-subtype">
+            <option value="">Select…</option>
+            <option>Hotel</option><option>Resort</option><option>Homestay</option>
+            <option>Guest House</option><option>Camp</option><option>Lodge</option>
+          </select>
+        </div>
+        <div class="fl"><label>💰 Price (₹/night)</label><input class="fi" id="stay-price" placeholder="e.g. 1500"/></div>
+        <div class="fl"><label>📞 Phone</label><input class="fi" type="tel" id="stay-phone" placeholder="+91 98000 00000"/></div>
+        <div class="fl"><label>⭐ Rating</label><input class="fi" type="number" id="stay-rating" placeholder="4" min="1" max="5" step="0.1"/></div>
+        <div class="fl fc"><label>About</label><textarea class="fi" id="stay-about" placeholder="Brief description…"></textarea></div>
+        <div class="fl fc"><label>🛎️ Facilities (comma separated)</label><input class="fi" id="stay-facilities" placeholder="WiFi, AC, Parking, Restaurant, Pool"/></div>
+        <div class="fl"><label>📍 Latitude</label><input class="fi" type="number" id="stay-lat" placeholder="13.8785" step="any"/></div>
+        <div class="fl"><label>📍 Longitude</label><input class="fi" type="number" id="stay-lng" placeholder="74.7313" step="any"/></div>
+        <div class="fl fc"><label>🎨 Card Color</label><div class="cswatches" id="cs-stay"></div><input type="hidden" id="stay-bg"/></div>
+      </div>
+    </div>
+
+    <!-- FOOD FORM -->
+    <div class="fpanel" id="fp-food">
+      <div class="fg">
+        <div class="fl fc"><label>📸 Photo</label>
+          <div class="photo-area"><div id="ph-food-ph"><div style="font-size:1.8rem">📷</div><div style="font-size:.78rem;color:#aaa;margin-top:5px">Tap to upload</div></div><input type="file" id="ph-food" accept="image/*" onchange="handlePhoto(this,'food')"/><img id="ph-food-prev" class="ph-prev"/></div>
+          <div class="upload-wrap" id="uw-food"><div class="upload-bar-bg"><div class="upload-bar" id="ub-food"></div></div></div>
+          <div class="upload-st" id="us-food"></div>
+        </div>
+        <div class="fl fc"><label>Name *</label><input class="fi" id="food-name" placeholder="e.g. Karavali Fish Curry House"/></div>
+        <div class="fl fc"><label>📍 Address</label><input class="fi" id="food-address" placeholder="e.g. Main Road, Byndoor"/></div>
+        <div class="fl"><label>Type</label>
+          <select class="fi" id="food-subtype">
+            <option value="">Select…</option>
+            <option>Seafood Restaurant</option><option>Udupi Restaurant</option>
+            <option>Hotel Restaurant</option><option>Tiffin Centre</option>
+            <option>Tea Stall</option><option>Bakery</option><option>Others</option>
+          </select>
+        </div>
+        <div class="fl"><label>📞 Phone</label><input class="fi" type="tel" id="food-phone" placeholder="+91 98000 00000"/></div>
+        <div class="fl"><label>⭐ Rating</label><input class="fi" type="number" id="food-rating" placeholder="4" min="1" max="5" step="0.1"/></div>
+        <div class="fl"><label>⏰ Timings</label><input class="fi" id="food-timing" placeholder="e.g. 7am – 10pm"/></div>
+        <div class="fl fc"><label>About</label><textarea class="fi" id="food-about" placeholder="Specialty dishes, ambience…"></textarea></div>
+        <div class="fl fc"><label>🍽️ Facilities (comma separated)</label><input class="fi" id="food-facilities" placeholder="AC, Takeaway, Home Delivery, Parking"/></div>
+        <div class="fl"><label>📍 Latitude</label><input class="fi" type="number" id="food-lat" placeholder="13.8785" step="any"/></div>
+        <div class="fl"><label>📍 Longitude</label><input class="fi" type="number" id="food-lng" placeholder="74.7313" step="any"/></div>
+        <div class="fl fc"><label>🎨 Card Color</label><div class="cswatches" id="cs-food"></div><input type="hidden" id="food-bg"/></div>
+      </div>
+    </div>
+
+    <!-- TRANSPORT FORM -->
+    <div class="fpanel" id="fp-transport">
+      <div class="ftabs" id="ttabs" style="margin-bottom:14px">
+        <button class="ftab active" data-tt="train">🚆 Train</button>
+        <button class="ftab" data-tt="bus">🚌 Bus</button>
+        <button class="ftab" data-tt="cab">🚕 Cab</button>
+        <button class="ftab" data-tt="auto">🛺 Auto</button>
+      </div>
+      <!-- Train -->
+      <div class="fpanel active" id="tp-train">
+        <div class="fg">
+          <div class="fl fc"><label>Train Name *</label><input class="fi" id="tr-name" placeholder="e.g. Matsyagandha Express"/></div>
+          <div class="fl fc"><label>Route</label><input class="fi" id="tr-route" placeholder="e.g. Mumbai → Mangalore via Byndoor"/></div>
+          <div class="fl fc"><label>Timings at Byndoor</label><input class="fi" id="tr-timing" placeholder="e.g. Arr: 10:35 | Dep: 10:37"/></div>
+        </div>
+      </div>
+      <!-- Bus -->
+      <div class="fpanel" id="tp-bus">
+        <div class="fg">
+          <div class="fl fc"><label>Bus Name / Number *</label><input class="fi" id="bus-name" placeholder="e.g. KSRTC Byndoor–Mangalore"/></div>
+          <div class="fl fc"><label>Route</label><input class="fi" id="bus-route" placeholder="e.g. Byndoor → Kundapur → Udupi → Mangalore"/></div>
+          <div class="fl fc"><label>Timings</label><input class="fi" id="bus-timing" placeholder="e.g. 6:00, 9:00, 12:00, 15:00, 18:00"/></div>
+        </div>
+      </div>
+      <!-- Cab -->
+      <div class="fpanel" id="tp-cab">
+        <div class="fg">
+          <div class="fl fc"><label>Cab Service Name *</label><input class="fi" id="cab-name" placeholder="e.g. Coastal Travels"/></div>
+          <div class="fl fc"><label>📞 Contact Number *</label><input class="fi" type="tel" id="cab-phone" placeholder="+91 98000 00000"/></div>
+        </div>
+      </div>
+      <!-- Auto -->
+      <div class="fpanel" id="tp-auto">
+        <div class="fg">
+          <div class="fl fc"><label>Auto Driver Name *</label><input class="fi" id="auto-name" placeholder="e.g. Raju Auto"/></div>
+          <div class="fl fc"><label>📞 Contact Number *</label><input class="fi" type="tel" id="auto-phone" placeholder="+91 98000 00000"/></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-acts">
+      <button class="f-cancel" onclick="closeModal()">Cancel</button>
+      <button class="f-save" id="save-btn" onclick="savePlace()">
+        <span id="save-spin" class="spinner" style="display:none"></span>
+        <span id="save-lbl">Save</span>
       </button>
     </div>
   </div>
 </div>
 
-<!-- DELETE CONFIRM -->
-<div class="confirm-overlay" id="confirm-modal">
-  <div class="confirm-box">
-    <h3>🗑️ Delete Place?</h3>
+<!-- CONFIRM DELETE -->
+<div class="conf-ov" id="conf">
+  <div class="conf-box">
+    <h3>🗑️ Delete?</h3>
     <p>This cannot be undone.</p>
-    <div class="confirm-btns">
-      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
-      <button class="confirm-delete" id="confirm-delete-btn">Delete</button>
+    <div class="conf-btns">
+      <button class="conf-no" onclick="closeConf()">Cancel</button>
+      <button class="conf-yes" id="conf-yes">Delete</button>
     </div>
   </div>
 </div>
@@ -233,7 +342,7 @@
 const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
 const CLOUDINARY_CLOUD_NAME="do8e3gbpu";
 const CLOUDINARY_UPLOAD_PRESET="byndoor_unsigned";
-const GRADIENTS=['linear-gradient(135deg,#1AAFCC,#0D8C76)','linear-gradient(135deg,#E8651A,#F5B731)','linear-gradient(135deg,#E8397A,#E8651A)','linear-gradient(135deg,#5C6BC0,#283593)','linear-gradient(135deg,#388E3C,#1B5E20)','linear-gradient(135deg,#FF7043,#BF360C)','linear-gradient(135deg,#7E57C2,#311B92)','linear-gradient(135deg,#26C6DA,#006064)'];
+const GRADS=['linear-gradient(135deg,#0a7c6e,#0ea5e9)','linear-gradient(135deg,#f97316,#fbbf24)','linear-gradient(135deg,#e11d7a,#f97316)','linear-gradient(135deg,#7c3aed,#0ea5e9)','linear-gradient(135deg,#0f172a,#1e40af)','linear-gradient(135deg,#065f46,#0a7c6e)','linear-gradient(135deg,#c2410c,#fbbf24)','linear-gradient(135deg,#7c3aed,#e11d7a)'];
 </script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -244,157 +353,284 @@ const app=initializeApp(FIREBASE_CONFIG);
 const db=getFirestore(app);
 const auth=getAuth(app);
 
-let allPlaces=[],currentFilter='all',editingId=null,deleteId=null;
-let selectedBg=null,selectedPhotoFile=null,existingPhotoURL=null;
+let allPlaces=[],filter='all',editId=null,delId=null;
+let selBg={att:null,evt:null,stay:null,food:null};
+let photoFiles={att:null,evt:null,stay:null,food:null};
+let existingPhotos={att:null,evt:null,stay:null,food:null};
+let curForm='attractions',curTT='train';
 
-// Auth guard
 onAuthStateChanged(auth,user=>{
   if(!user){location.href='login.html';return;}
-  document.getElementById('user-email').textContent=user.email;
-  loadPlaces();
-  buildSwatches();
+  document.getElementById('tb-user').textContent=user.email;
+  load();buildSwatches();
 });
-
 window.doLogout=async()=>{await signOut(auth);location.href='login.html';};
 
-async function loadPlaces(){
+async function load(){
   try{
-    const snap=await getDocs(collection(db,'places'));
-    allPlaces=snap.docs.map(d=>({id:d.id,...d.data()}));
-    updateStats();renderList();
-  }catch(e){
-    document.getElementById('places-list').innerHTML='<div class="empty-state">⚠️ Cannot load. Check internet connection.</div>';
-  }
+    const s=await getDocs(collection(db,'places'));
+    allPlaces=s.docs.map(d=>({id:d.id,...d.data()}));
+    stats();renderList();
+  }catch(e){document.getElementById('places-list').innerHTML='<div class="empty-st">⚠️ Cannot load. Check connection.</div>';}
 }
 
-function updateStats(){
-  document.getElementById('stat-total').textContent=allPlaces.length;
-  document.getElementById('stat-attractions').textContent=allPlaces.filter(p=>p.category==='attractions').length;
-  document.getElementById('stat-hotels').textContent=allPlaces.filter(p=>p.category==='hotels').length;
-  document.getElementById('stat-food').textContent=allPlaces.filter(p=>p.category==='food').length;
+function stats(){
+  document.getElementById('s-total').textContent=allPlaces.length;
+  document.getElementById('s-att').textContent=allPlaces.filter(p=>p.category==='attractions').length;
+  document.getElementById('s-stay').textContent=allPlaces.filter(p=>p.category==='stay'||p.category==='hotels').length;
+  document.getElementById('s-food').textContent=allPlaces.filter(p=>p.category==='food').length;
 }
 
 function renderList(){
-  const list=currentFilter==='all'?allPlaces:allPlaces.filter(p=>p.category===currentFilter);
+  const list=filter==='all'?allPlaces:allPlaces.filter(p=>p.category===filter);
   const el=document.getElementById('places-list');
-  if(!list.length){el.innerHTML='<div class="empty-state">📭 No places yet. Tap "+ Add Place" to get started!</div>';return;}
+  if(!list.length){el.innerHTML='<div class="empty-st">📭 No places yet. Tap "+ Add Place"!</div>';return;}
   el.innerHTML=list.map(p=>`
     <div class="place-row">
-      <div class="place-row-thumb" style="background:${p.cardBg||'#eee'}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}"/>`:`<span>${p.emoji||'📍'}</span>`}</div>
-      <div class="place-row-info">
-        <div class="place-row-name">${p.name}</div>
-        <div class="place-row-sub">${p.category||''} ${p.subcategory?'· '+p.subcategory:''} ${p.timing?'· '+p.timing:''}</div>
-      </div>
-      <div class="place-row-actions">
-        <button class="icon-btn edit-btn" onclick="openEditModal('${p.id}')">✏️</button>
-        <button class="icon-btn del-btn" onclick="confirmDelete('${p.id}')">🗑️</button>
+      <div class="pr-thumb" style="background:${p.cardBg||'#eee'}">${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}"/>`:`<span>${p.emoji||catE(p.category)}</span>`}</div>
+      <div class="pr-info"><div class="pr-name">${p.name}</div><div class="pr-sub">${p.category||''} ${p.subtype?'· '+p.subtype:p.subcategory?'· '+p.subcategory:''} ${p.transportType?'· '+p.transportType:''}</div></div>
+      <div class="pr-acts">
+        <button class="ico-btn btn-e" onclick="openEdit('${p.id}')">✏️</button>
+        <button class="ico-btn btn-d" onclick="confirmDel('${p.id}')">🗑️</button>
       </div>
     </div>`).join('');
 }
 
-document.querySelectorAll('.ftab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.ftab').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active');currentFilter=t.dataset.f;renderList();
+document.querySelectorAll('.cpill').forEach(x=>x.addEventListener('click',()=>{
+  document.querySelectorAll('.cpill').forEach(c=>c.classList.remove('active'));
+  x.classList.add('active');filter=x.dataset.f;renderList();
 }));
 
-function buildSwatches(){
-  document.getElementById('color-row').innerHTML=GRADIENTS.map(g=>`<div class="color-swatch" data-g="${g}" style="background:${g}" onclick="selectBg(this,'${g}')"></div>`).join('');
-}
-window.selectBg=(el,g)=>{document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');selectedBg=g;};
+// FORM TABS
+document.querySelectorAll('#ftabs .ftab').forEach(x=>x.addEventListener('click',()=>{
+  document.querySelectorAll('#ftabs .ftab').forEach(f=>f.classList.remove('active'));
+  x.classList.add('active');curForm=x.dataset.form;
+  document.querySelectorAll('.fpanel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('fp-'+curForm)?.classList.add('active');
+}));
 
-window.handlePhoto=(input)=>{
-  const file=input.files[0];if(!file)return;
-  selectedPhotoFile=file;
-  const preview=document.getElementById('photo-preview');
-  preview.src=URL.createObjectURL(file);preview.style.display='block';
-  document.getElementById('upload-placeholder').style.display='none';
-  document.getElementById('upload-status').textContent='✅ Photo ready — uploads when you save';
+// TRANSPORT SUB TABS
+document.querySelectorAll('#ttabs .ftab').forEach(x=>x.addEventListener('click',()=>{
+  document.querySelectorAll('#ttabs .ftab').forEach(f=>f.classList.remove('active'));
+  x.classList.add('active');curTT=x.dataset.tt;
+  document.querySelectorAll('#fp-transport .fpanel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tp-'+curTT)?.classList.add('active');
+}));
+
+// SWATCHES
+function buildSwatches(){
+  ['att','evt','stay','food'].forEach(k=>{
+    const el=document.getElementById('cs-'+k);
+    if(!el)return;
+    el.innerHTML=GRADS.map(gr=>`<div class="cswatch" style="background:${gr}" data-g="${gr}" onclick="pickBg('${k}',this,'${gr}')"></div>`).join('');
+  });
+}
+window.pickBg=(k,el,gr)=>{
+  document.querySelectorAll(`#cs-${k} .cswatch`).forEach(s=>s.classList.remove('on'));
+  el.classList.add('on');selBg[k]=gr;
 };
 
-async function uploadPhoto(file){
+// PHOTO
+window.handlePhoto=(input,k)=>{
+  const f=input.files[0];if(!f)return;
+  photoFiles[k]=f;
+  const prev=document.getElementById('ph-'+k+'-prev');
+  prev.src=URL.createObjectURL(f);prev.style.display='block';
+  document.getElementById('ph-'+k+'-ph').style.display='none';
+  document.getElementById('us-'+k).textContent='✅ Photo ready';
+};
+
+async function uploadPhoto(file,k){
   if(CLOUDINARY_CLOUD_NAME==='YOUR_CLOUD_NAME')return null;
   const fd=new FormData();fd.append('file',file);fd.append('upload_preset',CLOUDINARY_UPLOAD_PRESET);
-  document.getElementById('upload-bar-wrap').style.display='block';
-  document.getElementById('upload-status').textContent='⬆️ Uploading photo…';
-  return new Promise(resolve=>{
+  document.getElementById('uw-'+k).style.display='block';
+  document.getElementById('us-'+k).textContent='⬆️ Uploading…';
+  return new Promise(res=>{
     const xhr=new XMLHttpRequest();
     xhr.open('POST',`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`);
-    xhr.upload.onprogress=e=>{if(e.lengthComputable)document.getElementById('upload-bar').style.width=Math.round(e.loaded/e.total*100)+'%';};
-    xhr.onload=()=>{if(xhr.status===200){const r=JSON.parse(xhr.responseText);document.getElementById('upload-status').textContent='✅ Uploaded!';resolve(r.secure_url);}else{document.getElementById('upload-status').textContent='⚠️ Upload failed';resolve(null);}};
-    xhr.onerror=()=>{document.getElementById('upload-status').textContent='⚠️ Error';resolve(null);};
+    xhr.upload.onprogress=e=>{if(e.lengthComputable)document.getElementById('ub-'+k).style.width=Math.round(e.loaded/e.total*100)+'%';};
+    xhr.onload=()=>{if(xhr.status===200){const r=JSON.parse(xhr.responseText);document.getElementById('us-'+k).textContent='✅ Uploaded!';res(r.secure_url);}else{document.getElementById('us-'+k).textContent='⚠️ Failed';res(null);}};
+    xhr.onerror=()=>{document.getElementById('us-'+k).textContent='⚠️ Error';res(null);};
     xhr.send(fd);
   });
 }
 
-window.openAddModal=()=>{editingId=null;resetForm();document.getElementById('modal-title-text').textContent='➕ Add New Place';document.getElementById('save-label').textContent='Save Place';document.getElementById('place-modal').classList.add('show');};
-
-window.openEditModal=(id)=>{
-  const p=allPlaces.find(x=>x.id===id);if(!p)return;
-  editingId=id;resetForm();
-  const flds={name:'f-name',category:'f-category',subcategory:'f-subcategory',about:'f-about',timing:'f-timing',entryFee:'f-entry',bestTime:'f-besttime',duration:'f-duration',phone:'f-phone',price:'f-price',lat:'f-lat',lng:'f-lng',rating:'f-rating',emoji:'f-emoji',tips:'f-tips'};
-  Object.entries(flds).forEach(([k,id])=>{const el=document.getElementById(id);if(el&&p[k]!=null)el.value=p[k];});
-  document.getElementById('f-tags').value=(p.tags||[]).join(', ');
-  if(p.cardBg){selectedBg=p.cardBg;document.querySelectorAll('.color-swatch').forEach(s=>s.classList.toggle('selected',s.dataset.g===p.cardBg));}
-  if(p.photoURL){existingPhotoURL=p.photoURL;document.getElementById('photo-preview').src=p.photoURL;document.getElementById('photo-preview').style.display='block';document.getElementById('upload-placeholder').style.display='none';document.getElementById('upload-status').textContent='✅ Existing photo';}
-  document.getElementById('modal-title-text').textContent='✏️ Edit Place';
-  document.getElementById('save-label').textContent='Update Place';
-  document.getElementById('place-modal').classList.add('show');
+// OPEN MODAL
+window.openModal=(id)=>{
+  editId=null;resetAll();
+  document.getElementById('modal-title').textContent='➕ Add New Place';
+  document.getElementById('save-lbl').textContent='Save';
+  document.getElementById('modal').classList.add('open');
 };
 
-window.closeModal=()=>{document.getElementById('place-modal').classList.remove('show');resetForm();};
+window.openEdit=(id)=>{
+  const p=allPlaces.find(x=>x.id===id);if(!p)return;
+  editId=id;resetAll();
+  // Set correct form tab
+  const formMap={attractions:'attractions',events:'events',stay:'stay',hotels:'stay',food:'food',transport:'transport'};
+  const ft=formMap[p.category]||'attractions';
+  document.querySelectorAll('#ftabs .ftab').forEach(x=>{x.classList.toggle('active',x.dataset.form===ft);});
+  document.querySelectorAll('.fpanel').forEach(x=>x.classList.remove('active'));
+  document.getElementById('fp-'+ft)?.classList.add('active');
+  curForm=ft;
+  // Fill fields
+  if(ft==='attractions'){
+    setV('att-name',p.name);setV('att-subtype',p.subtype||'');setV('att-rating',p.rating||'');setV('att-about',p.about||'');
+    setV('att-timing',p.timing||'');setV('att-entry',p.entryFee||'');setV('att-best',p.bestTime||'');
+    setV('att-transport',p.transport||'');setV('att-risk',p.risk||'');
+    setV('att-lat',p.lat||'');setV('att-lng',p.lng||'');setV('att-tips',p.tips||'');
+    setV('att-tags',(p.tags||[]).join(', '));setV('att-emoji',p.emoji||'');
+    if(p.cardBg){selBg.att=p.cardBg;document.querySelectorAll('#cs-att .cswatch').forEach(s=>s.classList.toggle('on',s.dataset.g===p.cardBg));}
+    if(p.photoURL)previewExisting('att',p.photoURL);
+  } else if(ft==='events'){
+    setV('evt-name',p.name);if(p.eventDate)setV('evt-date',new Date(p.eventDate).toISOString().split('T')[0]);
+    setV('evt-time',p.timing||'');setV('evt-location',p.location||'');setV('evt-entry',p.entryFee||'');
+    setV('evt-subtype',p.subcategory||'');setV('evt-about',p.about||'');
+    if(p.cardBg){selBg.evt=p.cardBg;document.querySelectorAll('#cs-evt .cswatch').forEach(s=>s.classList.toggle('on',s.dataset.g===p.cardBg));}
+    if(p.photoURL)previewExisting('evt',p.photoURL);
+  } else if(ft==='stay'){
+    setV('stay-name',p.name);setV('stay-address',p.address||'');setV('stay-subtype',p.subcategory||'');
+    setV('stay-price',p.price||'');setV('stay-phone',p.phone||'');setV('stay-rating',p.rating||'');
+    setV('stay-about',p.about||'');setV('stay-facilities',p.facilities||'');
+    setV('stay-lat',p.lat||'');setV('stay-lng',p.lng||'');
+    if(p.cardBg){selBg.stay=p.cardBg;document.querySelectorAll('#cs-stay .cswatch').forEach(s=>s.classList.toggle('on',s.dataset.g===p.cardBg));}
+    if(p.photoURL)previewExisting('stay',p.photoURL);
+  } else if(ft==='food'){
+    setV('food-name',p.name);setV('food-address',p.address||'');setV('food-subtype',p.subcategory||'');
+    setV('food-phone',p.phone||'');setV('food-rating',p.rating||'');setV('food-timing',p.timing||'');
+    setV('food-about',p.about||'');setV('food-facilities',p.facilities||'');
+    setV('food-lat',p.lat||'');setV('food-lng',p.lng||'');
+    if(p.cardBg){selBg.food=p.cardBg;document.querySelectorAll('#cs-food .cswatch').forEach(s=>s.classList.toggle('on',s.dataset.g===p.cardBg));}
+    if(p.photoURL)previewExisting('food',p.photoURL);
+  } else if(ft==='transport'){
+    const tt=p.transportType||'train';
+    curTT=tt;
+    document.querySelectorAll('#ttabs .ftab').forEach(x=>x.classList.toggle('active',x.dataset.tt===tt));
+    document.querySelectorAll('#fp-transport .fpanel').forEach(x=>x.classList.remove('active'));
+    document.getElementById('tp-'+tt)?.classList.add('active');
+    if(tt==='train'){setV('tr-name',p.name);setV('tr-route',p.route||'');setV('tr-timing',p.timing||'');}
+    else if(tt==='bus'){setV('bus-name',p.name);setV('bus-route',p.route||'');setV('bus-timing',p.timing||'');}
+    else if(tt==='cab'){setV('cab-name',p.name);setV('cab-phone',p.phone||'');}
+    else if(tt==='auto'){setV('auto-name',p.name);setV('auto-phone',p.phone||'');}
+  }
+  document.getElementById('modal-title').textContent='✏️ Edit Place';
+  document.getElementById('save-lbl').textContent='Update';
+  document.getElementById('modal').classList.add('open');
+};
 
-function resetForm(){
-  ['f-name','f-category','f-subcategory','f-about','f-timing','f-entry','f-besttime','f-duration','f-phone','f-price','f-lat','f-lng','f-rating','f-tags','f-tips','f-emoji'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('photo-preview').style.display='none';document.getElementById('photo-preview').src='';
-  document.getElementById('upload-placeholder').style.display='block';document.getElementById('photo-input').value='';
-  document.getElementById('upload-bar-wrap').style.display='none';document.getElementById('upload-bar').style.width='0%';
-  document.getElementById('upload-status').textContent='';
-  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));
-  selectedBg=null;selectedPhotoFile=null;existingPhotoURL=null;editingId=null;
+function previewExisting(k,url){
+  existingPhotos[k]=url;
+  const prev=document.getElementById('ph-'+k+'-prev');
+  prev.src=url;prev.style.display='block';
+  document.getElementById('ph-'+k+'-ph').style.display='none';
+  document.getElementById('us-'+k).textContent='✅ Existing photo';
 }
 
+window.closeModal=()=>{document.getElementById('modal').classList.remove('open');resetAll();};
+
+function resetAll(){
+  ['att-name','att-subtype','att-rating','att-about','att-timing','att-entry','att-best','att-transport','att-risk','att-lat','att-lng','att-tips','att-tags','att-emoji',
+   'evt-name','evt-date','evt-time','evt-location','evt-entry','evt-subtype','evt-about',
+   'stay-name','stay-address','stay-subtype','stay-price','stay-phone','stay-rating','stay-about','stay-facilities','stay-lat','stay-lng',
+   'food-name','food-address','food-subtype','food-phone','food-rating','food-timing','food-about','food-facilities','food-lat','food-lng',
+   'tr-name','tr-route','tr-timing','bus-name','bus-route','bus-timing','cab-name','cab-phone','auto-name','auto-phone'
+  ].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['att','evt','stay','food'].forEach(k=>{
+    const prev=document.getElementById('ph-'+k+'-prev');if(prev){prev.style.display='none';prev.src='';}
+    const ph=document.getElementById('ph-'+k+'-ph');if(ph)ph.style.display='block';
+    const inp=document.getElementById('ph-'+k);if(inp)inp.value='';
+    const uw=document.getElementById('uw-'+k);if(uw)uw.style.display='none';
+    const ub=document.getElementById('ub-'+k);if(ub)ub.style.width='0%';
+    const us=document.getElementById('us-'+k);if(us)us.textContent='';
+    document.querySelectorAll(`#cs-${k} .cswatch`).forEach(s=>s.classList.remove('on'));
+    selBg[k]=null;photoFiles[k]=null;existingPhotos[k]=null;
+  });
+  editId=null;
+  // Reset form tabs
+  document.querySelectorAll('#ftabs .ftab').forEach((x,i)=>x.classList.toggle('active',i===0));
+  document.querySelectorAll('.fpanel').forEach((x,i)=>x.classList.toggle('active',i===0));
+  curForm='attractions';
+}
+
+// SAVE
 window.savePlace=async()=>{
-  const name=document.getElementById('f-name').value.trim();
-  const cat=document.getElementById('f-category').value;
-  if(!name||!cat){alert('Name and Category are required!');return;}
-  const btn=document.getElementById('save-btn'),spinner=document.getElementById('save-spinner'),label=document.getElementById('save-label');
-  btn.disabled=true;spinner.style.display='inline-block';label.textContent='Saving…';
+  const btn=document.getElementById('save-btn'),spin=document.getElementById('save-spin'),lbl=document.getElementById('save-lbl');
+  btn.disabled=true;spin.style.display='inline-block';lbl.textContent='Saving…';
   try{
-    let photoURL=existingPhotoURL;
-    if(selectedPhotoFile)photoURL=await uploadPhoto(selectedPhotoFile)||existingPhotoURL;
-    const data={
-      name,category:cat,
-      subcategory:document.getElementById('f-subcategory').value.trim()||null,
-      about:document.getElementById('f-about').value.trim()||null,
-      timing:document.getElementById('f-timing').value.trim()||null,
-      entryFee:document.getElementById('f-entry').value.trim()||null,
-      bestTime:document.getElementById('f-besttime').value.trim()||null,
-      duration:document.getElementById('f-duration').value.trim()||null,
-      phone:document.getElementById('f-phone').value.trim()||null,
-      price:document.getElementById('f-price').value.trim()||null,
-      lat:parseFloat(document.getElementById('f-lat').value)||null,
-      lng:parseFloat(document.getElementById('f-lng').value)||null,
-      rating:parseFloat(document.getElementById('f-rating').value)||5,
-      tags:document.getElementById('f-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-      tips:document.getElementById('f-tips').value.trim()||null,
-      emoji:document.getElementById('f-emoji').value.trim()||null,
-      cardBg:selectedBg||GRADIENTS[0],
-      photoURL,updatedAt:serverTimestamp(),
-    };
-    if(editingId)await updateDoc(doc(db,'places',editingId),data);
+    let data=null;
+    if(curForm==='attractions'){
+      const name=gV('att-name');if(!name){alert('Name required!');return;}
+      let photoURL=existingPhotos.att;
+      if(photoFiles.att)photoURL=await uploadPhoto(photoFiles.att,'att')||existingPhotos.att;
+      data={name,category:'attractions',subtype:gV('att-subtype'),subcategory:gV('att-subtype'),
+        rating:parseFloat(gV('att-rating'))||5,about:gV('att-about')||null,timing:gV('att-timing')||null,
+        entryFee:gV('att-entry')||null,bestTime:gV('att-best')||null,transport:gV('att-transport')||null,
+        risk:gV('att-risk')||null,lat:parseFloat(gV('att-lat'))||null,lng:parseFloat(gV('att-lng'))||null,
+        tips:gV('att-tips')||null,tags:gV('att-tags').split(',').map(t=>t.trim()).filter(Boolean),
+        emoji:gV('att-emoji')||null,cardBg:selBg.att||GRADS[0],photoURL};
+    } else if(curForm==='events'){
+      const name=gV('evt-name');if(!name){alert('Event name required!');return;}
+      let photoURL=existingPhotos.evt;
+      if(photoFiles.evt)photoURL=await uploadPhoto(photoFiles.evt,'evt')||existingPhotos.evt;
+      const dateVal=gV('evt-date');
+      data={name,category:'events',subcategory:gV('evt-subtype'),eventDate:dateVal?new Date(dateVal).toISOString():null,
+        timing:gV('evt-time')||null,location:gV('evt-location')||null,entryFee:gV('evt-entry')||null,
+        about:gV('evt-about')||null,cardBg:selBg.evt||GRADS[2],photoURL};
+    } else if(curForm==='stay'){
+      const name=gV('stay-name');if(!name){alert('Name required!');return;}
+      let photoURL=existingPhotos.stay;
+      if(photoFiles.stay)photoURL=await uploadPhoto(photoFiles.stay,'stay')||existingPhotos.stay;
+      data={name,category:'stay',subcategory:gV('stay-subtype'),address:gV('stay-address')||null,
+        price:gV('stay-price')||null,phone:gV('stay-phone')||null,rating:parseFloat(gV('stay-rating'))||4,
+        about:gV('stay-about')||null,facilities:gV('stay-facilities')||null,
+        lat:parseFloat(gV('stay-lat'))||null,lng:parseFloat(gV('stay-lng'))||null,
+        cardBg:selBg.stay||GRADS[3],photoURL};
+    } else if(curForm==='food'){
+      const name=gV('food-name');if(!name){alert('Name required!');return;}
+      let photoURL=existingPhotos.food;
+      if(photoFiles.food)photoURL=await uploadPhoto(photoFiles.food,'food')||existingPhotos.food;
+      data={name,category:'food',subcategory:gV('food-subtype'),address:gV('food-address')||null,
+        phone:gV('food-phone')||null,rating:parseFloat(gV('food-rating'))||4,
+        timing:gV('food-timing')||null,about:gV('food-about')||null,facilities:gV('food-facilities')||null,
+        lat:parseFloat(gV('food-lat'))||null,lng:parseFloat(gV('food-lng'))||null,
+        cardBg:selBg.food||GRADS[1],photoURL};
+    } else if(curForm==='transport'){
+      if(curTT==='train'){
+        const name=gV('tr-name');if(!name){alert('Train name required!');return;}
+        data={name,category:'transport',transportType:'train',route:gV('tr-route')||null,timing:gV('tr-timing')||null,cardBg:GRADS[4]};
+      } else if(curTT==='bus'){
+        const name=gV('bus-name');if(!name){alert('Bus name required!');return;}
+        data={name,category:'transport',transportType:'bus',route:gV('bus-route')||null,timing:gV('bus-timing')||null,cardBg:GRADS[4]};
+      } else if(curTT==='cab'){
+        const name=gV('cab-name');if(!name){alert('Name required!');return;}
+        data={name,category:'transport',transportType:'cab',phone:gV('cab-phone')||null,cardBg:GRADS[4]};
+      } else if(curTT==='auto'){
+        const name=gV('auto-name');if(!name){alert('Name required!');return;}
+        data={name,category:'transport',transportType:'auto',phone:gV('auto-phone')||null,cardBg:GRADS[4]};
+      }
+    }
+    if(!data){return;}
+    data.updatedAt=serverTimestamp();
+    if(editId)await updateDoc(doc(db,'places',editId),data);
     else{data.createdAt=serverTimestamp();await addDoc(collection(db,'places'),data);}
-    closeModal();await loadPlaces();
-  }catch(e){alert('Error saving: '+e.message);}
-  finally{btn.disabled=false;spinner.style.display='none';label.textContent=editingId?'Update Place':'Save Place';}
+    closeModal();await load();
+  }catch(e){alert('Error: '+e.message);}
+  finally{btn.disabled=false;spin.style.display='none';lbl.textContent=editId?'Update':'Save';}
 };
 
-window.confirmDelete=(id)=>{deleteId=id;document.getElementById('confirm-modal').classList.add('show');};
-window.closeConfirm=()=>{document.getElementById('confirm-modal').classList.remove('show');deleteId=null;};
-document.getElementById('confirm-delete-btn').addEventListener('click',async()=>{
-  if(!deleteId)return;
-  try{await deleteDoc(doc(db,'places',deleteId));closeConfirm();await loadPlaces();}
+// DELETE
+window.confirmDel=(id)=>{delId=id;document.getElementById('conf').classList.add('open');};
+window.closeConf=()=>{document.getElementById('conf').classList.remove('open');delId=null;};
+document.getElementById('conf-yes').addEventListener('click',async()=>{
+  if(!delId)return;
+  try{await deleteDoc(doc(db,'places',delId));closeConf();await load();}
   catch(e){alert('Delete failed: '+e.message);}
 });
+
+// HELPERS
+function gV(id){return document.getElementById(id)?.value?.trim()||'';}
+function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
+function catE(c){return{attractions:'🏛️',stay:'🏨',hotels:'🏨',food:'🍛',events:'🎉',transport:'🚌'}[c]||'📍';}
 </script>
 </body>
 </html>
