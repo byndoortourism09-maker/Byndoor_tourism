@@ -190,6 +190,13 @@
         <div class="fl fc"><label>💡 Visitor Tips</label><textarea class="fi" id="att-tips" placeholder="Helpful tips…" style="min-height:60px"></textarea></div>
         <div class="fl fc"><label>🏷️ Tags (comma separated)</label><input class="fi" id="att-tags" placeholder="Beach, Sunset, Swimming, Family"/></div>
         <div class="fl"><label>Emoji</label><input class="fi" id="att-emoji" placeholder="🏖️"/></div>
+        <div class="fl"><label>📏 Distance from Byndoor Town</label><input class="fi" id="att-distance" placeholder="e.g. 5 km from Byndoor town"/></div>
+        <div class="fl fc" style="margin-top:4px">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.82rem;font-weight:600;color:#555">
+            <input type="checkbox" id="att-nearby" style="width:18px;height:18px;accent-color:var(--p);cursor:pointer"/>
+            🗺️ Show in "Byndoor Taluk Highlights" section on home page
+          </label>
+        </div>
         <div class="fl fc"><label>🎨 Card Color</label><div class="cswatches" id="cs-att"></div><input type="hidden" id="att-bg"/></div>
       </div>
     </div>
@@ -480,6 +487,8 @@ window.openEdit=(id)=>{
     setV('att-transport',p.transport||'');setV('att-risk',p.risk||'');
     setV('att-lat',p.lat||'');setV('att-lng',p.lng||'');setV('att-tips',p.tips||'');
     setV('att-tags',(p.tags||[]).join(', '));setV('att-emoji',p.emoji||'');
+    setV('att-distance',p.distanceFromTown||'');
+    const nb=document.getElementById('att-nearby');if(nb)nb.checked=p.showNearby||false;
     if(p.cardBg){selBg.att=p.cardBg;document.querySelectorAll('#cs-att .cswatch').forEach(s=>s.classList.toggle('on',s.dataset.g===p.cardBg));}
     if(p.photoURL)previewExisting('att',p.photoURL);
   } else if(ft==='events'){
@@ -529,7 +538,7 @@ function previewExisting(k,url){
 window.closeModal=()=>{document.getElementById('modal').classList.remove('open');resetAll();};
 
 function resetAll(){
-  ['att-name','att-subtype','att-rating','att-about','att-timing','att-entry','att-best','att-transport','att-risk','att-lat','att-lng','att-tips','att-tags','att-emoji',
+  ['att-name','att-subtype','att-rating','att-about','att-timing','att-entry','att-best','att-transport','att-risk','att-lat','att-lng','att-tips','att-tags','att-emoji','att-distance',
    'evt-name','evt-date','evt-time','evt-location','evt-entry','evt-subtype','evt-about',
    'stay-name','stay-address','stay-subtype','stay-price','stay-phone','stay-rating','stay-about','stay-facilities','stay-lat','stay-lng',
    'food-name','food-address','food-subtype','food-phone','food-rating','food-timing','food-about','food-facilities','food-lat','food-lng',
@@ -567,7 +576,9 @@ window.savePlace=async()=>{
         entryFee:gV('att-entry')||null,bestTime:gV('att-best')||null,transport:gV('att-transport')||null,
         risk:gV('att-risk')||null,lat:parseFloat(gV('att-lat'))||null,lng:parseFloat(gV('att-lng'))||null,
         tips:gV('att-tips')||null,tags:gV('att-tags').split(',').map(t=>t.trim()).filter(Boolean),
-        emoji:gV('att-emoji')||null,cardBg:selBg.att||GRADS[0],photoURL};
+        emoji:gV('att-emoji')||null,distanceFromTown:gV('att-distance')||null,
+        showNearby:document.getElementById('att-nearby')?.checked||false,
+        cardBg:selBg.att||GRADS[0],photoURL};
     } else if(curForm==='events'){
       const name=gV('evt-name');if(!name){alert('Event name required!');return;}
       let photoURL=existingPhotos.evt;
