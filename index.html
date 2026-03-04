@@ -106,17 +106,20 @@
   .tdot{width:6px;height:6px;border-radius:50%;background:#d1ccc4;border:none;cursor:pointer;padding:0;transition:all .3s}
   .tdot.on{background:var(--p);width:20px;border-radius:3px}
 
-  /* NEARBY */
-  .nscroll{display:flex;gap:12px;padding:0 16px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+
+  .nscroll{display:flex;gap:12px;padding:0 16px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px}
   .nscroll::-webkit-scrollbar{display:none}
-  .ncard{flex-shrink:0;width:150px;background:#fff;border-radius:var(--r2);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.08);cursor:pointer;transition:transform .15s}
-  .ncard:active{transform:scale(.97)}
-  .ncard-img{height:95px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden}
+  .ncard{flex-shrink:0;width:148px;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.11);cursor:pointer;transition:transform .15s}
+  .ncard:active{transform:scale(.96)}
+  .ncard-img{height:105px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
   .ncard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-  .ncard-body{padding:9px 11px 12px}
-  .ncard-name{font-family:'Playfair Display',serif;font-size:.85rem;line-height:1.2}
-  .ncard-dist{font-size:.68rem;color:var(--p);font-weight:600;margin-top:3px}
-  .ncard-desc{font-size:.65rem;color:var(--muted);margin-top:2px}
+  .ncard-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,rgba(0,0,0,.35))}
+  .ncard-body{padding:10px 11px 13px}
+  .ncard-name{font-family:'Playfair Display',serif;font-size:.88rem;line-height:1.25;color:var(--dark)}
+  .ncard-dist{font-size:.67rem;color:var(--p);font-weight:700;margin-top:4px;display:flex;align-items:center;gap:3px}
+  .ncard-desc{font-size:.64rem;color:var(--muted);margin-top:3px;line-height:1.4}
+  .ncard-arrow{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+  .ncard-dir{background:var(--p);color:#fff;font-size:.6rem;font-weight:700;padding:3px 9px;border-radius:10px}
 
   /* TABS */
   .tabs-wrap{padding:18px 16px 0;overflow-x:auto;scrollbar-width:none}
@@ -357,11 +360,12 @@
   <div class="tdots" id="tdots"></div>
 </div>
 
-<!-- NEARBY -->
-<div class="sh" style="padding-top:18px">
-  <div><h2>🗺️ Byndoor Taluk Highlights</h2><div class="sh-sub">Places across Byndoor Taluk — tap for directions</div></div>
+<!-- NEARBY — subtle secondary section -->
+<div style="padding:14px 16px 6px;display:flex;align-items:center;gap:8px">
+  <span style="font-size:.68rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:1px">Also explore nearby</span>
+  <div style="flex:1;height:1px;background:#e8e4de"></div>
 </div>
-<div class="nscroll" id="nearby-list"><div style="padding:16px;font-size:.8rem;color:#aaa">Loading places…</div></div>
+<div class="nscroll" id="nearby-list"></div>
 
 <!-- TABS -->
 <div class="tabs-wrap">
@@ -521,6 +525,7 @@
 const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
 
 // Nearby is now loaded from Firebase (places with showNearby=true)
+// Nearby places loaded from Firebase (category="nearby")
 
 const SHEETS={
   about:{t:"ℹ️ About This App",b:`<p><strong>Discover Byndoor</strong> is the official tourism guide for Byndoor, a beautiful coastal town in Udupi District, Karnataka.</p><h3>Features</h3><p>✅ Attractions with sub-categories<br/>✅ Live weather updates<br/>✅ Google Maps directions<br/>✅ Bus, train & taxi info<br/>✅ Emergency contacts<br/>✅ Nearby sightseeing<br/>✅ Works offline after first visit</p><h3>Version</h3><p>Version 2.0 · Made with ❤️ for Byndoor</p>`},
@@ -693,23 +698,22 @@ window.goSlide=function(i){
   document.querySelectorAll('.tdot').forEach((d,j)=>d.classList.toggle('on',j===i));
 };
 
-// NEARBY — loaded from Firebase places with showNearby=true
+// NEARBY — loaded from Firebase category="nearby"
 function buildNearby(ps){
-  const nearby=ps.filter(p=>p.showNearby===true||p.showNearby==='true');
   const el=document.getElementById('nearby-list');
+  const nearby=ps.filter(p=>p.category==='nearby');
   if(!nearby.length){
-    el.innerHTML='<div style="padding:16px 0;font-size:.8rem;color:#aaa;font-style:italic">No nearby places added yet. Mark places as "Show in Taluk Highlights" in admin panel.</div>';
+    el.innerHTML='<div style="padding:8px 0;font-size:.75rem;color:#bbb;font-style:italic">No nearby places added yet.</div>';
     return;
   }
   el.innerHTML=nearby.map(n=>`
-    <div class="ncard" onclick="${n.lat&&n.lng?`window.open('https://www.google.com/maps/dir/?api=1&destination=${n.lat},${n.lng}','_blank')`:`openDp('${n.id}')`}">
-      <div class="ncard-img" style="background:${n.cardBg||g(n.category)}">
-        ${n.photoURL?`<img src="${n.photoURL}" alt="${n.name}" loading="lazy"/>`:`<span>${n.emoji||ce(n.category)}</span>`}
+    <div class="ncard" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${n.lat},${n.lng}','_blank')">
+      <div class="ncard-img" style="background:${n.cardBg||'linear-gradient(135deg,#0a7c6e,#0ea5e9)'}">
+        ${n.photoURL?`<img src="${n.photoURL}" alt="${n.name}" loading="lazy"/>`:`<span>${n.emoji||'📍'}</span>`}
       </div>
       <div class="ncard-body">
         <div class="ncard-name">${n.name}</div>
-        ${n.distanceFromTown?`<div class="ncard-dist">📍 ${n.distanceFromTown}</div>`:''}
-        <div class="ncard-desc">${(n.about||'').slice(0,45)}${(n.about||'').length>45?'…':''}</div>
+        <div class="ncard-dist">${n.distance||''}</div>
       </div>
     </div>`).join('');
 }
