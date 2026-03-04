@@ -540,23 +540,20 @@ let places=[],tab='attractions',sub='all',curPlace=null,tIdx=0,tTimer=null;
 
 // TABS
 const tabs=document.querySelectorAll('.tab'),secs=document.querySelectorAll('.sec'),navs=document.querySelectorAll('.nbtn');
-function goTab(t, fromNav=false){
+function goTab(t){
   tab=t;
   tabs.forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
   secs.forEach(x=>x.classList.toggle('active',x.id===t));
   navs.forEach(x=>x.classList.toggle('active',x.dataset.nav===t));
-  if(fromNav){
-    // Bottom nav tapped — scroll page to top so content is visible immediately
-    window.scrollTo({top:0,behavior:'smooth'});
-  } else {
-    // Top tab tapped — just scroll to tabs level
-    document.querySelector('.tabs-wrap').scrollIntoView({behavior:'smooth',block:'start'});
-  }
+  // Always scroll to tabs section so content is immediately visible
+  const tabsEl=document.querySelector('.tabs-wrap');
+  const top=tabsEl.getBoundingClientRect().top+window.pageYOffset-8;
+  window.scrollTo({top,behavior:'smooth'});
   render(t);
 }
-tabs.forEach(x=>x.addEventListener('click',()=>goTab(x.dataset.tab, false)));
-navs.forEach(x=>x.addEventListener('click',()=>goTab(x.dataset.nav, true)));
-window.goTab=(t)=>goTab(t,true);
+tabs.forEach(x=>x.addEventListener('click',()=>goTab(x.dataset.tab)));
+navs.forEach(x=>x.addEventListener('click',()=>goTab(x.dataset.nav)));
+window.goTab=goTab;
 
 // SUB TABS
 document.querySelectorAll('.stab').forEach(x=>x.addEventListener('click',()=>{
