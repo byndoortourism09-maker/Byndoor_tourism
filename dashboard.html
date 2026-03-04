@@ -151,6 +151,7 @@
       <button class="ftab" data-form="stay">🏨 Stay</button>
       <button class="ftab" data-form="food">🍛 Food</button>
       <button class="ftab" data-form="transport">🚌 Transport</button>
+      <button class="ftab" data-form="nearby">🗺️ Nearby</button>
     </div>
 
     <!-- ATTRACTION FORM -->
@@ -323,6 +324,27 @@
       </div>
     </div>
 
+    <!-- NEARBY FORM -->
+    <div class="fpanel" id="fp-nearby">
+      <div style="background:#f0fdf4;border-radius:10px;padding:10px 13px;font-size:.78rem;color:#166534;margin-bottom:14px;border-left:3px solid #4ade80">
+        🗺️ Add places <strong>outside Byndoor</strong> that tourists should visit — like Murudeshwar, Udupi, Jog Falls etc.
+      </div>
+      <div class="fg">
+        <div class="fl fc"><label>📸 Photo</label>
+          <div class="photo-area"><div id="ph-nearby-ph"><div style="font-size:1.8rem">📷</div><div style="font-size:.78rem;color:#aaa;margin-top:5px">Tap to upload</div></div><input type="file" id="ph-nearby" accept="image/*" onchange="handlePhoto(this,'nearby')"/><img id="ph-nearby-prev" class="ph-prev"/></div>
+          <div class="upload-wrap" id="uw-nearby"><div class="upload-bar-bg"><div class="upload-bar" id="ub-nearby"></div></div></div>
+          <div class="upload-st" id="us-nearby"></div>
+        </div>
+        <div class="fl fc"><label>Place Name *</label><input class="fi" id="nearby-name" placeholder="e.g. Murudeshwar Temple"/></div>
+        <div class="fl"><label>📏 Distance from Byndoor *</label><input class="fi" id="nearby-distance" placeholder="e.g. 58 km"/></div>
+        <div class="fl"><label>Emoji Icon</label><input class="fi" id="nearby-emoji" placeholder="e.g. 🛕"/></div>
+        <div class="fl fc"><label>About (Short)</label><textarea class="fi" id="nearby-about" placeholder="Brief description for tourists…" style="min-height:60px"></textarea></div>
+        <div class="fl"><label>📍 Latitude *</label><input class="fi" type="number" id="nearby-lat" placeholder="e.g. 14.0944" step="any"/></div>
+        <div class="fl"><label>📍 Longitude *</label><input class="fi" type="number" id="nearby-lng" placeholder="e.g. 74.4838" step="any"/></div>
+        <div class="fl fc"><label>🎨 Card Color</label><div class="cswatches" id="cs-nearby"></div><input type="hidden" id="nearby-bg"/></div>
+      </div>
+    </div>
+
     <div class="f-acts">
       <button class="f-cancel" onclick="closeModal()">Cancel</button>
       <button class="f-save" id="save-btn" onclick="savePlace()">
@@ -426,7 +448,7 @@ document.querySelectorAll('#ttabs .ftab').forEach(x=>x.addEventListener('click',
 
 // SWATCHES
 function buildSwatches(){
-  ['att','evt','stay','food'].forEach(k=>{
+  ['att','evt','stay','food','nearby'].forEach(k=>{
     const el=document.getElementById('cs-'+k);
     if(!el)return;
     el.innerHTML=GRADS.map(gr=>`<div class="cswatch" style="background:${gr}" data-g="${gr}" onclick="pickBg('${k}',this,'${gr}')"></div>`).join('');
@@ -474,7 +496,7 @@ window.openEdit=(id)=>{
   const p=allPlaces.find(x=>x.id===id);if(!p)return;
   editId=id;resetAll();
   // Set correct form tab
-  const formMap={attractions:'attractions',events:'events',stay:'stay',hotels:'stay',food:'food',transport:'transport'};
+  const formMap={attractions:'attractions',events:'events',stay:'stay',hotels:'stay',food:'food',transport:'transport',nearby:'nearby'};
   const ft=formMap[p.category]||'attractions';
   document.querySelectorAll('#ftabs .ftab').forEach(x=>{x.classList.toggle('active',x.dataset.form===ft);});
   document.querySelectorAll('.fpanel').forEach(x=>x.classList.remove('active'));
@@ -522,6 +544,13 @@ window.openEdit=(id)=>{
     else if(tt==='cab'){setV('cab-name',p.name);setV('cab-phone',p.phone||'');}
     else if(tt==='auto'){setV('auto-name',p.name);setV('auto-phone',p.phone||'');}
   }
+  } else if(ft==='nearby'){
+    setV('nearby-name',p.name);setV('nearby-distance',p.distance||'');
+    setV('nearby-emoji',p.emoji||'');setV('nearby-about',p.about||'');
+    setV('nearby-lat',p.lat||'');setV('nearby-lng',p.lng||'');
+    if(p.cardBg){selBg.nearby=p.cardBg;document.querySelectorAll('#cs-nearby .cswatch').forEach(s=>s.classList.toggle('on',s.dataset.g===p.cardBg));}
+    if(p.photoURL)previewExisting('nearby',p.photoURL);
+  }
   document.getElementById('modal-title').textContent='✏️ Edit Place';
   document.getElementById('save-lbl').textContent='Update';
   document.getElementById('modal').classList.add('open');
@@ -538,13 +567,13 @@ function previewExisting(k,url){
 window.closeModal=()=>{document.getElementById('modal').classList.remove('open');resetAll();};
 
 function resetAll(){
-  ['att-name','att-subtype','att-rating','att-about','att-timing','att-entry','att-best','att-transport','att-risk','att-lat','att-lng','att-tips','att-tags','att-emoji','att-distance',
+  ['att-name','att-subtype','att-rating','att-about','att-timing','att-entry','att-best','att-transport','att-risk','att-lat','att-lng','att-tips','att-tags','att-emoji','att-distance','nearby-name','nearby-distance','nearby-emoji','nearby-about','nearby-lat','nearby-lng',
    'evt-name','evt-date','evt-time','evt-location','evt-entry','evt-subtype','evt-about',
    'stay-name','stay-address','stay-subtype','stay-price','stay-phone','stay-rating','stay-about','stay-facilities','stay-lat','stay-lng',
    'food-name','food-address','food-subtype','food-phone','food-rating','food-timing','food-about','food-facilities','food-lat','food-lng',
    'tr-name','tr-route','tr-timing','bus-name','bus-route','bus-timing','cab-name','cab-phone','auto-name','auto-phone'
   ].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  ['att','evt','stay','food'].forEach(k=>{
+  ['att','evt','stay','food','nearby'].forEach(k=>{
     const prev=document.getElementById('ph-'+k+'-prev');if(prev){prev.style.display='none';prev.src='';}
     const ph=document.getElementById('ph-'+k+'-ph');if(ph)ph.style.display='block';
     const inp=document.getElementById('ph-'+k);if(inp)inp.value='';
@@ -605,6 +634,15 @@ window.savePlace=async()=>{
         timing:gV('food-timing')||null,about:gV('food-about')||null,facilities:gV('food-facilities')||null,
         lat:parseFloat(gV('food-lat'))||null,lng:parseFloat(gV('food-lng'))||null,
         cardBg:selBg.food||GRADS[1],photoURL};
+    } else if(curForm==='nearby'){
+      const name=gV('nearby-name');if(!name){alert('Place name required!');return;}
+      const lat=parseFloat(gV('nearby-lat')),lng=parseFloat(gV('nearby-lng'));
+      if(!lat||!lng){alert('Latitude and Longitude are required for directions!');return;}
+      let photoURL=existingPhotos.nearby;
+      if(photoFiles.nearby)photoURL=await uploadPhoto(photoFiles.nearby,'nearby')||existingPhotos.nearby;
+      data={name,category:'nearby',distance:gV('nearby-distance')||null,
+        emoji:gV('nearby-emoji')||null,about:gV('nearby-about')||null,
+        lat,lng,cardBg:selBg.nearby||GRADS[0],photoURL};
     } else if(curForm==='transport'){
       if(curTT==='train'){
         const name=gV('tr-name');if(!name){alert('Train name required!');return;}
@@ -641,7 +679,7 @@ document.getElementById('conf-yes').addEventListener('click',async()=>{
 // HELPERS
 function gV(id){return document.getElementById(id)?.value?.trim()||'';}
 function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
-function catE(c){return{attractions:'🏛️',stay:'🏨',hotels:'🏨',food:'🍛',events:'🎉',transport:'🚌'}[c]||'📍';}
+function catE(c){return{attractions:'🏛️',stay:'🏨',hotels:'🏨',food:'🍛',events:'🎉',transport:'🚌',nearby:'🗺️'}[c]||'📍';}
 </script>
 </body>
 </html>
