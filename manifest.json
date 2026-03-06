@@ -1,16 +1,36 @@
 {
-  "name": "Discover Byndoor",
+  "name": "Discover Byndoor - Taluk Tourism Guide",
   "short_name": "Byndoor",
-  "description": "Your official tourism guide for Byndoor, Coastal Karnataka",
-  "start_url": "/index.html",
+  "description": "Official tourism guide for Byndoor Taluk, Udupi District, Karnataka. Explore beaches, temples, waterfalls, hotels, food, transport and local events.",
+  "start_url": "/Byndoor_tourism/",
+  "scope": "/Byndoor_tourism/",
   "display": "standalone",
-  "background_color": "#FFF8EF",
-  "theme_color": "#E8651A",
   "orientation": "portrait",
+  "background_color": "#fdf6ec",
+  "theme_color": "#0a7c6e",
+  "lang": "en",
+  "categories": ["travel", "lifestyle", "tourism"],
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
-  "categories": ["travel", "lifestyle"],
-  "lang": "en"
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Admin Login",
+      "short_name": "Admin",
+      "url": "/Byndoor_tourism/login.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
 }
