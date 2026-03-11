@@ -172,8 +172,7 @@ init();
 </script>
 
 <script>
-// ⚠️ REPLACE THIS WITH YOUR NEW ANTHROPIC API KEY
-window.ANTHROPIC_API_KEY='PASTE_YOUR_NEW_API_KEY_HERE';
+// API handled securely via Cloudflare Worker
 
 let currentLang='en-IN',currentLangName='English';
 let chatHistory=[];
@@ -212,14 +211,14 @@ function getSysPrompt(){
 async function sendMessage(){
   const inp=document.getElementById('msg-input');
   const txt=inp.value.trim();if(!txt)return;
-  if(window.ANTHROPIC_API_KEY==='PASTE_YOUR_NEW_API_KEY_HERE'){addMsg('ai','⚠️ Please add your Anthropic API key to the code first!');return;}
+  
   inp.value='';autoResize(inp);
   addMsg('user',txt);
   chatHistory.push({role:'user',content:txt});
   const btn=document.getElementById('send-btn');btn.disabled=true;
   const tid=showTyping();
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,system:getSysPrompt(),messages:chatHistory.slice(-12)})});
+    const res=await fetch('https://super-waterfall-865a.byndoortourism09.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,system:getSysPrompt(),messages:chatHistory.slice(-12)})});
     removeTyping(tid);
     if(!res.ok)throw new Error('API '+res.status);
     const data=await res.json();
@@ -271,53 +270,4 @@ function removeTyping(id){document.getElementById(id)?.remove();}
 window.speakText=function(btn,mid){
   if(synth.speaking){
     synth.cancel();
-    document.querySelectorAll('.speak-btn').forEach(b=>{b.textContent='🔊 Listen in '+currentLangName;b.classList.remove('speaking');});
-    if(currentUtt&&currentUtt._mid===mid)return;
-  }
-  const el=document.getElementById(mid);if(!el)return;
-  const raw=el.getAttribute('data-text')||'';if(!raw)return;
-  const utt=new SpeechSynthesisUtterance(raw);
-  utt._mid=mid;currentUtt=utt;
-  utt.lang=currentLang;utt.rate=0.9;utt.pitch=1.0;utt.volume=1.0;
-  const voices=synth.getVoices();
-  const match=voices.find(v=>v.lang===currentLang||v.lang.startsWith(currentLang.split('-')[0]));
-  if(match)utt.voice=match;
-  btn.textContent='⏹ Stop';btn.classList.add('speaking');
-  utt.onend=()=>{btn.textContent='🔊 Listen in '+currentLangName;btn.classList.remove('speaking');currentUtt=null;};
-  utt.onerror=()=>{btn.textContent='🔊 Listen in '+currentLangName;btn.classList.remove('speaking');};
-  synth.speak(utt);
-};
-if(synth){synth.onvoiceschanged=()=>synth.getVoices();synth.getVoices();}
-
-// VOICE INPUT — Speech to Text
-window.toggleMic=function(){
-  if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window)){alert('Voice input works only in Chrome browser.');return;}
-  if(isListening){recognition?.stop();return;}
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recognition=new SR();recognition.lang=currentLang;recognition.continuous=false;recognition.interimResults=true;
-  const mic=document.getElementById('mic-btn'),inp=document.getElementById('msg-input');
-  recognition.onstart=()=>{isListening=true;mic.classList.add('listening');mic.textContent='🔴';inp.placeholder='Listening…';};
-  recognition.onresult=e=>{inp.value=Array.from(e.results).map(r=>r[0].transcript).join('');autoResize(inp);};
-  recognition.onend=()=>{isListening=false;mic.classList.remove('listening');mic.textContent='🎙️';inp.placeholder='Ask anything about Byndoor…';if(inp.value.trim())sendMessage();};
-  recognition.onerror=e=>{isListening=false;mic.classList.remove('listening');mic.textContent='🎙️';inp.placeholder='Ask anything about Byndoor…';if(e.error!=='no-speech')alert('Mic error: '+e.error+'. Allow microphone permission in Chrome.');};
-  recognition.start();
-};
-
-window.openLang=()=>document.getElementById('lang-panel').classList.add('open');
-window.closeLang=e=>{if(e.target===document.getElementById('lang-panel'))document.getElementById('lang-panel').classList.remove('open');};
-window.setLang=function(name,code){
-  currentLang=code;currentLangName=name;
-  document.getElementById('lang-label').textContent=name;
-  document.querySelectorAll('.lang-opt').forEach(x=>x.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('lang-panel').classList.remove('open');
-  if(recognition)recognition.lang=code;
-  addMsg('ai','Language changed to '+name+'! 🌐 I will now speak and reply in '+name+'. How can I help you?',true);
-};
-window.quickAsk=function(q){document.getElementById('msg-input').value=q;sendMessage();};
-window.handleKey=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}};
-window.autoResize=function(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';};
-window.sendMessage=sendMessage;
-</script>
-</body>
-</html>
+    document.querySelectorAll('.speak-btn').forEach(b=>{b.textContent='🔊 Listen in '+currentLang
