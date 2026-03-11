@@ -185,17 +185,25 @@ let msgCounter=0;
 
 function buildPlacesCtx(){
   const pl=window.PLACES_DATA||[];
-  if(!pl.length)return'\n\nNote: No places in database yet. Use general Byndoor knowledge.';
+  if(!pl.length)return'\nNo places in database yet. Use general Byndoor knowledge.';
   const g={};
-  pl.forEach(p=>{const c=p.category||'other';if(!g[c])g[c]=[];g[c].push(p);});
-  let ctx='\n\n=== BYNDOOR APP LIVE DATABASE ('+pl.length+' places) ===\n';
-  if(g.attractions){ctx+='\nATTRACTIONS:\n';g.attractions.forEach(p=>{ctx+='• '+p.name+(p.subtype?' ['+p.subtype+']':'')+(p.about?' — '+p.about.substring(0,100):'')+(p.timing?' | Time:'+p.timing:'')+(p.entryFee?' | Entry:'+p.entryFee:'')+(p.distanceFromTown?' | Dist:'+p.distanceFromTown:'')+(p.tips?' | Tip:'+p.tips:'')+'\n';});}
-  if(g.stay){ctx+='\nSTAY:\n';g.stay.forEach(p=>{ctx+='• '+p.name+(p.subcategory?' ['+p.subcategory+']':'')+(p.price?' | ₹'+p.price+'/night':'')+(p.phone?' | 📞'+p.phone:'')+(p.rating?' | ⭐'+p.rating:'')+(p.facilities?' | '+p.facilities:'')+'\n';});}
-  if(g.food){ctx+='\nFOOD:\n';g.food.forEach(p=>{ctx+='• '+p.name+(p.subcategory?' ['+p.subcategory+']':'')+(p.timing?' | '+p.timing:'')+(p.phone?' | 📞'+p.phone:'')+(p.rating?' | ⭐'+p.rating:'')+'\n';});}
-  if(g.transport){ctx+='\nTRANSPORT:\n';g.transport.forEach(p=>{ctx+='• ['+( p.transportType||'transport')+'] '+p.name+(p.route?' | '+p.route:'')+(p.timing?' | '+p.timing:'')+(p.phone?' | 📞'+p.phone:'')+'\n';});}
-  if(g.nearby){ctx+='\nNEARBY:\n';g.nearby.forEach(p=>{ctx+='• '+(p.emoji||'📍')+' '+p.name+(p.distance?' ('+p.distance+')':'')+(p.about?' — '+p.about:'')+'\n';});}
-  if(g.events){ctx+='\nEVENTS:\n';g.events.forEach(p=>{ctx+='• '+p.name+(p.eventDate?' on '+p.eventDate:'')+(p.location?' at '+p.location:'')+(p.entryFee?' | '+p.entryFee:'')+'\n';});}
-  ctx+='=== END ===';
+  pl.forEach(p=>{const cat=p.category||'other';if(!g[cat])g[cat]=[];g[cat].push(p);});
+  let ctx='\nBYNDOOR DATABASE ('+pl.length+' places):\n';
+  // Limit each place to short summary only
+  const fmt=(p)=>{
+    let s='• '+p.name;
+    if(p.subtype||p.subcategory)s+=' ['+( p.subtype||p.subcategory)+']';
+    if(p.about)s+=' — '+p.about.substring(0,60);
+    if(p.phone)s+=' 📞'+p.phone;
+    if(p.price)s+=' ₹'+p.price;
+    if(p.timing)s+=' ('+p.timing+')';
+    return s+'\n';
+  };
+  if(g.attractions)g.attractions.forEach(p=>{ctx+=fmt(p);});
+  if(g.stay)g.stay.forEach(p=>{ctx+=fmt(p);});
+  if(g.food)g.food.forEach(p=>{ctx+=fmt(p);});
+  if(g.transport)g.transport.slice(0,5).forEach(p=>{ctx+='• [transport] '+p.name+(p.route?' '+p.route:'')+'\n';});
+  if(g.nearby)g.nearby.forEach(p=>{ctx+='• nearby: '+p.name+(p.distance?' '+p.distance:'')+'\n';});
   return ctx;
 }
 
@@ -207,8 +215,16 @@ function buildWeatherCtx(){
 }
 
 function getSysPrompt(){
-  const li=currentLang!=='en-IN'?'\n\nCRITICAL: Respond ENTIRELY in '+currentLangName+'. Every word must be in '+currentLangName+'.':'';
-  return'You are "Byndoor Travel Assistant" — a warm, knowledgeable local travel guide for Byndoor Taluk, Udupi District, Karnataka, India. Created by the Discover Byndoor team.\n\nCORE KNOWLEDGE:\n- Byndoor Taluk is in Udupi District, Karnataka on Arabian Sea coast\n- Famous: Maravanthe Beach (NH66 between sea & Sauparnika river), Kollur Mookambika Temple (32km), Trasi Beach, Someshwara Temple\n- Nearby: Murudeshwar (58km), Udupi (55km), Jog Falls (98km), Gokarna (85km), Mangalore (110km)\n- Best time: October–March | Monsoon: June–September\n- Local food: Fish curry, Neer dosa, Kori rotti, fresh seafood\n- Languages: Kannada, Tulu, Konkani\n\nRULES:\n- Use the DATABASE to answer specifically about places, hotels, food, transport\n- Recommend actual places from database with phone numbers and prices\n- For weather, give practical outdoor activity advice\n- For trip planning, create day-by-day itineraries using database places\n- Be warm and friendly like a local guide\n- Use emojis naturally\n- NEVER mention Anthropic or Claude\n- If asked who made you: say "Discover Byndoor team"\n- If database empty, use general Byndoor knowledge\n'+li+buildPlacesCtx()+buildWeatherCtx();
+  const li=currentLang!=='en-IN'?'\nRespond ENTIRELY in '+currentLangName+'.':'';
+  const w=buildWeatherCtx();
+  const p=buildPlacesCtx();
+  return'You are Byndoor Travel Assistant, a friendly local guide for Byndoor Taluk, Karnataka, India.'+
+  '\nFamous places: Maravanthe Beach, Kollur Temple(32km), Trasi Beach, Someshwara Temple.'+
+  '\nNearby: Murudeshwar(58km), Udupi(55km), Mangalore(110km).'+
+  '\nBest time: Oct-Mar. Food: Fish curry, Neer dosa, seafood.'+
+  '\nRules: Be friendly, use emojis, recommend from database, never mention Claude/Anthropic.'+
+  '\nIf asked who made you: say Discover Byndoor team.'+
+  li+w+p;
 }
 
 async function sendMessage(){
