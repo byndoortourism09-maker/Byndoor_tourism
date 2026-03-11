@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <title>Byndoor AI Travel Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+  :root{--p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;--dark:#0f172a;--sand:#fdf6ec;--muted:#64748b;--bdr:#e8e4de;}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden}
+  body{font-family:'DM Sans',sans-serif;background:var(--sand);display:flex;flex-direction:column;max-width:860px;margin:0 auto}
+  .hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+  .hd-back{background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0}
+  .hd-avatar{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
+  .hd-info{flex:1}
+  .hd-name{font-family:'Playfair Display',serif;font-size:1rem;color:#fff}
+  .hd-status{font-size:.7rem;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:5px;margin-top:2px}
+  .hd-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .hd-lang{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:5px 12px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .load-bar{height:0px;background:transparent;flex-shrink:0;overflow:hidden}
+  .load-fill{height:100%;background:#0a7c6e;width:0;transition:width .4s}
+  .suggestions{padding:10px 14px;background:#fff;border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+  .suggestions::-webkit-scrollbar{display:none}
+  .sug-row{display:flex;gap:7px;width:max-content}
+  .sug{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:6px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .2s}
+  .sug:active{background:var(--p);color:#fff;border-color:var(--p)}
+  .msgs{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+  .msgs::-webkit-scrollbar{width:4px}
+  .msgs::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
+  .msg{display:flex;gap:9px;align-items:flex-end;animation:msgIn .3s ease}
+  @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .msg.user{flex-direction:row-reverse}
+  .msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+  .ai-av{background:linear-gradient(135deg,#0a7c6e,#0ea5e9)}
+  .user-av{background:linear-gradient(135deg,#f97316,#fbbf24)}
+  .bubble{max-width:78%;padding:11px 14px;border-radius:18px;font-size:.84rem;line-height:1.7}
+  .ai-bubble{background:#fff;color:var(--dark);border-radius:18px 18px 18px 4px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+  .user-bubble{background:linear-gradient(135deg,#0a7c6e,#0d9e8d);color:#fff;border-radius:18px 18px 4px 18px}
+  .bubble-time{font-size:.6rem;opacity:.6;margin-top:5px;display:block}
+  .user .bubble-time{text-align:right}
+  .voice-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+  .speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:4px 11px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
+  .speak-btn.speaking{background:var(--p);color:#fff;border-color:var(--p)}
+  .typing{display:flex;align-items:center;gap:4px;padding:12px 16px;background:#fff;border-radius:18px 18px 18px 4px;width:fit-content;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+  .typing span{width:7px;height:7px;border-radius:50%;background:#0a7c6e;display:inline-block;animation:bounce .8s infinite}
+  .typing span:nth-child(2){animation-delay:.15s}
+  .typing span:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+  .ai-bubble strong{color:var(--p);font-weight:700}
+  .ai-bubble .ai-sec{margin:8px 0 4px;font-weight:700;color:var(--p);font-size:.85rem}
+  .ai-bubble .ai-item{display:flex;gap:7px;margin:4px 0;font-size:.82rem}
+  .ai-bubble .ai-item::before{content:'•';color:var(--acc);font-weight:700;flex-shrink:0}
+  .input-bar{background:#fff;border-top:1px solid var(--bdr);padding:10px 12px;display:flex;align-items:flex-end;gap:9px;flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(0,0,0,.06)}
+  .input-wrap{flex:1;background:var(--sand);border:2px solid var(--bdr);border-radius:25px;padding:8px 14px;display:flex;align-items:flex-end;gap:8px;transition:border .2s}
+  .input-wrap:focus-within{border-color:var(--p)}
+  #msg-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--dark);resize:none;max-height:100px;min-height:20px;line-height:1.5}
+  #msg-input::placeholder{color:#bbb}
+  .mic-btn{width:34px;height:34px;border-radius:50%;background:var(--sand);border:1.5px solid var(--bdr);color:var(--p);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+  .mic-btn.listening{background:var(--p);color:#fff;animation:micPulse 1s infinite}
+  @keyframes micPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  .send-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s,opacity .15s}
+  .send-btn:active{transform:scale(.93)}
+  .send-btn:disabled{opacity:.5;cursor:not-allowed}
+  .lang-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}
+  .lang-panel.open{display:flex}
+  .lang-sheet{background:#fff;border-radius:24px 24px 0 0;padding:22px 18px 40px;width:100%;max-width:860px}
+  .lang-sheet h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:14px}
+  .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .lang-opt{background:var(--sand);border:2px solid var(--bdr);border-radius:12px;padding:11px 14px;cursor:pointer;font-size:.84rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .2s;text-align:center}
+  .lang-opt.active{background:var(--p);color:#fff;border-color:var(--p)}
+  .welcome{text-align:center;padding:18px 14px}
+  .welcome-emoji{font-size:2.8rem;margin-bottom:8px}
+  .welcome-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--dark);margin-bottom:5px}
+  .welcome-sub{font-size:.76rem;color:var(--muted);line-height:1.7}
+  .wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
+  .wf{background:#fff;border-radius:12px;padding:9px 11px;display:flex;align-items:center;gap:7px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .wf-ico{font-size:1.1rem}
+  .wf-txt{font-size:.7rem;font-weight:600;color:var(--dark)}
+  @media(min-width:600px){body{border-left:1px solid var(--bdr);border-right:1px solid var(--bdr)}.bubble{max-width:65%}.hd,.msgs,.input-bar,.suggestions{padding-left:24px;padding-right:24px}}
+  </style>
+</head>
+<body>
+<div class="hd">
+  <a class="hd-back" href="index.html">←</a>
+  <div class="hd-avatar">🌊</div>
+  <div class="hd-info">
+    <div class="hd-name">Byndoor Travel Assistant</div>
+    <div class="hd-status"><span class="hd-dot"></span><span id="status-txt">Online · Ready to help</span></div>
+  </div>
+  <button class="hd-lang" onclick="openLang()">🌐 <span id="lang-label">English</span></button>
+</div>
+<div class="load-bar"><div class="load-fill" id="load-fill"></div></div>
+<div class="suggestions">
+  <div class="sug-row">
+    <button class="sug" onclick="quickAsk('Best places to visit in Byndoor?')">🏖️ Best places</button>
+    <button class="sug" onclick="quickAsk('Plan a 2 day trip to Byndoor for family')">🗺️ Trip plan</button>
+    <button class="sug" onclick="quickAsk('How is the weather today? Good for outdoor visit?')">🌤️ Weather</button>
+    <button class="sug" onclick="quickAsk('Best local food and restaurants in Byndoor?')">🍛 Food</button>
+    <button class="sug" onclick="quickAsk('Best hotels and homestays in Byndoor?')">🏨 Stay</button>
+    <button class="sug" onclick="quickAsk('How to reach Byndoor from Bangalore?')">🚌 How to reach</button>
+    <button class="sug" onclick="quickAsk('What water sports are available near Byndoor?')">🤿 Water sports</button>
+    <button class="sug" onclick="quickAsk('Temples near Byndoor with timings?')">🛕 Temples</button>
+  </div>
+</div>
+<div class="msgs" id="msgs">
+  <div class="welcome">
+    <div class="welcome-emoji">🌊</div>
+    <div class="welcome-title">Namaste! I'm your Byndoor Guide</div>
+    <div class="welcome-sub">Your personal travel guide for Byndoor Taluk. Ask me about beaches, temples, hotels, food, transport or let me plan your trip!</div>
+    <div class="wf-grid">
+      <div class="wf"><span class="wf-ico">📍</span><span class="wf-txt">Places & Attractions</span></div>
+      <div class="wf"><span class="wf-ico">🗺️</span><span class="wf-txt">Trip Planning</span></div>
+      <div class="wf"><span class="wf-ico">🌤️</span><span class="wf-txt">Weather Advisory</span></div>
+      <div class="wf"><span class="wf-ico">🔊</span><span class="wf-txt">Voice Reply</span></div>
+      <div class="wf"><span class="wf-ico">🌐</span><span class="wf-txt">8 Languages</span></div>
+      <div class="wf"><span class="wf-ico">🎙️</span><span class="wf-txt">Voice Input</span></div>
+    </div>
+  </div>
+</div>
+<div class="input-bar">
+  <div class="input-wrap">
+    <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input">🎙️</button>
+  </div>
+  <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+</div>
+<div class="lang-panel" id="lang-panel" onclick="closeLang(event)">
+  <div class="lang-sheet">
+    <h3>🌐 Choose Language</h3>
+    <div class="lang-grid">
+      <button class="lang-opt active" onclick="setLang('English','en-IN')">🇬🇧 English</button>
+      <button class="lang-opt" onclick="setLang('हिंदी','hi-IN')">🇮🇳 Hindi</button>
+      <button class="lang-opt" onclick="setLang('ಕನ್ನಡ','kn-IN')">🌿 Kannada</button>
+      <button class="lang-opt" onclick="setLang('മലയാളം','ml-IN')">🌴 Malayalam</button>
+      <button class="lang-opt" onclick="setLang('தமிழ்','ta-IN')">🎭 Tamil</button>
+      <button class="lang-opt" onclick="setLang('తెలుగు','te-IN')">🌸 Telugu</button>
+      <button class="lang-opt" onclick="setLang('मराठी','mr-IN')">🏔️ Marathi</button>
+      <button class="lang-opt" onclick="setLang('العربية','ar-SA')">🌙 Arabic</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import{getFirestore,collection,getDocs}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+const FC={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
+const db=getFirestore(initializeApp(FC));
+function setLoad(p){document.getElementById('load-fill').style.width=p+'%'}
+async function init(){
+  setLoad(20);
+  try{
+    const snap=await getDocs(collection(db,'places'));
+    const pl=[];snap.forEach(d=>pl.push({id:d.id,...d.data()}));
+    window.PLACES_DATA=pl;
+    setLoad(60);
+    try{
+      const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia/Kolkata&forecast_days=3');
+      window.WEATHER_DATA=await r.json();
+    }catch(e){window.WEATHER_DATA=null;}
+    setLoad(100);
+    setTimeout(()=>{document.getElementById('load-fill').style.width='0';},600);
+    document.getElementById('status-txt').textContent='Online · Ready to help';
+  }catch(e){
+    window.PLACES_DATA=[];window.WEATHER_DATA=null;
+    document.getElementById('status-txt').textContent='Online · Ready to help';
+    setLoad(100);
+  }
+}
+init();
+</script>
+
+<script>
+// ⚠️ REPLACE THIS WITH YOUR NEW ANTHROPIC API KEY
+window.ANTHROPIC_API_KEY='PASTE_YOUR_NEW_API_KEY_HERE';
+
+let currentLang='en-IN',currentLangName='English';
+let chatHistory=[];
+let synth=window.speechSynthesis;
+let currentUtt=null,recognition=null,isListening=false;
+let msgCounter=0;
+
+function buildPlacesCtx(){
+  const pl=window.PLACES_DATA||[];
+  if(!pl.length)return'\n\nNote: No places in database yet. Use general Byndoor knowledge.';
+  const g={};
+  pl.forEach(p=>{const c=p.category||'other';if(!g[c])g[c]=[];g[c].push(p);});
+  let ctx='\n\n=== BYNDOOR APP LIVE DATABASE ('+pl.length+' places) ===\n';
+  if(g.attractions){ctx+='\nATTRACTIONS:\n';g.attractions.forEach(p=>{ctx+='• '+p.name+(p.subtype?' ['+p.subtype+']':'')+(p.about?' — '+p.about.substring(0,100):'')+(p.timing?' | Time:'+p.timing:'')+(p.entryFee?' | Entry:'+p.entryFee:'')+(p.distanceFromTown?' | Dist:'+p.distanceFromTown:'')+(p.tips?' | Tip:'+p.tips:'')+'\n';});}
+  if(g.stay){ctx+='\nSTAY:\n';g.stay.forEach(p=>{ctx+='• '+p.name+(p.subcategory?' ['+p.subcategory+']':'')+(p.price?' | ₹'+p.price+'/night':'')+(p.phone?' | 📞'+p.phone:'')+(p.rating?' | ⭐'+p.rating:'')+(p.facilities?' | '+p.facilities:'')+'\n';});}
+  if(g.food){ctx+='\nFOOD:\n';g.food.forEach(p=>{ctx+='• '+p.name+(p.subcategory?' ['+p.subcategory+']':'')+(p.timing?' | '+p.timing:'')+(p.phone?' | 📞'+p.phone:'')+(p.rating?' | ⭐'+p.rating:'')+'\n';});}
+  if(g.transport){ctx+='\nTRANSPORT:\n';g.transport.forEach(p=>{ctx+='• ['+( p.transportType||'transport')+'] '+p.name+(p.route?' | '+p.route:'')+(p.timing?' | '+p.timing:'')+(p.phone?' | 📞'+p.phone:'')+'\n';});}
+  if(g.nearby){ctx+='\nNEARBY:\n';g.nearby.forEach(p=>{ctx+='• '+(p.emoji||'📍')+' '+p.name+(p.distance?' ('+p.distance+')':'')+(p.about?' — '+p.about:'')+'\n';});}
+  if(g.events){ctx+='\nEVENTS:\n';g.events.forEach(p=>{ctx+='• '+p.name+(p.eventDate?' on '+p.eventDate:'')+(p.location?' at '+p.location:'')+(p.entryFee?' | '+p.entryFee:'')+'\n';});}
+  ctx+='=== END ===';
+  return ctx;
+}
+
+function buildWeatherCtx(){
+  const w=window.WEATHER_DATA;if(!w)return'';
+  const c=w.current,d=w.daily;
+  const desc={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
+  return'\n\nCURRENT BYNDOOR WEATHER:\nCondition: '+(desc[c.weather_code]||'Unknown')+'\nTemperature: '+Math.round(c.temperature_2m)+'°C\nHumidity: '+c.relative_humidity_2m+'%\nRain: '+c.precipitation+'mm\nWind: '+Math.round(c.wind_speed_10m)+' km/h\nTomorrow: Max '+d?.temperature_2m_max?.[1]+'°C, Rain '+d?.precipitation_sum?.[1]+'mm';
+}
+
+function getSysPrompt(){
+  const li=currentLang!=='en-IN'?'\n\nCRITICAL: Respond ENTIRELY in '+currentLangName+'. Every word must be in '+currentLangName+'.':'';
+  return'You are "Byndoor Travel Assistant" — a warm, knowledgeable local travel guide for Byndoor Taluk, Udupi District, Karnataka, India. Created by the Discover Byndoor team.\n\nCORE KNOWLEDGE:\n- Byndoor Taluk is in Udupi District, Karnataka on Arabian Sea coast\n- Famous: Maravanthe Beach (NH66 between sea & Sauparnika river), Kollur Mookambika Temple (32km), Trasi Beach, Someshwara Temple\n- Nearby: Murudeshwar (58km), Udupi (55km), Jog Falls (98km), Gokarna (85km), Mangalore (110km)\n- Best time: October–March | Monsoon: June–September\n- Local food: Fish curry, Neer dosa, Kori rotti, fresh seafood\n- Languages: Kannada, Tulu, Konkani\n\nRULES:\n- Use the DATABASE to answer specifically about places, hotels, food, transport\n- Recommend actual places from database with phone numbers and prices\n- For weather, give practical outdoor activity advice\n- For trip planning, create day-by-day itineraries using database places\n- Be warm and friendly like a local guide\n- Use emojis naturally\n- NEVER mention Anthropic or Claude\n- If asked who made you: say "Discover Byndoor team"\n- If database empty, use general Byndoor knowledge\n'+li+buildPlacesCtx()+buildWeatherCtx();
+}
+
+async function sendMessage(){
+  const inp=document.getElementById('msg-input');
+  const txt=inp.value.trim();if(!txt)return;
+  if(window.ANTHROPIC_API_KEY==='PASTE_YOUR_NEW_API_KEY_HERE'){addMsg('ai','⚠️ Please add your Anthropic API key to the code first!');return;}
+  inp.value='';autoResize(inp);
+  addMsg('user',txt);
+  chatHistory.push({role:'user',content:txt});
+  const btn=document.getElementById('send-btn');btn.disabled=true;
+  const tid=showTyping();
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,system:getSysPrompt(),messages:chatHistory.slice(-12)})});
+    removeTyping(tid);
+    if(!res.ok)throw new Error('API '+res.status);
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'Sorry, please try again.';
+    addMsg('ai',reply,true);
+    chatHistory.push({role:'assistant',content:reply});
+  }catch(e){removeTyping(tid);addMsg('ai','⚠️ Connection error. Please check internet and try again.');}
+  btn.disabled=false;
+}
+
+function addMsg(role,text,showVoice=false){
+  const msgs=document.getElementById('msgs');
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const isAi=role==='ai';
+  const div=document.createElement('div');
+  div.className='msg '+(isAi?'ai':'user');
+  const fmt=isAi?fmtAi(text):esc(text);
+  let vrow='';
+  if(isAi&&showVoice){
+    msgCounter++;
+    const mid='m'+msgCounter;
+    div.id=mid;
+    div.setAttribute('data-text',text);
+    vrow='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="speakText(this,\''+mid+'\')">🔊 Listen in '+currentLangName+'</button></div>';
+  }
+  div.innerHTML='<div class="msg-avatar '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div><div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+fmt+vrow+'<span class="bubble-time">'+now+'</span></div>';
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+}
+
+function fmtAi(t){
+  return esc(t)
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^#{1,3} (.*?)$/gm,'<div class="ai-sec">$1</div>')
+    .replace(/^[\-\*] (.*?)$/gm,'<div class="ai-item">$1</div>')
+    .replace(/\n\n/g,'<br/><br/>').replace(/\n/g,'<br/>');
+}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function showTyping(){
+  const msgs=document.getElementById('msgs');
+  const id='typ-'+Date.now();
+  const d=document.createElement('div');d.className='msg ai';d.id=id;
+  d.innerHTML='<div class="msg-avatar ai-av">🌊</div><div class="typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return id;
+}
+function removeTyping(id){document.getElementById(id)?.remove();}
+
+// VOICE REPLY — Text to Speech
+window.speakText=function(btn,mid){
+  if(synth.speaking){
+    synth.cancel();
+    document.querySelectorAll('.speak-btn').forEach(b=>{b.textContent='🔊 Listen in '+currentLangName;b.classList.remove('speaking');});
+    if(currentUtt&&currentUtt._mid===mid)return;
+  }
+  const el=document.getElementById(mid);if(!el)return;
+  const raw=el.getAttribute('data-text')||'';if(!raw)return;
+  const utt=new SpeechSynthesisUtterance(raw);
+  utt._mid=mid;currentUtt=utt;
+  utt.lang=currentLang;utt.rate=0.9;utt.pitch=1.0;utt.volume=1.0;
+  const voices=synth.getVoices();
+  const match=voices.find(v=>v.lang===currentLang||v.lang.startsWith(currentLang.split('-')[0]));
+  if(match)utt.voice=match;
+  btn.textContent='⏹ Stop';btn.classList.add('speaking');
+  utt.onend=()=>{btn.textContent='🔊 Listen in '+currentLangName;btn.classList.remove('speaking');currentUtt=null;};
+  utt.onerror=()=>{btn.textContent='🔊 Listen in '+currentLangName;btn.classList.remove('speaking');};
+  synth.speak(utt);
+};
+if(synth){synth.onvoiceschanged=()=>synth.getVoices();synth.getVoices();}
+
+// VOICE INPUT — Speech to Text
+window.toggleMic=function(){
+  if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window)){alert('Voice input works only in Chrome browser.');return;}
+  if(isListening){recognition?.stop();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();recognition.lang=currentLang;recognition.continuous=false;recognition.interimResults=true;
+  const mic=document.getElementById('mic-btn'),inp=document.getElementById('msg-input');
+  recognition.onstart=()=>{isListening=true;mic.classList.add('listening');mic.textContent='🔴';inp.placeholder='Listening…';};
+  recognition.onresult=e=>{inp.value=Array.from(e.results).map(r=>r[0].transcript).join('');autoResize(inp);};
+  recognition.onend=()=>{isListening=false;mic.classList.remove('listening');mic.textContent='🎙️';inp.placeholder='Ask anything about Byndoor…';if(inp.value.trim())sendMessage();};
+  recognition.onerror=e=>{isListening=false;mic.classList.remove('listening');mic.textContent='🎙️';inp.placeholder='Ask anything about Byndoor…';if(e.error!=='no-speech')alert('Mic error: '+e.error+'. Allow microphone permission in Chrome.');};
+  recognition.start();
+};
+
+window.openLang=()=>document.getElementById('lang-panel').classList.add('open');
+window.closeLang=e=>{if(e.target===document.getElementById('lang-panel'))document.getElementById('lang-panel').classList.remove('open');};
+window.setLang=function(name,code){
+  currentLang=code;currentLangName=name;
+  document.getElementById('lang-label').textContent=name;
+  document.querySelectorAll('.lang-opt').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('lang-panel').classList.remove('open');
+  if(recognition)recognition.lang=code;
+  addMsg('ai','Language changed to '+name+'! 🌐 I will now speak and reply in '+name+'. How can I help you?',true);
+};
+window.quickAsk=function(q){document.getElementById('msg-input').value=q;sendMessage();};
+window.handleKey=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}};
+window.autoResize=function(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';};
+window.sendMessage=sendMessage;
+</script>
+</body>
+</html>
