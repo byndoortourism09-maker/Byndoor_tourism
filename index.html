@@ -360,12 +360,7 @@
   <div class="tdots" id="tdots"></div>
 </div>
 
-<!-- NEARBY — subtle secondary section -->
-<div style="padding:14px 16px 6px;display:flex;align-items:center;gap:8px">
-  <span style="font-size:.68rem;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:1px">Also explore nearby</span>
-  <div style="flex:1;height:1px;background:#e8e4de"></div>
-</div>
-<div class="nscroll" id="nearby-list"></div>
+
 
 <!-- TABS -->
 <div class="tabs-wrap">
@@ -376,6 +371,7 @@
     <button class="tab" data-tab="food">🍛 Food</button>
     <button class="tab" data-tab="transport">🚌 Transport</button>
     <button class="tab" data-tab="emergency">🚨 Emergency</button>
+    <button class="tab" data-tab="more">☰ More</button>
   </div>
 </div>
 
@@ -435,6 +431,56 @@
   </div>
 </div>
 
+
+<!-- MORE TAB -->
+<div class="sec" id="more">
+  <div class="sbanner" style="background:linear-gradient(135deg,#374151,#1f2937)"><h2>More</h2><p>Nearby places, emergency &amp; more</p><div class="deco">☰</div></div>
+  
+  <!-- NEARBY PLACES -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">📍 Explore Nearby Places</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div class="nscroll" id="nearby-list"></div>
+
+  <!-- SOS EMERGENCY -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px;margin-top:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">🚨 Emergency Contacts</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div class="epage">
+    <div class="emcard"><div class="emico" style="background:#FEE2E2">👮</div><div class="eminfo"><div class="emname">Police Station</div><div class="emnum">100</div><div class="emsub">Byndoor Police · 24/7</div></div><button class="emcall" onclick="window.open('tel:100')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#FEE2E2">🚑</div><div class="eminfo"><div class="emname">Ambulance</div><div class="emnum">108</div><div class="emsub">Karnataka Emergency · Free</div></div><button class="emcall" onclick="window.open('tel:108')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#FEF3C7">🚒</div><div class="eminfo"><div class="emname">Fire Service</div><div class="emnum">101</div><div class="emsub">Fire &amp; Rescue · Emergency</div></div><button class="emcall" onclick="window.open('tel:101')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#DCFCE7">🏥</div><div class="eminfo"><div class="emname">CHC Byndoor Hospital</div><div class="emnum">08254-253027</div><div class="emsub">Community Health Centre</div></div><button class="emcall" onclick="window.open('tel:08254253027')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#EDE9FE">🆘</div><div class="eminfo"><div class="emname">National Emergency</div><div class="emnum">112</div><div class="emsub">Police · Fire · Medical</div></div><button class="emcall" onclick="window.open('tel:112')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#E0F2FE">🌊</div><div class="eminfo"><div class="emname">Coast Guard</div><div class="emnum">1554</div><div class="emsub">Sea Emergency · Distress at Sea</div></div><button class="emcall" onclick="window.open('tel:1554')">Call</button></div>
+  </div>
+
+  <!-- CONTACT US -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px;margin-top:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">📞 Contact Us</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div style="padding:0 16px 80px">
+    <div class="emcard" style="cursor:pointer" onclick="showSheet('contact')">
+      <div class="emico" style="background:#E0F2FE">📧</div>
+      <div class="eminfo"><div class="emname">Discover Byndoor</div><div class="emsub">📍 Byndoor, Udupi District, Karnataka</div></div>
+      <button class="emcall">Open</button>
+    </div>
+    <div class="emcard" style="cursor:pointer" onclick="showSheet('about')">
+      <div class="emico" style="background:#DCFCE7">ℹ️</div>
+      <div class="eminfo"><div class="emname">About App</div><div class="emsub">Version 2.0 · Discover Byndoor</div></div>
+      <button class="emcall">Open</button>
+    </div>
+    <div class="emcard" style="cursor:pointer" onclick="showSheet('feedback')">
+      <div class="emico" style="background:#FEF3C7">💬</div>
+      <div class="eminfo"><div class="emname">Feedback</div><div class="emsub">Help us improve</div></div>
+      <button class="emcall">Open</button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer class="footer">
   <div class="ft-logo">🌊 Discover Byndoor</div>
@@ -461,7 +507,7 @@
   <button class="nbtn" data-nav="stay"><span class="ico">🏨</span>Stay</button>
   <button class="nbtn" data-nav="food"><span class="ico">🍛</span>Food</button>
   <button class="nbtn" data-nav="transport"><span class="ico">🚌</span>Transport</button>
-  <button class="nbtn" data-nav="emergency"><span class="ico">🚨</span>SOS</button>
+  <button class="nbtn" data-nav="more"><span class="ico">☰</span>More</button>
 </div>
 
 <!-- DETAIL PAGE -->
@@ -483,7 +529,7 @@
     <div class="dp-h">ℹ️ Info</div>
     <div class="igrid">
       <div class="iitem"><div class="iitem-l">⏰ Timing</div><div class="iitem-v" id="dp-timing">—</div></div>
-      <div class="iitem"><div class="iitem-l">🎟️ Entry</div><div class="iitem-v" id="dp-entry">—</div></div>
+      <div class="iitem"><div class="iitem-l">🎟️ Entry Fee</div><div class="iitem-v" id="dp-entry">—</div></div>
       <div class="iitem"><div class="iitem-l">🌤️ Best Time</div><div class="iitem-v" id="dp-best">—</div></div>
       <div class="iitem" id="dp-transport-row" style="display:none"><div class="iitem-l">🚌 Transport</div><div class="iitem-v" id="dp-transport" style="font-size:.78rem">—</div></div>
       <div class="iitem" id="dp-risk-row" style="display:none"><div class="iitem-l">⚠️ Risk/Notes</div><div class="iitem-v" id="dp-risk" style="font-size:.75rem">—</div></div>
@@ -499,6 +545,14 @@
     <div id="dp-map-row" style="display:none">
       <div class="dp-h">🗺️ Location</div>
       <div class="mwrap" id="dp-map"></div>
+    </div>
+    <div id="dp-social-row" style="display:none;margin-top:8px">
+      <div class="dp-h">🔗 Follow</div>
+      <div id="dp-social" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"></div>
+    </div>
+    <div id="dp-photos-row" style="display:none">
+      <div class="dp-h">📷 More Photos</div>
+      <div id="dp-photos" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px"></div>
     </div>
     <div class="discbox" style="margin-top:14px">
       <p>⚠️ Information is for general guidance only. Entry fees, timings and availability may change. Please verify locally before visiting.</p>
@@ -583,6 +637,7 @@ function render(t){
   else if(t==='stay')renderStay();
   else if(t==='food')renderFood();
   else if(t==='transport')renderTransport();
+  else if(t==='more')buildNearby(places);
 }
 
 // ATTRACTIONS
@@ -707,13 +762,13 @@ function buildNearby(ps){
     return;
   }
   el.innerHTML=nearby.map(n=>`
-    <div class="ncard" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${n.lat},${n.lng}','_blank')">
+    <div class="ncard" onclick="openDp('${n.id}')">
       <div class="ncard-img" style="background:${n.cardBg||'linear-gradient(135deg,#0a7c6e,#0ea5e9)'}">
         ${n.photoURL?`<img src="${n.photoURL}" alt="${n.name}" loading="lazy"/>`:`<span>${n.emoji||'📍'}</span>`}
       </div>
       <div class="ncard-body">
         <div class="ncard-name">${n.name}</div>
-        <div class="ncard-dist">${n.distance||''}</div>
+        <div class="ncard-dist">${n.emoji||'📍'} ${n.distance||''}</div>
       </div>
     </div>`).join('');
 }
@@ -752,7 +807,7 @@ window.openDp=function(id){
   const b=document.getElementById('dp-bdg');b.textContent=(p.emoji||'')+' '+(p.subtype||p.subcategory||p.category||'');b.style.background=cb(p.category);b.style.color=cc(p.category);
   document.getElementById('dp-about').textContent=p.about||'No description available.';
   document.getElementById('dp-timing').textContent=p.timing||'—';
-  document.getElementById('dp-entry').textContent=p.entryFee||(p.freeEntry?'🆓 Free':'—');
+  document.getElementById('dp-entry').textContent=p.entryFee?p.entryFee:(p.freeEntry?'🆓 Free Entry':'—');
   document.getElementById('dp-best').textContent=p.bestTime||'—';
   const tr=document.getElementById('dp-transport-row');
   if(p.transport){tr.style.display='block';document.getElementById('dp-transport').textContent=p.transport;}else tr.style.display='none';
@@ -766,12 +821,41 @@ window.openDp=function(id){
   if(p.lat&&p.lng){mw.style.display='block';me.innerHTML=`<iframe loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=${p.lat},${p.lng}&z=15&output=embed"></iframe>`;}
   else if(p.name){mw.style.display='block';me.innerHTML=`<iframe loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=${encodeURIComponent(p.name+' Byndoor Karnataka')}&z=14&output=embed"></iframe>`;}
   else mw.style.display='none';
+
+  // Social links (YouTube / Instagram)
+  const sw=document.getElementById('dp-social-row'),se=document.getElementById('dp-social');
+  const socials=[];
+  if(p.youtubeURL)socials.push(`<a href="${p.youtubeURL}" target="_blank" class="dp-social-btn" style="background:#FF0000">▶ YouTube</a>`);
+  if(p.instagramURL)socials.push(`<a href="${p.instagramURL}" target="_blank" class="dp-social-btn" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">📸 Instagram</a>`);
+  if(socials.length){sw.style.display='block';se.innerHTML=socials.join('');}else sw.style.display='none';
+
+  // More photos
+  const pw=document.getElementById('dp-photos-row'),pe=document.getElementById('dp-photos');
+  const extraPhotos=p.photos||[];
+  if(extraPhotos.length){
+    pw.style.display='block';
+    pe.innerHTML=extraPhotos.map(url=>`<img class="dp-photo-thumb" src="${url}" loading="lazy" onclick="openLightbox('${url}')" />`).join('');
+  }else pw.style.display='none';
+
   document.getElementById('dp-dir').onclick=()=>{const u=p.lat&&p.lng?`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' Byndoor Karnataka')}`;window.open(u,'_blank');};
   const cb2=document.getElementById('dp-call');
   if(p.phone){cb2.style.display='block';cb2.onclick=()=>window.open(`tel:${p.phone}`);}else cb2.style.display='none';
   document.getElementById('dp').style.display='block';
   document.getElementById('dp').scrollTop=0;
   document.body.style.overflow='hidden';
+};
+
+// PHOTO LIGHTBOX
+window.openLightbox=function(url){
+  let lb=document.getElementById('photo-lb');
+  if(!lb){
+    lb=document.createElement('div');lb.id='photo-lb';lb.className='photo-lightbox';
+    lb.innerHTML='<button class="photo-lightbox-close" onclick="document.getElementById(\'photo-lb\').classList.remove(\'open\')">✕</button><img id="photo-lb-img"/>';
+    lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open');});
+    document.body.appendChild(lb);
+  }
+  document.getElementById('photo-lb-img').src=url;
+  lb.classList.add('open');
 };
 window.closeDp=function(){document.getElementById('dp').style.display='none';document.body.style.overflow='';document.getElementById('dp-map').innerHTML='';};
 window.sharePlace=async function(){if(!curPlace)return;const d={title:`${curPlace.name} — Discover Byndoor`,text:`Check out ${curPlace.name} in Byndoor!`,url:window.location.href};if(navigator.share){try{await navigator.share(d);}catch(e){}}else{navigator.clipboard?.writeText(window.location.href);toast('🔗 Link copied!');}};
@@ -829,6 +913,12 @@ load();loadWeather();
 
 <!-- AI ASSISTANT FLOATING BUTTON -->
 <style>
+.dp-social-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-size:.78rem;font-weight:700;text-decoration:none;color:#fff}
+.dp-photo-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer}
+.photo-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center}
+.photo-lightbox.open{display:flex}
+.photo-lightbox img{max-width:95vw;max-height:90vh;border-radius:10px;object-fit:contain}
+.photo-lightbox-close{position:absolute;top:16px;right:20px;color:#fff;font-size:1.6rem;cursor:pointer;background:none;border:none}
 .ai-fab{
   position:fixed;bottom:80px;right:16px;z-index:999;
   width:52px;height:52px;border-radius:50%;
@@ -855,7 +945,31 @@ load();loadWeather();
   .ai-fab{bottom:30px;right:30px;width:58px;height:58px;font-size:1.6rem;}
   .ai-fab-label{bottom:38px;right:96px;}
 }
+@media(min-width:900px){
+  body{max-width:100%;background:#e8ede9}
+  #install-banner{max-width:900px}
+  .app-shell{max-width:900px;margin:0 auto;background:var(--sand);box-shadow:0 0 40px rgba(0,0,0,0.12);min-height:100vh;position:relative}
+  .bnav{max-width:900px;left:50%;transform:translateX(-50%)}
+  #dp{max-width:900px}
+  .dp-actions{max-width:900px}
+  .sheet{max-width:900px}
+  /* Grid layout for place cards */
+  .places-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:0 16px}
+  .place-card{margin:0}
+  /* Hero section bigger */
+  .hero{height:260px}
+  .hero-title{font-size:2rem}
+  /* Tab bar bigger */
+  .tabs{gap:12px;padding:14px 20px}
+  .tab{font-size:.82rem;padding:8px 18px}
+  /* Search bigger */
+  .search-wrap{padding:14px 20px}
+  /* AI fab reposition */
+  .ai-fab{bottom:40px;right:calc(50% - 450px + 20px)}
+  .ai-fab-label{bottom:48px;right:calc(50% - 450px + 78px)}
+}
 </style>
+</div></div>
 <div class="ai-fab-label">Ask AI Guide 🌊</div>
 <a class="ai-fab" href="ai-assistant.html" title="AI Travel Assistant">🤖</a>
 </body>
