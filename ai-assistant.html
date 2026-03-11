@@ -218,17 +218,17 @@ async function sendMessage(){
   const btn=document.getElementById('send-btn');btn.disabled=true;
   const tid=showTyping();
   try{
-    const res=await fetch('https://super-waterfall-865a.byndoortourism09.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,system:getSysPrompt(),messages:chatHistory.slice(-12)})});
+    const res=await fetch('https://super-waterfall-865a.byndoortourism09.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemPrompt:getSysPrompt(),messages:chatHistory.slice(-12)})});
     removeTyping(tid);
     if(!res.ok){
       const errData=await res.json().catch(()=>({}));
       throw new Error('API '+res.status+': '+(errData.error?.message||'Unknown error'));
     }
     const data=await res.json();
-    const reply=data.content?.[0]?.text||'Sorry, please try again.';
+    const reply=data.reply||'Sorry, please try again.';
     addMsg('ai',reply,true);
     chatHistory.push({role:'assistant',content:reply});
-  }catch(e){removeTyping(tid);addMsg('ai','⚠️ Connection error. Please check internet and try again.');}
+  }catch(e){removeTyping(tid);addMsg('ai','⚠️ Error: '+e.message);}
   btn.disabled=false;
 }
 
