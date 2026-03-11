@@ -236,7 +236,7 @@ async function sendMessage(){
   try{
     // Build Gemini contents
     // Call via Cloudflare Worker (key stored safely in Cloudflare)
-    const res=await fetch('https://super-waterfall-865a.byndoortourism09.workers.dev',{
+    const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({systemPrompt:getSysPrompt(),messages:chatHistory.slice(-12)})
