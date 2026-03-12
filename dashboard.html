@@ -152,6 +152,8 @@
       <button class="ftab" data-form="food">🍛 Food</button>
       <button class="ftab" data-form="transport">🚌 Transport</button>
       <button class="ftab" data-form="nearby">🗺️ Nearby</button>
+      <button class="ftab" data-form="guide">🧭 Guide</button>
+      <button class="ftab" data-form="config">⚙️ Social</button>
     </div>
 
     <!-- ATTRACTION FORM -->
@@ -198,14 +200,14 @@
           <input type="file" id="ph-att-extra" accept="image/*" multiple onchange="handleExtraPhotos(this,'att')" style="margin-top:6px"/>
           <div id="ph-att-extra-prev" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
         </div>
-        <div class="fl fc" style="margin-top:4px">
+        <div class="fl fc" style="margin-top:4px;gap:10px">
           <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.82rem;font-weight:600;color:#555">
             <input type="checkbox" id="att-nearby" style="width:18px;height:18px;accent-color:var(--p);cursor:pointer"/>
+            🗺️ Show in Nearby Highlights
           </label>
           <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.82rem;font-weight:600">
             <input type="checkbox" id="att-trending" style="width:18px;height:18px;accent-color:var(--acc);cursor:pointer"/>
             ⭐ Show in Trending Carousel
-            🗺️ Show in "Byndoor Taluk Highlights" section on home page
           </label>
         </div>
         <div class="fl fc"><label>🎨 Card Color</label><div class="cswatches" id="cs-att"></div><input type="hidden" id="att-bg"/></div>
@@ -736,9 +738,21 @@ window.savePlace=async()=>{
       data={name,category:'guide',phone:gV('guide-phone')||null,
         about:gV('guide-about')||null,emoji:gV('guide-emoji')||'🧭'};
     } else if(curForm==='config'){
-      data={name:'Social Config',category:'config',
+      // Always update existing config or create one
+      const cfgData={name:'Social Config',category:'config',
         facebookURL:gV('cfg-facebook')||null,youtubeURL:gV('cfg-youtube')||null,
-        instagramURL:gV('cfg-instagram')||null,twitterURL:gV('cfg-twitter')||null};
+        instagramURL:gV('cfg-instagram')||null,twitterURL:gV('cfg-twitter')||null,
+        updatedAt:serverTimestamp()};
+      const existingCfg=allPlaces.find(p=>p.category==='config');
+      if(existingCfg){
+        await updateDoc(doc(db,'places',existingCfg.id),cfgData);
+      } else {
+        await addDoc(collection(db,'places'),cfgData);
+      }
+      btn.disabled=false;spin.style.display='none';lbl.textContent='Save';
+      closeModal();await load();
+      toast('✅ Social links saved!');
+      return;
     } else if(curForm==='transport'){
       if(curTT==='train'){
         const name=gV('tr-name');if(!name){alert('Train name required!');return;}
