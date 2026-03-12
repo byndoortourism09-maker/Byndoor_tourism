@@ -26,16 +26,16 @@
   .sug-row{display:flex;gap:7px;width:max-content}
   .sug{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:6px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .2s}
   .sug:active{background:var(--p);color:#fff;border-color:var(--p)}
-  .msgs{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+  .msgs{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;width:100%}
   .msgs::-webkit-scrollbar{width:4px}
   .msgs::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
-  .msg{display:flex;gap:9px;align-items:flex-end;animation:msgIn .3s ease}
+  .msg{display:flex;gap:9px;align-items:flex-end;animation:msgIn .3s ease;max-width:100%;overflow:hidden}
   @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .msg.user{flex-direction:row-reverse}
   .msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
   .ai-av{background:linear-gradient(135deg,#0a7c6e,#0ea5e9)}
   .user-av{background:linear-gradient(135deg,#f97316,#fbbf24)}
-  .bubble{max-width:86%;padding:12px 15px;border-radius:18px;font-size:.88rem;line-height:1.65;overflow-wrap:break-word}
+  .bubble{max-width:82%;padding:11px 13px;border-radius:18px;font-size:.86rem;line-height:1.6;overflow-wrap:break-word;word-break:break-word;min-width:0}
   .ai-bubble{background:#fff;color:var(--dark);border-radius:18px 18px 18px 4px;box-shadow:0 2px 12px rgba(0,0,0,.08);column-count:unset!important;columns:unset!important}
   .user-bubble{background:linear-gradient(135deg,#0a7c6e,#0d9e8d);color:#fff;border-radius:18px 18px 4px 18px}
   .bubble-time{font-size:.6rem;opacity:.6;margin-top:5px;display:block}
@@ -49,14 +49,15 @@
   .typing span:nth-child(3){animation-delay:.3s}
   @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
   .ai-bubble strong{color:var(--p);font-weight:700;display:inline}
-  .ai-bubble .ai-sec{display:block;margin:10px 0 4px;font-weight:700;color:var(--p);font-size:.86rem;border-bottom:1px solid #f0ede8;padding-bottom:3px}
+  .ai-bubble .ai-sec{display:block;margin:10px 0 4px;font-weight:700;color:var(--p);font-size:.86rem;border-bottom:1px solid #f0ede8;padding-bottom:3px;overflow-wrap:break-word;word-break:break-word}
   .ai-bubble .ai-para{display:block;margin:3px 0;font-size:.88rem;line-height:1.65}
   .ai-bubble .ai-list{margin:4px 0}
-  .ai-bubble .ai-item{display:flex;gap:8px;align-items:flex-start;margin:5px 0;font-size:.88rem;line-height:1.6}
+  .ai-bubble .ai-item{display:flex;gap:8px;align-items:flex-start;margin:5px 0;font-size:.86rem;line-height:1.6;min-width:0;overflow-wrap:break-word;word-break:break-word}
   .ai-bubble .ai-item::before{content:'•';color:var(--acc);font-weight:900;font-size:1rem;flex-shrink:0;margin-top:1px}
   .ai-bubble .ai-num{gap:8px}
   .ai-bubble .ai-num::before{display:none}
-  .ai-num-badge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0;margin-top:2px}
+  .ai-num-badge{background:var(--p);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0;margin-top:2px}
+  .ai-bubble .ai-item>span:not(.ai-num-badge){flex:1;min-width:0;overflow-wrap:break-word;word-break:break-word}
   .input-bar{background:#fff;border-top:1px solid var(--bdr);padding:10px 12px;display:flex;align-items:flex-end;gap:9px;flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(0,0,0,.06)}
   .input-wrap{flex:1;background:var(--sand);border:2px solid var(--bdr);border-radius:25px;padding:8px 14px;display:flex;align-items:flex-end;gap:8px;transition:border .2s}
   .input-wrap:focus-within{border-color:var(--p)}
@@ -270,6 +271,7 @@ function getSysPrompt(){
   const w=buildWeatherCtx();
   const p=buildPlacesCtx();
   return'You are Byndoor Travel Assistant, a friendly local guide for Byndoor Taluk, Karnataka, India.'+
+  '\nFORMAT RULES: Never use markdown. No ** bold **. No # headers. No --- dividers. Use plain text only. For lists, start each item on a new line with a simple dash like: - item. Keep responses clear and readable.'+
   '\nFamous places: Maravanthe Beach, Kollur Temple(32km), Trasi Beach, Someshwara Temple.'+
   '\nNearby: Murudeshwar(58km), Udupi(55km), Mangalore(110km).'+
   '\nBest time: Oct-Mar. Food: Fish curry, Neer dosa, seafood.'+
@@ -325,6 +327,9 @@ function addMsg(role,text,showVoice=false){
 }
 
 function fmtAi(t){
+  // Pre-process: **Title:** some text → split into two lines
+  t = t.replace(/\*\*([^*]+):\*\*\s*(.+)/g, '**$1:**\n$2');
+  // Pre-process: **Title:** at end of line (nothing after) is fine as-is
   // Process line by line to avoid inline wrapping issues
   const lines = t.split('\n');
   let html = '';
