@@ -371,6 +371,7 @@
     <button class="tab" data-tab="food">🍛 Food</button>
     <button class="tab" data-tab="transport">🚌 Transport</button>
     <button class="tab" data-tab="emergency">🚨 Emergency</button>
+    <button class="tab" data-tab="map">🗺️ Map</button>
     <button class="tab" data-tab="more">☰ More</button>
   </div>
 </div>
@@ -432,6 +433,22 @@
 </div>
 
 
+
+<!-- MAP TAB -->
+<div class="sec" id="map">
+  <div class="sbanner" style="background:var(--g5)"><h2>Tourist Map</h2><p>All Byndoor attractions on one map</p><div class="deco">🗺️</div></div>
+  <div style="padding:12px 16px 6px;display:flex;gap:8px;flex-wrap:wrap" id="map-filter-btns">
+    <button class="map-filter-btn active" data-mcat="all" onclick="filterMapPins('all')">All</button>
+    <button class="map-filter-btn" data-mcat="attractions" onclick="filterMapPins('attractions')">🏛️ Attractions</button>
+    <button class="map-filter-btn" data-mcat="stay" onclick="filterMapPins('stay')">🏨 Stay</button>
+    <button class="map-filter-btn" data-mcat="food" onclick="filterMapPins('food')">🍛 Food</button>
+    <button class="map-filter-btn" data-mcat="nearby" onclick="filterMapPins('nearby')">📍 Nearby</button>
+  </div>
+  <div id="tourist-map-container" style="margin:8px 16px 80px;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.12);height:65vh;background:#e8f4f0;display:flex;align-items:center;justify-content:center">
+    <div id="map-loading" style="text-align:center;color:var(--muted)"><div style="font-size:2.5rem">🗺️</div><div style="font-size:.85rem;margin-top:8px">Loading map…</div></div>
+  </div>
+</div>
+
 <!-- MORE TAB -->
 <div class="sec" id="more">
   <div class="sbanner" style="background:linear-gradient(135deg,#374151,#1f2937)"><h2>More</h2><p>Nearby places, emergency &amp; more</p><div class="deco">☰</div></div>
@@ -455,6 +472,15 @@
     <div class="emcard"><div class="emico" style="background:#DCFCE7">🏥</div><div class="eminfo"><div class="emname">CHC Byndoor Hospital</div><div class="emnum">08254-253027</div><div class="emsub">Community Health Centre</div></div><button class="emcall" onclick="window.open('tel:08254253027')">Call</button></div>
     <div class="emcard"><div class="emico" style="background:#EDE9FE">🆘</div><div class="eminfo"><div class="emname">National Emergency</div><div class="emnum">112</div><div class="emsub">Police · Fire · Medical</div></div><button class="emcall" onclick="window.open('tel:112')">Call</button></div>
     <div class="emcard"><div class="emico" style="background:#E0F2FE">🌊</div><div class="eminfo"><div class="emname">Coast Guard</div><div class="emnum">1554</div><div class="emsub">Sea Emergency · Distress at Sea</div></div><button class="emcall" onclick="window.open('tel:1554')">Call</button></div>
+  </div>
+
+  <!-- TOURIST GUIDES -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px;margin-top:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">🧭 Tourist Guides</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div id="guides-list" style="padding:0 16px 8px">
+    <div style="font-size:.8rem;color:#bbb;font-style:italic">Loading guides…</div>
   </div>
 
   <!-- CONTACT US -->
@@ -485,6 +511,7 @@
 <footer class="footer">
   <div class="ft-logo">🌊 Discover Byndoor</div>
   <div class="ft-tag">Official tourism guide · Coastal Karnataka</div>
+  <div id="footer-social" style="display:flex;gap:12px;justify-content:center;margin:14px 0 4px"></div>
   <div class="ft-grid">
     <button class="ft-btn" onclick="showSheet('about')">ℹ️ About App</button>
     <button class="ft-btn" onclick="showSheet('privacy')">🔒 Privacy Policy</button>
@@ -507,6 +534,7 @@
   <button class="nbtn" data-nav="stay"><span class="ico">🏨</span>Stay</button>
   <button class="nbtn" data-nav="food"><span class="ico">🍛</span>Food</button>
   <button class="nbtn" data-nav="transport"><span class="ico">🚌</span>Transport</button>
+  <button class="nbtn" data-nav="map"><span class="ico">🗺️</span>Map</button>
   <button class="nbtn" data-nav="more"><span class="ico">☰</span>More</button>
 </div>
 
@@ -625,7 +653,7 @@ async function load(){
   try{
     const s=await getDocs(collection(db,'places'));
     places=s.docs.map(d=>({id:d.id,...d.data()}));
-    render('attractions');buildTrending();buildNearby(places);
+    render('attractions');buildTrending();buildNearby(places);buildFooterSocial();
   }catch(e){
     document.getElementById('att-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Could not load. Check connection.</p></div>';
   }
@@ -637,7 +665,8 @@ function render(t){
   else if(t==='stay')renderStay();
   else if(t==='food')renderFood();
   else if(t==='transport')renderTransport();
-  else if(t==='more')buildNearby(places);
+  else if(t==='more'){buildNearby(places);buildGuides();}
+  else if(t==='map')buildTouristMap();
 }
 
 // ATTRACTIONS
@@ -730,7 +759,8 @@ function renderTransport(){
 
 // TRENDING
 function buildTrending(){
-  const ts=places.filter(p=>p.category==='attractions').slice(0,6);
+  let ts=places.filter(p=>p.trending===true);
+  if(!ts.length)ts=places.filter(p=>p.category==='attractions').slice(0,6); // fallback
   const rail=document.getElementById('trend-rail');
   const dots=document.getElementById('tdots');
   if(!ts.length){
@@ -795,12 +825,24 @@ document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))sd.cl
 // DETAIL
 window.openDp=function(id){
   const p=places.find(x=>x.id===id);if(!p)return;curPlace=p;
+  stopDpSlide();
   const hero=document.getElementById('dp-hero');
-  hero.style.background=p.cardBg||g(p.category);
-  const oi=hero.querySelector('img');if(oi)oi.remove();
-  if(p.photoURL){const i=document.createElement('img');i.src=p.photoURL;i.alt=p.name;hero.prepend(i);document.getElementById('dp-emoji').style.display='none';}
-  else{document.getElementById('dp-emoji').style.display='block';document.getElementById('dp-emoji').textContent=p.emoji||ce(p.category);}
-  document.getElementById('dp-name').textContent=p.name;
+  // Build photo list: main photo + extra photos
+  const allPhotos=[p.photoURL,...(p.photos||[])].filter(Boolean);
+  if(allPhotos.length>=2){
+    // Reset hero element
+    hero.className='dp-photo-slide';
+    hero.style.background='';
+    buildDpSlideshow(allPhotos,hero);
+    document.getElementById('dp-name').textContent=p.name;
+  } else {
+    hero.className='dp-hero';
+    hero.style.background=p.cardBg||g(p.category);
+    hero.innerHTML=`<span id="dp-emoji" style="${p.photoURL?'display:none':''}"></span><div class="dp-ov"></div><button class="dp-back" onclick="closeDp()">← Back</button><div id="dp-name" class="dp-name"></div>`;
+    if(p.photoURL){const i=document.createElement('img');i.src=p.photoURL;i.alt=p.name;hero.prepend(i);}
+    else{hero.querySelector('#dp-emoji').textContent=p.emoji||ce(p.category);}
+    document.getElementById('dp-name').textContent=p.name;
+  }
   const r=Math.round(p.rating||5);
   document.getElementById('dp-stars').textContent='★'.repeat(r)+'☆'.repeat(5-r);
   document.getElementById('dp-rat').textContent=`(${(p.rating||5).toFixed(1)})`;
@@ -857,8 +899,159 @@ window.openLightbox=function(url){
   document.getElementById('photo-lb-img').src=url;
   lb.classList.add('open');
 };
-window.closeDp=function(){document.getElementById('dp').style.display='none';document.body.style.overflow='';document.getElementById('dp-map').innerHTML='';};
+window.closeDp=function(){stopDpSlide();document.getElementById('dp').style.display='none';document.body.style.overflow='';document.getElementById('dp-map').innerHTML='';};
 window.sharePlace=async function(){if(!curPlace)return;const d={title:`${curPlace.name} — Discover Byndoor`,text:`Check out ${curPlace.name} in Byndoor!`,url:window.location.href};if(navigator.share){try{await navigator.share(d);}catch(e){}}else{navigator.clipboard?.writeText(window.location.href);toast('🔗 Link copied!');}};
+
+
+// ============================================================
+// TOURIST MAP
+// ============================================================
+let mapBuilt=false,allMapMarkers=[],mapPlaces=[];
+function buildTouristMap(){
+  if(mapBuilt)return;
+  mapBuilt=true;
+  const container=document.getElementById('tourist-map-container');
+  // Use Google Maps embed with multiple markers via iframe — simple approach
+  const ps=places.filter(p=>p.lat&&p.lng&&p.category!=='transport');
+  mapPlaces=ps;
+  if(!ps.length){
+    container.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:2.5rem">📍</div><p style="margin-top:8px;font-size:.85rem">No places with location added yet</p></div>';
+    return;
+  }
+  // Build custom map using OpenStreetMap + Leaflet (free, no API key)
+  container.innerHTML='<div id="leaflet-map" style="width:100%;height:100%"></div>';
+  // Load Leaflet CSS + JS
+  if(!document.getElementById('leaflet-css')){
+    const lc=document.createElement('link');lc.id='leaflet-css';lc.rel='stylesheet';
+    lc.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(lc);
+  }
+  const script=document.createElement('script');
+  script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload=()=>initLeaflet(ps);
+  document.head.appendChild(script);
+}
+
+function initLeaflet(ps){
+  const map=L.map('leaflet-map').setView([13.8785,74.7313],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap',maxZoom:19
+  }).addTo(map);
+  const catColors={attractions:'#0a7c6e',stay:'#7c3aed',food:'#f97316',events:'#e11d7a',nearby:'#0ea5e9'};
+  ps.forEach(p=>{
+    const col=catColors[p.category]||'#0a7c6e';
+    const icon=L.divIcon({
+      html:`<div style="background:${col};width:30px;height:30px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;box-shadow:0 2px 8px rgba(0,0,0,.3)">${p.emoji||catEmoji(p.category)}</div>`,
+      className:'',iconSize:[30,30],iconAnchor:[15,15]
+    });
+    const marker=L.marker([p.lat,p.lng],{icon});
+    marker.bindPopup(`<div style="font-family:'DM Sans',sans-serif;min-width:140px">
+      <div style="font-weight:700;font-size:.88rem">${p.name}</div>
+      <div style="font-size:.72rem;color:#64748b;margin:2px 0">${p.subtype||p.subcategory||p.category||''}</div>
+      ${p.about?`<div style="font-size:.75rem;margin:4px 0;color:#374151">${p.about.slice(0,80)}…</div>`:''}
+      <button onclick="openDp('${p.id}')" style="background:#0a7c6e;color:#fff;border:none;border-radius:8px;padding:5px 12px;font-size:.72rem;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif">View Details</button>
+    </div>`,{maxWidth:200});
+    marker._category=p.category;
+    marker._id=p.id;
+    marker.addTo(map);
+    allMapMarkers.push(marker);
+  });
+  window._leafletMap=map;
+}
+
+function catEmoji(c){return{attractions:'🏛️',stay:'🏨',food:'🍛',events:'🎉',nearby:'📍',transport:'🚌'}[c]||'📍';}
+
+window.filterMapPins=function(cat){
+  document.querySelectorAll('.map-filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.mcat===cat));
+  allMapMarkers.forEach(m=>{
+    const show=cat==='all'||m._category===cat;
+    if(show)m.addTo(window._leafletMap||{addLayer:()=>{}});
+    else m.remove();
+  });
+};
+
+// ============================================================
+// TOURIST GUIDES
+// ============================================================
+function buildGuides(){
+  const el=document.getElementById('guides-list');
+  const guides=places.filter(p=>p.category==='guide');
+  if(!guides.length){
+    el.innerHTML='<div style="font-size:.8rem;color:#bbb;font-style:italic;padding:4px 0">No guides added yet.</div>';
+    return;
+  }
+  el.innerHTML=guides.map(g=>`
+    <div class="guide-card">
+      <div class="guide-avatar">${g.emoji||'🧭'}</div>
+      <div style="flex:1">
+        <div class="guide-name">${g.name}</div>
+        <div class="guide-lang">${g.about||'Local Tourist Guide'}</div>
+        ${g.distanceFromTown?`<div style="font-size:.7rem;color:var(--muted)">${g.distanceFromTown}</div>`:''}
+      </div>
+      ${g.phone?`<button class="guide-call" onclick="window.open('tel:${g.phone}')">📞 Call</button>`:''}
+    </div>`).join('');
+}
+
+// ============================================================
+// FOOTER SOCIAL ICONS (loaded from config in Firestore)
+// ============================================================
+function buildFooterSocial(){
+  // Read social links from a special config place or from first place that has them
+  const cfg=places.find(p=>p.category==='config')||{};
+  const icons=[];
+  if(cfg.facebookURL)icons.push(`<a href="${cfg.facebookURL}" target="_blank" class="ft-social-icon" style="background:#1877F2" title="Facebook">f</a>`);
+  if(cfg.youtubeURL)icons.push(`<a href="${cfg.youtubeURL}" target="_blank" class="ft-social-icon" style="background:#FF0000" title="YouTube">▶</a>`);
+  if(cfg.instagramURL)icons.push(`<a href="${cfg.instagramURL}" target="_blank" class="ft-social-icon" style="background:linear-gradient(135deg,#f09433,#dc2743,#bc1888)" title="Instagram">📷</a>`);
+  if(cfg.twitterURL)icons.push(`<a href="${cfg.twitterURL}" target="_blank" class="ft-social-icon" style="background:#000" title="X / Twitter">𝕏</a>`);
+  const el=document.getElementById('footer-social');
+  if(el&&icons.length)el.innerHTML=icons.join('');
+}
+
+// ============================================================
+// DETAIL PAGE PHOTO SLIDESHOW
+// ============================================================
+let dpSlideTimer=null,dpSlideIdx=0;
+function stopDpSlide(){if(dpSlideTimer){clearInterval(dpSlideTimer);dpSlideTimer=null;}}
+
+function buildDpSlideshow(photos, heroEl){
+  stopDpSlide();dpSlideIdx=0;
+  if(!photos||photos.length<2){
+    // single photo — keep existing hero as-is
+    return;
+  }
+  // Replace hero with slideshow
+  heroEl.innerHTML='';
+  heroEl.className='dp-photo-slide';
+  const rail=document.createElement('div');rail.className='dp-slide-rail';
+  photos.forEach((url,i)=>{
+    const item=document.createElement('div');item.className='dp-slide-item';
+    const img=document.createElement('img');img.src=url;img.alt='Photo '+(i+1);
+    item.appendChild(img);
+    rail.appendChild(item);
+  });
+  // overlay and name
+  const ov=document.createElement('div');ov.style.cssText='position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(10,20,40,.82));z-index:1';
+  const back=document.createElement('button');back.className='dp-back';back.textContent='← Back';back.onclick=closeDp;back.style.zIndex='2';
+  const name=document.createElement('div');name.id='dp-name';name.className='dp-name';
+  // dots
+  const dotsEl=document.createElement('div');dotsEl.className='dp-slide-dots';dotsEl.style.zIndex='3';
+  photos.forEach((_,i)=>{
+    const d=document.createElement('button');d.className='dp-slide-dot'+(i===0?' on':'');
+    d.onclick=()=>goDpSlide(rail,dotsEl,i);dotsEl.appendChild(d);
+  });
+  heroEl.appendChild(rail);heroEl.appendChild(ov);heroEl.appendChild(back);heroEl.appendChild(name);heroEl.appendChild(dotsEl);
+  // auto slide every 3 sec
+  dpSlideTimer=setInterval(()=>{
+    dpSlideIdx=(dpSlideIdx+1)%photos.length;
+    goDpSlide(rail,dotsEl,dpSlideIdx);
+  },3000);
+}
+
+function goDpSlide(rail,dots,i){
+  dpSlideIdx=i;
+  rail.style.transform=`translateX(-${i*100}%)`;
+  dots.querySelectorAll('.dp-slide-dot').forEach((d,j)=>d.classList.toggle('on',j===i));
+}
 
 // SHEET
 window.showSheet=function(k){const s=SHEETS[k];if(!s)return;document.getElementById('s-title').textContent=s.t;document.getElementById('s-body').innerHTML=s.b;document.getElementById('sov').classList.add('open');};
@@ -913,6 +1106,23 @@ load();loadWeather();
 
 <!-- AI ASSISTANT FLOATING BUTTON -->
 <style>
+.map-filter-btn{background:#fff;border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:6px 13px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.map-filter-btn.active{background:var(--p);color:#fff;border-color:var(--p)}
+.guide-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.guide-avatar{width:44px;height:44px;border-radius:50%;background:var(--g1);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;flex-shrink:0}
+.guide-name{font-weight:700;font-size:.88rem}
+.guide-lang{font-size:.72rem;color:var(--muted);margin-top:2px}
+.guide-call{background:var(--p);color:#fff;border:none;border-radius:16px;padding:6px 14px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.ft-social-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-decoration:none;transition:opacity .2s}
+.ft-social-icon:hover{opacity:.8}
+/* Detail page photo slideshow */
+.dp-photo-slide{position:relative;height:265px;overflow:hidden}
+.dp-slide-rail{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.dp-slide-item{flex-shrink:0;width:100%;height:100%;position:relative}
+.dp-slide-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.dp-slide-dots{position:absolute;bottom:60px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
+.dp-slide-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;padding:0}
+.dp-slide-dot.on{background:#fff;width:18px;border-radius:3px}
 .dp-social-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-size:.78rem;font-weight:700;text-decoration:none;color:#fff}
 .dp-photo-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer}
 .photo-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center}
