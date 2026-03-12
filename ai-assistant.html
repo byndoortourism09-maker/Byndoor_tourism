@@ -35,7 +35,7 @@
   .msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
   .ai-av{background:linear-gradient(135deg,#0a7c6e,#0ea5e9)}
   .user-av{background:linear-gradient(135deg,#f97316,#fbbf24)}
-  .bubble{max-width:82%;padding:11px 14px;border-radius:18px;font-size:.88rem;line-height:1.65;word-wrap:break-word;overflow-wrap:anywhere}
+  .bubble{max-width:86%;padding:12px 15px;border-radius:18px;font-size:.88rem;line-height:1.65;overflow-wrap:break-word}
   .ai-bubble{background:#fff;color:var(--dark);border-radius:18px 18px 18px 4px;box-shadow:0 2px 12px rgba(0,0,0,.08);column-count:unset!important;columns:unset!important}
   .user-bubble{background:linear-gradient(135deg,#0a7c6e,#0d9e8d);color:#fff;border-radius:18px 18px 4px 18px}
   .bubble-time{font-size:.6rem;opacity:.6;margin-top:5px;display:block}
@@ -50,8 +50,13 @@
   @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
   .ai-bubble strong{color:var(--p);font-weight:700;display:inline}
   .ai-bubble .ai-sec{display:block;margin:10px 0 4px;font-weight:700;color:var(--p);font-size:.86rem;border-bottom:1px solid #f0ede8;padding-bottom:3px}
-  .ai-bubble .ai-item{display:block;margin:5px 0;font-size:.85rem;padding-left:14px;position:relative}
-  .ai-bubble .ai-item::before{content:'•';color:var(--acc);font-weight:700;position:absolute;left:2px}
+  .ai-bubble .ai-para{display:block;margin:3px 0;font-size:.88rem;line-height:1.65}
+  .ai-bubble .ai-list{margin:4px 0}
+  .ai-bubble .ai-item{display:flex;gap:8px;align-items:flex-start;margin:5px 0;font-size:.88rem;line-height:1.6}
+  .ai-bubble .ai-item::before{content:'•';color:var(--acc);font-weight:900;font-size:1rem;flex-shrink:0;margin-top:1px}
+  .ai-bubble .ai-num{gap:8px}
+  .ai-bubble .ai-num::before{display:none}
+  .ai-num-badge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0;margin-top:2px}
   .input-bar{background:#fff;border-top:1px solid var(--bdr);padding:10px 12px;display:flex;align-items:flex-end;gap:9px;flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(0,0,0,.06)}
   .input-wrap{flex:1;background:var(--sand);border:2px solid var(--bdr);border-radius:25px;padding:8px 14px;display:flex;align-items:flex-end;gap:8px;transition:border .2s}
   .input-wrap:focus-within{border-color:var(--p)}
@@ -320,11 +325,51 @@ function addMsg(role,text,showVoice=false){
 }
 
 function fmtAi(t){
+  // Process line by line to avoid inline wrapping issues
+  const lines = t.split('\n');
+  let html = '';
+  let inList = false;
+
+  for(let raw of lines){
+    const line = raw.trim();
+    if(!line){ 
+      if(inList){html+='</div>';inList=false;}
+      html+='<div style="height:6px"></div>';
+      continue;
+    }
+    // Heading: ## or ###
+    if(/^#{1,3} /.test(line)){
+      if(inList){html+='</div>';inList=false;}
+      const txt = inlineFormat(line.replace(/^#{1,3} /,''));
+      html+=`<div class="ai-sec">${txt}</div>`;
+    }
+    // Bullet: - or * or •
+    else if(/^[-*•] /.test(line)){
+      if(!inList){html+='<div class="ai-list">';inList=true;}
+      const txt = inlineFormat(line.replace(/^[-*•] /,''));
+      html+=`<div class="ai-item">${txt}</div>`;
+    }
+    // Numbered list: 1. 2. etc
+    else if(/^\d+\.\s/.test(line)){
+      if(!inList){html+='<div class="ai-list">';inList=true;}
+      const txt = inlineFormat(line.replace(/^\d+\.\s/,''));
+      const num = line.match(/^(\d+)\./)[1];
+      html+=`<div class="ai-item ai-num"><span class="ai-num-badge">${num}</span>${txt}</div>`;
+    }
+    // Normal paragraph
+    else {
+      if(inList){html+='</div>';inList=false;}
+      html+=`<div class="ai-para">${inlineFormat(line)}</div>`;
+    }
+  }
+  if(inList)html+='</div>';
+  return html;
+}
+
+function inlineFormat(t){
   return esc(t)
     .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/^#{1,3} (.*?)$/gm,'<div class="ai-sec">$1</div>')
-    .replace(/^[\-\*] (.*?)$/gm,'<div class="ai-item">$1</div>')
-    .replace(/\n\n/g,'<br/><br/>').replace(/\n/g,'<br/>');
+    .replace(/\*(.*?)\*/g,'<em>$1</em>');
 }
 function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
