@@ -201,6 +201,10 @@
         <div class="fl fc" style="margin-top:4px">
           <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.82rem;font-weight:600;color:#555">
             <input type="checkbox" id="att-nearby" style="width:18px;height:18px;accent-color:var(--p);cursor:pointer"/>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.82rem;font-weight:600">
+            <input type="checkbox" id="att-trending" style="width:18px;height:18px;accent-color:var(--acc);cursor:pointer"/>
+            ⭐ Show in Trending Carousel
             🗺️ Show in "Byndoor Taluk Highlights" section on home page
           </label>
         </div>
@@ -363,6 +367,32 @@
       </div>
     </div>
 
+
+    <!-- GUIDE FORM -->
+    <div class="fpanel" id="fp-guide">
+      <div style="background:#f0fdf4;border-radius:10px;padding:10px 13px;font-size:.78rem;color:#166534;margin-bottom:14px;border-left:3px solid #4ade80">
+        🧭 Add local tourist guides with their contact info.
+      </div>
+      <div class="fg">
+        <div class="fl fc"><label>Guide Name</label><input class="fi" id="guide-name" placeholder="e.g. Ramesh Kumar"/></div>
+        <div class="fl"><label>📞 Phone Number</label><input class="fi" type="tel" id="guide-phone" placeholder="+91 98000 00000"/></div>
+        <div class="fl fc"><label>Languages / About</label><textarea class="fi" id="guide-about" placeholder="e.g. Kannada, English, Hindi · 10 years experience" style="min-height:60px"></textarea></div>
+        <div class="fl"><label>Emoji Icon</label><input class="fi" id="guide-emoji" placeholder="🧭"/></div>
+      </div>
+    </div>
+
+    <!-- SOCIAL CONFIG FORM -->
+    <div class="fpanel" id="fp-config">
+      <div style="background:#eff6ff;border-radius:10px;padding:10px 13px;font-size:.78rem;color:#1e40af;margin-bottom:14px;border-left:3px solid #3b82f6">
+        ⚙️ Add your social media links. These will appear in the app footer.
+      </div>
+      <div class="fg">
+        <div class="fl fc"><label>📘 Facebook URL</label><input class="fi" id="cfg-facebook" placeholder="https://facebook.com/..."/></div>
+        <div class="fl fc"><label>▶ YouTube URL</label><input class="fi" id="cfg-youtube" placeholder="https://youtube.com/..."/></div>
+        <div class="fl fc"><label>📸 Instagram URL</label><input class="fi" id="cfg-instagram" placeholder="https://instagram.com/..."/></div>
+        <div class="fl fc"><label>𝕏 Twitter/X URL</label><input class="fi" id="cfg-twitter" placeholder="https://twitter.com/..."/></div>
+      </div>
+    </div>
     <div class="f-acts">
       <button class="f-cancel" onclick="closeModal()">Cancel</button>
       <button class="f-save" id="save-btn" onclick="savePlace()">
@@ -540,7 +570,8 @@ window.openEdit=(id)=>{
   // Set correct form tab
   const formMap={attractions:'attractions',events:'events',stay:'stay',hotels:'stay',food:'food',transport:'transport',nearby:'nearby'};
   const ft=formMap[p.category]||'attractions';
-  document.querySelectorAll('#ftabs .ftab').forEach(x=>{x.classList.toggle('active',x.dataset.form===ft);});
+  // Handle guide/config tabs
+document.querySelectorAll('#ftabs .ftab').forEach(x=>{x.classList.toggle('active',x.dataset.form===ft);});
   document.querySelectorAll('.fpanel').forEach(x=>x.classList.remove('active'));
   document.getElementById('fp-'+ft)?.classList.add('active');
   curForm=ft;
@@ -556,6 +587,8 @@ window.openEdit=(id)=>{
     if(p.cardBg){selBg.att=p.cardBg;document.querySelectorAll('#cs-att .cswatch').forEach(s=>s.classList.toggle('on',s.dataset.g===p.cardBg));}
     if(p.photoURL)previewExisting('att',p.photoURL);
     setV('att-youtube',p.youtubeURL||'');setV('att-instagram',p.instagramURL||'');
+    if(document.getElementById('att-trending'))document.getElementById('att-trending').checked=!!p.trending;
+    if(document.getElementById('att-nearby'))document.getElementById('att-nearby').checked=!!p.showNearby;
   } else if(ft==='events'){
     setV('evt-name',p.name);if(p.eventDate)setV('evt-date',new Date(p.eventDate).toISOString().split('T')[0]);
     setV('evt-time',p.timing||'');setV('evt-location',p.location||'');setV('evt-entry',p.entryFee||'');
@@ -653,6 +686,7 @@ window.savePlace=async()=>{
         emoji:gV('att-emoji')||null,distanceFromTown:gV('att-distance')||null,
         showNearby:document.getElementById('att-nearby')?.checked||false,
         youtubeURL:gV('att-youtube')||null,instagramURL:gV('att-instagram')||null,
+        trending:document.getElementById('att-trending')?.checked||false,
         photos:attExtraPhotos.length?attExtraPhotos:undefined,
         cardBg:selBg.att||GRADS[0],photoURL};
     } else if(curForm==='events'){
@@ -697,6 +731,14 @@ window.savePlace=async()=>{
         youtubeURL:gV('nearby-youtube')||null,instagramURL:gV('nearby-instagram')||null,
         photos:nearbyExtraPhotos.length?nearbyExtraPhotos:undefined,
         cardBg:selBg.nearby||GRADS[0],photoURL};
+    } else if(curForm==='guide'){
+      const name=gV('guide-name');if(!name){alert('Please enter guide name!');return;}
+      data={name,category:'guide',phone:gV('guide-phone')||null,
+        about:gV('guide-about')||null,emoji:gV('guide-emoji')||'🧭'};
+    } else if(curForm==='config'){
+      data={name:'Social Config',category:'config',
+        facebookURL:gV('cfg-facebook')||null,youtubeURL:gV('cfg-youtube')||null,
+        instagramURL:gV('cfg-instagram')||null,twitterURL:gV('cfg-twitter')||null};
     } else if(curForm==='transport'){
       if(curTT==='train'){
         const name=gV('tr-name');if(!name){alert('Train name required!');return;}
