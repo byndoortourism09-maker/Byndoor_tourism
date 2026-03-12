@@ -511,7 +511,12 @@
 <footer class="footer">
   <div class="ft-logo">🌊 Discover Byndoor</div>
   <div class="ft-tag">Official tourism guide · Coastal Karnataka</div>
-  <div id="footer-social" style="display:flex;gap:12px;justify-content:center;margin:14px 0 4px"></div>
+  <div id="footer-social" style="display:flex;gap:12px;justify-content:center;margin:14px 0 4px">
+    <a id="fs-fb" href="#" class="ft-social-icon" style="background:#1877F2;display:none" target="_blank" title="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+    <a id="fs-yt" href="#" class="ft-social-icon" style="background:#FF0000;display:none" target="_blank" title="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg></a>
+    <a id="fs-ig" href="#" class="ft-social-icon" style="background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);display:none" target="_blank" title="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+    <a id="fs-tw" href="#" class="ft-social-icon" style="background:#000;display:none" target="_blank" title="X / Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.632z"/></svg></a>
+  </div>
   <div class="ft-grid">
     <button class="ft-btn" onclick="showSheet('about')">ℹ️ About App</button>
     <button class="ft-btn" onclick="showSheet('privacy')">🔒 Privacy Policy</button>
@@ -996,15 +1001,22 @@ function buildGuides(){
 // FOOTER SOCIAL ICONS (loaded from config in Firestore)
 // ============================================================
 function buildFooterSocial(){
-  // Read social links from a special config place or from first place that has them
   const cfg=places.find(p=>p.category==='config')||{};
-  const icons=[];
-  if(cfg.facebookURL)icons.push(`<a href="${cfg.facebookURL}" target="_blank" class="ft-social-icon" style="background:#1877F2" title="Facebook">f</a>`);
-  if(cfg.youtubeURL)icons.push(`<a href="${cfg.youtubeURL}" target="_blank" class="ft-social-icon" style="background:#FF0000" title="YouTube">▶</a>`);
-  if(cfg.instagramURL)icons.push(`<a href="${cfg.instagramURL}" target="_blank" class="ft-social-icon" style="background:linear-gradient(135deg,#f09433,#dc2743,#bc1888)" title="Instagram">📷</a>`);
-  if(cfg.twitterURL)icons.push(`<a href="${cfg.twitterURL}" target="_blank" class="ft-social-icon" style="background:#000" title="X / Twitter">𝕏</a>`);
-  const el=document.getElementById('footer-social');
-  if(el&&icons.length)el.innerHTML=icons.join('');
+  const map={fb:{id:'fs-fb',url:cfg.facebookURL},yt:{id:'fs-yt',url:cfg.youtubeURL},ig:{id:'fs-ig',url:cfg.instagramURL},tw:{id:'fs-tw',url:cfg.twitterURL}};
+  let anyShown=false;
+  Object.values(map).forEach(({id,url})=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(url){el.href=url;el.style.display='flex';anyShown=true;}
+    else el.style.display='none';
+  });
+  // If no config yet, show all as disabled placeholders
+  if(!anyShown){
+    ['fs-fb','fs-yt','fs-ig','fs-tw'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.style.display='flex';el.style.opacity='0.3';el.href='#';el.onclick=e=>e.preventDefault();}
+    });
+  }
 }
 
 // ============================================================
