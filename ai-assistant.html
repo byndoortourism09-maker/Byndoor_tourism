@@ -6,182 +6,312 @@
   <title>Byndoor AI Travel Assistant</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-  :root{--p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;--dark:#0f172a;--sand:#fdf6ec;--muted:#64748b;--bdr:#e8e4de;}
+  :root{
+    --p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;
+    --dark:#0f172a;--sand:#fdf6ec;--muted:#64748b;--bdr:#e8e4de;
+  }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+  /* THE ONLY CORRECT WAY to do full-height chat on mobile */
   html{height:100%}
-  body{font-family:'DM Sans',sans-serif;background:var(--sand);display:flex;flex-direction:column;max-width:860px;margin:0 auto;height:100vh;overflow:hidden;position:relative}
-  .hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,.15)}
-  .hd-back{background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0}
-  .hd-avatar{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
-  .hd-info{flex:1}
-  .hd-name{font-family:'Playfair Display',serif;font-size:1rem;color:#fff}
-  .hd-status{font-size:.7rem;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:5px;margin-top:2px}
-  .hd-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--sand);
+    max-width:520px;
+    margin:0 auto;
+    /* Use dvh (dynamic viewport height) — accounts for mobile browser chrome */
+    height:100dvh;
+    height:100vh; /* fallback */
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* ─── HEADER ─── */
+  .hd{
+    background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);
+    padding:12px 16px;
+    display:flex;align-items:center;gap:12px;
+    flex-shrink:0;
+    box-shadow:0 4px 20px rgba(0,0,0,.18);
+    z-index:10;
+  }
+  .hd-back{
+    background:rgba(255,255,255,.15);border:none;color:#fff;
+    width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    text-decoration:none;flex-shrink:0;
+  }
+  .hd-avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:rgba(255,255,255,.2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;flex-shrink:0;
+    border:2px solid rgba(255,255,255,.35);
+  }
+  .hd-info{flex:1;min-width:0}
+  .hd-name{font-family:'Playfair Display',serif;font-size:.95rem;color:#fff}
+  .hd-status{font-size:.67rem;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:5px;margin-top:2px}
+  .hd-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;flex-shrink:0}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-  .hd-lang{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:5px 12px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
-  .load-bar{height:0px;background:transparent;flex-shrink:0;overflow:hidden}
-  .load-fill{height:100%;background:#0a7c6e;width:0;transition:width .4s}
-  .suggestions{padding:10px 14px;background:#fff;border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
-  .suggestions::-webkit-scrollbar{display:none}
-  .sug-row{display:flex;gap:7px;width:max-content}
-  .sug{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:6px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .2s}
-  .sug:active{background:var(--p);color:#fff;border-color:var(--p)}
-  .msgs{flex:1;overflow-y:scroll;overflow-x:hidden;padding:16px 14px 20px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;width:100%;min-height:0;-webkit-overflow-scrolling:touch}
-  .msgs::-webkit-scrollbar{width:4px}
-  .msgs::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
-  .msg{display:flex;gap:9px;align-items:flex-end;animation:msgIn .3s ease;max-width:100%;overflow:hidden}
-  @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .hd-lang{
+    background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+    color:#fff;border-radius:20px;padding:5px 12px;
+    font-size:.7rem;font-weight:600;cursor:pointer;
+    font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;
+  }
+
+  /* ─── CHIPS ─── */
+  .chips{
+    padding:8px 14px;background:#fff;
+    border-bottom:1px solid var(--bdr);
+    flex-shrink:0;
+    overflow-x:auto;scrollbar-width:none;
+  }
+  .chips::-webkit-scrollbar{display:none}
+  .chip-row{display:flex;gap:7px;width:max-content}
+  .chip{
+    background:var(--sand);border:1.5px solid var(--bdr);
+    color:var(--dark);border-radius:20px;
+    padding:5px 13px;font-size:.7rem;font-weight:600;
+    cursor:pointer;white-space:nowrap;
+    font-family:'DM Sans',sans-serif;transition:all .18s;
+  }
+  .chip:active{background:var(--p);color:#fff;border-color:var(--p)}
+
+  /* ─── SCROLLABLE AREA (flex:1 fills all remaining space) ─── */
+  .chat-area{
+    flex:1;
+    min-height:0;        /* CRITICAL — without this, flex child won't shrink */
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* ─── WELCOME SCREEN ─── */
+  #welcome-screen{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100%;
+    padding:28px 20px 20px;
+    text-align:center;
+  }
+  .w-wave{font-size:3rem;margin-bottom:12px;animation:wv 2.5s ease-in-out infinite}
+  @keyframes wv{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .w-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--dark);margin-bottom:8px}
+  .w-sub{font-size:.77rem;color:var(--muted);line-height:1.7;max-width:290px}
+  .feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px;width:100%}
+  .feat{
+    background:#fff;border-radius:14px;padding:11px 12px;
+    display:flex;align-items:center;gap:9px;
+    box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:left;
+  }
+  .feat-ico{font-size:1.15rem;flex-shrink:0}
+  .feat-txt{font-size:.72rem;font-weight:600;color:var(--dark);line-height:1.3}
+
+  /* ─── MESSAGES ─── */
+  #msgs{
+    display:none;          /* hidden until first message */
+    flex-direction:column;
+    gap:12px;
+    padding:16px 14px 24px;
+  }
+
+  .msg{display:flex;gap:8px;align-items:flex-end;animation:mIn .28s ease}
+  @keyframes mIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .msg.user{flex-direction:row-reverse}
-  .msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+
+  .av{
+    width:28px;height:28px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:.8rem;
+  }
   .ai-av{background:linear-gradient(135deg,#0a7c6e,#0ea5e9)}
   .user-av{background:linear-gradient(135deg,#f97316,#fbbf24)}
-  .bubble{max-width:82%;padding:11px 13px;border-radius:18px;font-size:.86rem;line-height:1.6;overflow-wrap:break-word;word-break:break-word;min-width:0}
-  .ai-bubble{background:#fff;color:var(--dark);border-radius:18px 18px 18px 4px;box-shadow:0 2px 12px rgba(0,0,0,.08);column-count:unset!important;columns:unset!important}
-  .user-bubble{background:linear-gradient(135deg,#0a7c6e,#0d9e8d);color:#fff;border-radius:18px 18px 4px 18px}
-  .bubble-time{font-size:.6rem;opacity:.6;margin-top:5px;display:block}
-  .user .bubble-time{text-align:right}
-  .voice-row{display:flex;align-items:center;gap:8px;margin-top:8px}
-  .speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:4px 11px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
+
+  .bubble{
+    max-width:78%;
+    padding:10px 14px;
+    border-radius:18px;
+    font-size:.875rem;
+    line-height:1.65;
+    word-wrap:break-word;
+    overflow-wrap:break-word;
+    min-width:0;
+  }
+  .ai-bubble{
+    background:#fff;color:var(--dark);
+    border-radius:18px 18px 18px 5px;
+    box-shadow:0 2px 14px rgba(0,0,0,.09);
+  }
+  .user-bubble{
+    background:linear-gradient(135deg,#0a7c6e,#0d9e8d);
+    color:#fff;
+    border-radius:18px 18px 5px 18px;
+  }
+  .btime{font-size:.6rem;opacity:.55;margin-top:5px;display:block}
+  .msg.user .btime{text-align:right}
+
+  /* AI text elements — all display:block so they stack vertically */
+  .ap{display:block;margin:3px 0;word-break:break-word}
+  .ah{display:block;font-weight:700;color:var(--p);font-size:.88rem;margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid #f0ede8}
+  .al{display:block;padding-left:16px;position:relative;margin:4px 0;word-break:break-word}
+  .al::before{content:'•';color:var(--acc);font-weight:900;position:absolute;left:2px}
+  .an{display:flex;gap:7px;align-items:flex-start;margin:4px 0}
+  .nbadge{
+    background:var(--p);color:#fff;border-radius:50%;
+    width:18px;height:18px;min-width:18px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:2px;
+  }
+  .an-text{word-break:break-word}
+
+  /* Typing */
+  .typing-bub{
+    background:#fff;padding:12px 16px;
+    border-radius:18px 18px 18px 5px;
+    box-shadow:0 2px 14px rgba(0,0,0,.09);
+    display:inline-flex;gap:4px;align-items:center;
+  }
+  .typing-bub span{
+    width:7px;height:7px;border-radius:50%;background:var(--p);
+    display:inline-block;animation:td .8s infinite;
+  }
+  .typing-bub span:nth-child(2){animation-delay:.15s}
+  .typing-bub span:nth-child(3){animation-delay:.3s}
+  @keyframes td{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+
+  .voice-row{margin-top:8px}
+  .speak-btn{
+    background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;
+    padding:4px 12px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);
+    display:inline-flex;align-items:center;gap:5px;
+    font-family:'DM Sans',sans-serif;transition:all .2s;
+  }
   .speak-btn.speaking{background:var(--p);color:#fff;border-color:var(--p)}
-  .typing{display:flex;align-items:center;gap:4px;padding:12px 16px;background:#fff;border-radius:18px 18px 18px 4px;width:fit-content;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-  .typing span{width:7px;height:7px;border-radius:50%;background:#0a7c6e;display:inline-block;animation:bounce .8s infinite}
-  .typing span:nth-child(2){animation-delay:.15s}
-  .typing span:nth-child(3){animation-delay:.3s}
-  @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
-  .ai-bubble strong{color:var(--p);font-weight:700;display:inline}
-  .ai-bubble .ai-sec{display:block;margin:10px 0 4px;font-weight:700;color:var(--p);font-size:.86rem;border-bottom:1px solid #f0ede8;padding-bottom:3px;overflow-wrap:break-word;word-break:break-word}
-  .ai-bubble .ai-para{display:block;margin:3px 0;font-size:.88rem;line-height:1.65}
-  .ai-bubble .ai-list{margin:4px 0}
-  .ai-bubble .ai-item{display:flex;gap:8px;align-items:flex-start;margin:5px 0;font-size:.86rem;line-height:1.6;min-width:0;overflow-wrap:break-word;word-break:break-word}
-  .ai-bubble .ai-item::before{content:'•';color:var(--acc);font-weight:900;font-size:1rem;flex-shrink:0;margin-top:1px}
-  .ai-bubble .ai-num{gap:8px}
-  .ai-bubble .ai-num::before{display:none}
-  .ai-num-badge{background:var(--p);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0;margin-top:2px}
-  .ai-bubble .ai-item>span:not(.ai-num-badge){flex:1;min-width:0;overflow-wrap:break-word;word-break:break-word}
-  .input-bar{background:#fff;border-top:1px solid var(--bdr);padding:10px 12px;display:flex;align-items:flex-end;gap:9px;flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(0,0,0,.06)}
-  .input-wrap{flex:1;background:var(--sand);border:2px solid var(--bdr);border-radius:25px;padding:8px 14px;display:flex;align-items:flex-end;gap:8px;transition:border .2s}
-  .input-wrap:focus-within{border-color:var(--p)}
-  #msg-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--dark);resize:none;max-height:100px;min-height:20px;line-height:1.5}
-  #msg-input::placeholder{color:#bbb}
-  .mic-btn{width:34px;height:34px;border-radius:50%;background:var(--sand);border:1.5px solid var(--bdr);color:var(--p);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
-  .mic-btn.listening{background:var(--p);color:#fff;animation:micPulse 1s infinite}
-  @keyframes micPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-  .send-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s,opacity .15s}
-  .send-btn:active{transform:scale(.93)}
-  .send-btn:disabled{opacity:.5;cursor:not-allowed}
-  .lang-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}
+
+  /* ─── INPUT BAR ─── */
+  .input-bar{
+    flex-shrink:0;           /* NEVER let this shrink */
+    background:#fff;
+    border-top:1px solid var(--bdr);
+    padding:10px 12px;
+    padding-bottom:calc(10px + env(safe-area-inset-bottom));
+    display:flex;align-items:flex-end;gap:8px;
+    box-shadow:0 -3px 16px rgba(0,0,0,.07);
+    z-index:10;
+  }
+  .inp-wrap{
+    flex:1;min-width:0;
+    background:var(--sand);border:2px solid var(--bdr);border-radius:24px;
+    padding:9px 14px;display:flex;align-items:flex-end;gap:8px;
+    transition:border-color .2s;
+  }
+  .inp-wrap:focus-within{border-color:var(--p)}
+  #msg-input{
+    flex:1;border:none;outline:none;background:transparent;
+    font-family:'DM Sans',sans-serif;font-size:.875rem;color:var(--dark);
+    resize:none;max-height:100px;min-height:22px;line-height:1.5;
+  }
+  #msg-input::placeholder{color:#c0b8af}
+  .mic-btn{
+    width:32px;height:32px;border-radius:50%;background:transparent;border:none;
+    color:var(--muted);font-size:1.1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    transition:all .2s;
+  }
+  .mic-btn.listening{color:var(--p);animation:mp 1s infinite}
+  @keyframes mp{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+  .send-btn{
+    width:42px;height:42px;flex-shrink:0;border-radius:50%;
+    background:linear-gradient(135deg,#0a7c6e,#0ea5e9);
+    border:none;color:#fff;font-size:1.1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 12px rgba(10,124,110,.35);
+    transition:transform .15s,opacity .15s;
+  }
+  .send-btn:active{transform:scale(.92)}
+  .send-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+
+  /* ─── LANGUAGE PANEL ─── */
+  .lang-panel{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.5);z-index:200;
+    align-items:flex-end;justify-content:center;
+  }
   .lang-panel.open{display:flex}
-  .lang-sheet{background:#fff;border-radius:24px 24px 0 0;padding:22px 18px 40px;width:100%;max-width:860px}
-  .lang-sheet h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:14px}
-  .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-  .lang-opt{background:var(--sand);border:2px solid var(--bdr);border-radius:12px;padding:11px 14px;cursor:pointer;font-size:.84rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .2s;text-align:center}
+  .lang-sheet{
+    background:#fff;border-radius:24px 24px 0 0;
+    padding:20px 18px 36px;width:100%;max-width:520px;
+  }
+  .lang-sheet h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:14px}
+  .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .lang-opt{
+    background:var(--sand);border:2px solid var(--bdr);border-radius:12px;
+    padding:10px;cursor:pointer;font-size:.82rem;font-weight:600;
+    font-family:'DM Sans',sans-serif;text-align:center;transition:all .2s;
+  }
   .lang-opt.active{background:var(--p);color:#fff;border-color:var(--p)}
-  .welcome{text-align:center;padding:18px 14px}
-  .welcome-emoji{font-size:2.8rem;margin-bottom:8px}
-  .welcome-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--dark);margin-bottom:5px}
-  .welcome-sub{font-size:.76rem;color:var(--muted);line-height:1.7}
-  .wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
-  .wf{background:#fff;border-radius:12px;padding:9px 11px;display:flex;align-items:center;gap:7px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-  .wf-ico{font-size:1.1rem}
-  .wf-txt{font-size:.7rem;font-weight:600;color:var(--dark)}
-  @media(min-width:600px){
-    body{border-left:1px solid var(--bdr);border-right:1px solid var(--bdr)}
-    .bubble{max-width:65%}
-    .hd,.msgs,.input-bar,.suggestions{padding-left:24px;padding-right:24px}
-  }
-  @media(min-width:900px){
-    html,body{height:100vh}
-    body{
-      flex-direction:row;
-      max-width:100%;
-      margin:0;
-      background:var(--sand);
-    }
-    .chat-wrap{
-      display:flex;
-      flex-direction:row;
-      width:100%;
-      height:100vh;
-      max-width:1400px;
-      margin:0 auto;
-      box-shadow:0 0 40px rgba(0,0,0,0.1);
-    }
-    .sidebar{
-      width:320px;
-      min-width:280px;
-      background:linear-gradient(160deg,#0a7c6e,#0d9e8d);
-      color:#fff;
-      display:flex;
-      flex-direction:column;
-      padding:40px 28px;
-      gap:24px;
-      flex-shrink:0;
-    }
-    .sidebar-logo{font-size:3rem;text-align:center}
-    .sidebar-title{font-size:1.4rem;font-weight:700;text-align:center;font-family:'Playfair Display',serif}
-    .sidebar-sub{font-size:.85rem;opacity:.85;text-align:center;line-height:1.6}
-    .sidebar-chips{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-    .sidebar-chip{background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 14px;font-size:.82rem;cursor:pointer;transition:background .2s}
-    .sidebar-chip:hover{background:rgba(255,255,255,0.25)}
-    .chat-main{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      background:#fff;
-      overflow:hidden;
-    }
-    .bubble{max-width:60%}
-    .hd,.msgs,.input-bar,.suggestions{padding-left:32px;padding-right:32px}
-    .msgs{padding-top:24px}
-  }
   </style>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+
+<!-- HEADER -->
 <div class="hd">
-  <a class="hd-back" href="index.html">←</a>
+  <a href="index.html" class="hd-back">←</a>
   <div class="hd-avatar">🌊</div>
   <div class="hd-info">
     <div class="hd-name">Byndoor Travel Assistant</div>
-    <div class="hd-status"><span class="hd-dot"></span><span id="status-txt">Online · Ready to help</span></div>
+    <div class="hd-status"><span class="hd-dot"></span>Online · Ready to help</div>
   </div>
   <button class="hd-lang" onclick="openLang()">🌐 <span id="lang-label">English</span></button>
 </div>
-<div class="load-bar"><div class="load-fill" id="load-fill"></div></div>
-<div class="suggestions">
-  <div class="sug-row">
-    <button class="sug" onclick="quickAsk('Best places to visit in Byndoor?')">🏖️ Best places</button>
-    <button class="sug" onclick="quickAsk('Plan a 2 day trip to Byndoor for family')">🗺️ Trip plan</button>
-    <button class="sug" onclick="quickAsk('How is the weather today? Good for outdoor visit?')">🌤️ Weather</button>
-    <button class="sug" onclick="quickAsk('Best local food and restaurants in Byndoor?')">🍛 Food</button>
-    <button class="sug" onclick="quickAsk('Best hotels and homestays in Byndoor?')">🏨 Stay</button>
-    <button class="sug" onclick="quickAsk('How to reach Byndoor from Bangalore?')">🚌 How to reach</button>
-    <button class="sug" onclick="quickAsk('What water sports are available near Byndoor?')">🤿 Water sports</button>
-    <button class="sug" onclick="quickAsk('Temples near Byndoor with timings?')">🛕 Temples</button>
+
+<!-- CHIPS -->
+<div class="chips">
+  <div class="chip-row">
+    <button class="chip" onclick="quickAsk('Best places to visit in Byndoor?')">🏖️ Best places</button>
+    <button class="chip" onclick="quickAsk('Plan a 2 day trip to Byndoor')">🗺️ Trip plan</button>
+    <button class="chip" onclick="quickAsk('What is the weather in Byndoor today?')">🌤️ Weather</button>
+    <button class="chip" onclick="quickAsk('Best food to eat in Byndoor?')">🍛 Food</button>
+    <button class="chip" onclick="quickAsk('Hotels and stays in Byndoor?')">🏨 Hotels</button>
+    <button class="chip" onclick="quickAsk('How to reach Byndoor from Mangalore?')">🚌 Transport</button>
   </div>
 </div>
-<div id="welcome-screen" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:30px 16px 16px;background:var(--sand);min-height:0">
-  <div class="welcome-emoji">🌊</div>
-  <div class="welcome-title">Namaste! I'm your Byndoor Guide</div>
-  <div class="welcome-sub">Your personal travel guide for Byndoor Taluk. Ask me about beaches, temples, hotels, food, transport or let me plan your trip!</div>
-  <div class="wf-grid">
-    <div class="wf"><span class="wf-ico">📍</span><span class="wf-txt">Places & Attractions</span></div>
-    <div class="wf"><span class="wf-ico">🗺️</span><span class="wf-txt">Trip Planning</span></div>
-    <div class="wf"><span class="wf-ico">🌤️</span><span class="wf-txt">Weather Advisory</span></div>
-    <div class="wf"><span class="wf-ico">🔊</span><span class="wf-txt">Voice Reply</span></div>
-    <div class="wf"><span class="wf-ico">🌐</span><span class="wf-txt">8 Languages</span></div>
-    <div class="wf"><span class="wf-ico">🎙️</span><span class="wf-txt">Voice Input</span></div>
+
+<!-- SCROLLABLE CHAT AREA -->
+<div class="chat-area" id="chat-area">
+
+  <div id="welcome-screen">
+    <div class="w-wave">🌊</div>
+    <div class="w-title">Namaste! I'm your Byndoor Guide</div>
+    <div class="w-sub">Ask me about beaches, temples, hotels, food, transport — or let me plan your perfect Byndoor trip!</div>
+    <div class="feat-grid">
+      <div class="feat"><span class="feat-ico">📍</span><span class="feat-txt">Places &amp; Attractions</span></div>
+      <div class="feat"><span class="feat-ico">🗺️</span><span class="feat-txt">Trip Planning</span></div>
+      <div class="feat"><span class="feat-ico">🌤️</span><span class="feat-txt">Weather Advisory</span></div>
+      <div class="feat"><span class="feat-ico">🔊</span><span class="feat-txt">Voice Reply</span></div>
+      <div class="feat"><span class="feat-ico">🌐</span><span class="feat-txt">8 Languages</span></div>
+      <div class="feat"><span class="feat-ico">🎙️</span><span class="feat-txt">Voice Input</span></div>
+    </div>
   </div>
+
+  <div id="msgs"></div>
+
 </div>
-<div class="msgs" id="msgs" style="display:none"></div>
+
+<!-- INPUT BAR -->
 <div class="input-bar">
-  <div class="input-wrap">
-    <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+  <div class="inp-wrap">
+    <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1"
+      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
     <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input">🎙️</button>
   </div>
   <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
 </div>
+
+<!-- LANGUAGE PANEL -->
 <div class="lang-panel" id="lang-panel" onclick="closeLang(event)">
   <div class="lang-sheet">
     <h3>🌐 Choose Language</h3>
@@ -198,283 +328,196 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-// Firebase init using compat version (works without module type)
+// ── FIREBASE ──
 const FC={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
 firebase.initializeApp(FC);
 const db=firebase.firestore();
-function setLoad(p){document.getElementById('load-fill').style.width=p+'%'}
-async function initData(){
-  setLoad(20);
-  try{
-    const snap=await db.collection('places').get();
-    const pl=[];snap.forEach(d=>pl.push({id:d.id,...d.data()}));
-    window.PLACES_DATA=pl;
-    setLoad(60);
-    try{
-      const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia/Kolkata&forecast_days=3');
-      window.WEATHER_DATA=await r.json();
-    }catch(e){window.WEATHER_DATA=null;}
-    setLoad(100);
-    setTimeout(()=>{document.getElementById('load-fill').style.width='0';},600);
-    document.getElementById('status-txt').textContent='Online · Ready to help';
-  }catch(e){
-    window.PLACES_DATA=[];window.WEATHER_DATA=null;
-    document.getElementById('status-txt').textContent='Online · Ready to help';
-    setLoad(100);
-  }
-}
-initData();
+window.PLACES_DATA=[];window.WEATHER_DATA=null;
+(async()=>{
+  try{const s=await db.collection('places').get();window.PLACES_DATA=s.docs.map(d=>({id:d.id,...d.data()}));}catch(e){}
+  try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&timezone=Asia/Kolkata&forecast_days=2');window.WEATHER_DATA=await r.json();}catch(e){}
+})();
 
-// Cloudflare Worker URL — API key is hidden inside Cloudflare
-
-let currentLang='en-IN',currentLangName='English';
-let chatHistory=[];
+// ── STATE ──
+let lang='en-IN',langName='English';
+let history=[];
 let synth=window.speechSynthesis;
 let currentUtt=null,recognition=null,isListening=false;
-let msgCounter=0;
+let msgN=0,started=false;
 
-function buildPlacesCtx(){
+// ── CONTEXT ──
+function placesCtx(){
   const pl=window.PLACES_DATA||[];
-  if(!pl.length)return'\nNo places in database yet. Use general Byndoor knowledge.';
-  const g={};
-  pl.forEach(p=>{const cat=p.category||'other';if(!g[cat])g[cat]=[];g[cat].push(p);});
-  let ctx='\nBYNDOOR DATABASE ('+pl.length+' places):\n';
-  // Limit each place to short summary only
-  const fmt=(p)=>{
-    let s='• '+p.name;
-    if(p.subtype||p.subcategory)s+=' ['+( p.subtype||p.subcategory)+']';
-    if(p.about)s+=' — '+p.about.substring(0,60);
-    if(p.phone)s+=' 📞'+p.phone;
-    if(p.price)s+=' ₹'+p.price;
-    if(p.timing)s+=' ('+p.timing+')';
-    return s+'\n';
-  };
-  if(g.attractions)g.attractions.forEach(p=>{ctx+=fmt(p);});
-  if(g.stay)g.stay.forEach(p=>{ctx+=fmt(p);});
-  if(g.food)g.food.forEach(p=>{ctx+=fmt(p);});
-  if(g.transport)g.transport.slice(0,5).forEach(p=>{ctx+='• [transport] '+p.name+(p.route?' '+p.route:'')+'\n';});
-  if(g.nearby)g.nearby.forEach(p=>{ctx+='• nearby: '+p.name+(p.distance?' '+p.distance:'')+'\n';});
-  return ctx;
+  if(!pl.length)return'\nNo places yet. Use general Byndoor knowledge.';
+  const g={};pl.forEach(p=>{const c=p.category||'other';if(!g[c])g[c]=[];g[c].push(p);});
+  let s='\nBYNDOOR PLACES ('+pl.length+'):\n';
+  const f=p=>'• '+p.name+(p.subtype?' ['+p.subtype+']':'')+(p.about?' — '+p.about.slice(0,55):'')+'\n';
+  ['attractions','stay','food','transport','nearby'].forEach(c=>{if(g[c])g[c].slice(0,15).forEach(p=>{s+=f(p);});});
+  return s;
 }
-
-function buildWeatherCtx(){
+function weatherCtx(){
   const w=window.WEATHER_DATA;if(!w)return'';
   const c=w.current,d=w.daily;
-  const desc={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
-  return'\n\nCURRENT BYNDOOR WEATHER:\nCondition: '+(desc[c.weather_code]||'Unknown')+'\nTemperature: '+Math.round(c.temperature_2m)+'°C\nHumidity: '+c.relative_humidity_2m+'%\nRain: '+c.precipitation+'mm\nWind: '+Math.round(c.wind_speed_10m)+' km/h\nTomorrow: Max '+d?.temperature_2m_max?.[1]+'°C, Rain '+d?.precipitation_sum?.[1]+'mm';
+  const desc={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
+  return'\n\nBYNDOOR WEATHER NOW: '+(desc[c.weather_code]||'Unknown')+', '+Math.round(c.temperature_2m)+'°C, Humidity '+c.relative_humidity_2m+'%, Wind '+Math.round(c.wind_speed_10m)+' km/h, Rain '+c.precipitation+'mm. Tomorrow max '+d?.temperature_2m_max?.[1]+'°C.';
+}
+function sysPrompt(){
+  return 'You are Byndoor Travel Assistant, a friendly expert guide for Byndoor Taluk, Karnataka, India.'
+    +'\nFORMAT: Plain text only. No markdown symbols like ** or # or ---. For lists use: - item. Keep responses concise and readable.'
+    +'\nKnowledge: Maravanthe Beach, Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple.'
+    +'\nNearby: Murudeshwar 58km, Udupi 55km, Mangalore 110km. Best season: Oct-Mar.'
+    +'\nFood specialties: Fish curry, Neer dosa, Prawn curry, Bangda fry, Kane fish.'
+    +'\nBe warm and helpful. Use emojis naturally. If asked who made you: say Discover Byndoor team.'
+    +(lang!=='en-IN'?'\nReply ENTIRELY in '+langName+'.':'')
+    +weatherCtx()+placesCtx();
 }
 
-function getSysPrompt(){
-  const li=currentLang!=='en-IN'?'\nRespond ENTIRELY in '+currentLangName+'.':'';
-  const w=buildWeatherCtx();
-  const p=buildPlacesCtx();
-  return'You are Byndoor Travel Assistant, a friendly local guide for Byndoor Taluk, Karnataka, India.'+
-  '\nFORMAT RULES: Never use markdown. No ** bold **. No # headers. No --- dividers. Use plain text only. For lists, start each item on a new line with a simple dash like: - item. Keep responses clear and readable.'+
-  '\nFamous places: Maravanthe Beach, Kollur Temple(32km), Trasi Beach, Someshwara Temple.'+
-  '\nNearby: Murudeshwar(58km), Udupi(55km), Mangalore(110km).'+
-  '\nBest time: Oct-Mar. Food: Fish curry, Neer dosa, seafood.'+
-  '\nRules: Be friendly, use emojis, recommend from database, never mention Claude/Anthropic.'+
-  '\nIf asked who made you: say Discover Byndoor team.'+
-  li+w+p;
-}
-
+// ── SEND ──
 async function sendMessage(){
   const inp=document.getElementById('msg-input');
   const txt=inp.value.trim();if(!txt)return;
-  
   inp.value='';autoResize(inp);
   addMsg('user',txt);
-  chatHistory.push({role:'user',content:txt});
+  history.push({role:'user',content:txt});
   const btn=document.getElementById('send-btn');btn.disabled=true;
   const tid=showTyping();
   try{
-    // Build Gemini contents
-    // Call via Cloudflare Worker (key stored safely in Cloudflare)
     const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({systemPrompt:getSysPrompt(),messages:chatHistory.slice(-12)})
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({systemPrompt:sysPrompt(),messages:history.slice(-12)})
     });
     removeTyping(tid);
-    if(!res.ok){const e=await res.json();throw new Error('Worker '+res.status+': '+JSON.stringify(e));}
     const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Failed');
     const reply=data.reply||'Sorry, please try again.';
     addMsg('ai',reply,true);
-    chatHistory.push({role:'assistant',content:reply});
-  }catch(e){removeTyping(tid);addMsg('ai','⚠️ Error: '+e.message);}
+    history.push({role:'assistant',content:reply});
+  }catch(e){
+    removeTyping(tid);
+    addMsg('ai','Sorry, something went wrong. Please try again 🙏');
+  }
   btn.disabled=false;
 }
 
-function addMsg(role,text,showVoice=false){
+// ── ADD MESSAGE ──
+function addMsg(role,text,voice=false){
+  if(!started){
+    started=true;
+    document.getElementById('welcome-screen').style.display='none';
+    const m=document.getElementById('msgs');
+    m.style.display='flex';
+  }
   const msgs=document.getElementById('msgs');
-  // On first message: hide welcome, show chat
-  const welcome=document.getElementById('welcome-screen');
-  if(welcome){welcome.style.display='none';}
-  msgs.style.display='flex';
-  msgs.style.flex='1';
-  msgs.style.minHeight='0';
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   const isAi=role==='ai';
-  const div=document.createElement('div');
-  div.className='msg '+(isAi?'ai':'user');
-  const fmt=isAi?fmtAi(text):esc(text);
-  let vrow='';
-  if(isAi&&showVoice){
-    msgCounter++;
-    const mid='m'+msgCounter;
-    div.id=mid;
-    div.setAttribute('data-text',text);
-    vrow='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="speakText(this,\''+mid+'\')">🔊 Listen in '+currentLangName+'</button></div>';
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const d=document.createElement('div');
+  d.className='msg '+(isAi?'ai':'user');
+  let vhtml='';
+  if(isAi&&voice){
+    msgN++;const mid='m'+msgN;
+    d.id=mid;d.dataset.text=text;
+    vhtml='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="doSpeak(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';
   }
-  div.innerHTML='<div class="msg-avatar '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div><div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+fmt+vrow+'<span class="bubble-time">'+now+'</span></div>';
-  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+  d.innerHTML=
+    '<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div>'+
+    '<div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+(isAi?renderAI(text):esc(text))+vhtml+'<span class="btime">'+now+'</span></div>';
+  msgs.appendChild(d);
+  scrollBottom();
 }
 
-function fmtAi(t){
-  // Pre-process: **Title:** some text → split into two lines
-  t = t.replace(/\*\*([^*]+):\*\*\s*(.+)/g, '**$1:**\n$2');
-  // Pre-process: **Title:** at end of line (nothing after) is fine as-is
-  // Process line by line to avoid inline wrapping issues
-  const lines = t.split('\n');
-  let html = '';
-  let inList = false;
-
-  for(let raw of lines){
-    const line = raw.trim();
-    if(!line){ 
-      if(inList){html+='</div>';inList=false;}
-      html+='<div style="height:6px"></div>';
-      continue;
-    }
-    // Heading: ## or ###
-    if(/^#{1,3} /.test(line)){
-      if(inList){html+='</div>';inList=false;}
-      const txt = inlineFormat(line.replace(/^#{1,3} /,''));
-      html+=`<div class="ai-sec">${txt}</div>`;
-    }
-    // Bullet: - or * or •
-    else if(/^[-*•] /.test(line)){
-      if(!inList){html+='<div class="ai-list">';inList=true;}
-      const txt = inlineFormat(line.replace(/^[-*•] /,''));
-      html+=`<div class="ai-item">${txt}</div>`;
-    }
-    // Numbered list: 1. 2. etc
-    else if(/^\d+\.\s/.test(line)){
-      if(!inList){html+='<div class="ai-list">';inList=true;}
-      const txt = inlineFormat(line.replace(/^\d+\.\s/,''));
-      const num = line.match(/^(\d+)\./)[1];
-      html+=`<div class="ai-item ai-num"><span class="ai-num-badge">${num}</span>${txt}</div>`;
-    }
-    // Normal paragraph
-    else {
-      if(inList){html+='</div>';inList=false;}
-      html+=`<div class="ai-para">${inlineFormat(line)}</div>`;
+// ── RENDER AI TEXT ──
+function renderAI(raw){
+  // Strip any remaining markdown formatting
+  let t=raw
+    .replace(/\*\*([^*]+)\*\*/g,'$1')
+    .replace(/\*([^*]+)\*/g,'$1')
+    .replace(/_{2}([^_]+)_{2}/g,'$1');
+  let html='';
+  for(const line of t.split('\n')){
+    const l=line.trim();
+    if(!l){html+='<span class="ap">&nbsp;</span>';continue;}
+    if(/^#{1,3}\s/.test(l)){
+      html+='<span class="ah">'+esc(l.replace(/^#{1,3}\s/,''))+'</span>';
+    } else if(/^[-–•]\s/.test(l)){
+      html+='<span class="al">'+esc(l.replace(/^[-–•]\s/,''))+'</span>';
+    } else if(/^\d+\.\s/.test(l)){
+      const num=l.match(/^(\d+)\./)[1];
+      html+='<span class="an"><span class="nbadge">'+num+'</span><span class="an-text">'+esc(l.replace(/^\d+\.\s/,''))+'</span></span>';
+    } else {
+      html+='<span class="ap">'+esc(l)+'</span>';
     }
   }
-  if(inList)html+='</div>';
   return html;
-}
-
-function inlineFormat(t){
-  return esc(t)
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'<em>$1</em>');
 }
 function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+// ── TYPING ──
 function showTyping(){
-  const msgs=document.getElementById('msgs');
-  const id='typ-'+Date.now();
-  const d=document.createElement('div');d.className='msg ai';d.id=id;
-  d.innerHTML='<div class="msg-avatar ai-av">🌊</div><div class="typing"><span></span><span></span><span></span></div>';
-  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return id;
+  if(!started){
+    started=true;
+    document.getElementById('welcome-screen').style.display='none';
+    document.getElementById('msgs').style.display='flex';
+  }
+  const id='t'+Date.now();
+  const d=document.createElement('div');
+  d.className='msg ai';d.id=id;
+  d.innerHTML='<div class="av ai-av">🌊</div><div class="typing-bub"><span></span><span></span><span></span></div>';
+  document.getElementById('msgs').appendChild(d);
+  scrollBottom();return id;
 }
 function removeTyping(id){document.getElementById(id)?.remove();}
-
-// VOICE REPLY — Text to Speech
-window.speakText=function(btn,mid){
-  if(synth.speaking){
-    synth.cancel();
-    document.querySelectorAll('.speak-btn').forEach(b=>{b.textContent='🔊 Listen in '+currentLangName;b.classList.remove('speaking');});
-    if(currentUtt&&currentUtt._mid===mid)return;
-  }
-  const el=document.getElementById(mid);if(!el)return;
-  const raw=el.getAttribute('data-text')||'';if(!raw)return;
-  // Strip markdown and ALL emojis before speaking
-  let clean=raw
-    .replace(/\*\*(.*?)\*\*/g,'$1')
-    .replace(/\*(.*?)\*/g,'$1')
-    .replace(/#{1,3} /g,'')
-    .replace(/^[\-\*•] /gm,'')
-    .replace(/\n/g,' ');
-  // Remove emojis using spread to handle all unicode chars
-  clean=[...clean].filter(ch=>{
-    const cp=ch.codePointAt(0);
-    return cp<0x2000||(cp>0x2BFF&&cp<0x1F000)||(cp>0x1FAFF&&cp<0xE0000);
-  }).join('').replace(/  +/g,' ').trim();
-  const utt=new SpeechSynthesisUtterance(clean);
-  utt._mid=mid;currentUtt=utt;
-  utt.lang=currentLang;utt.rate=0.9;utt.pitch=1.0;utt.volume=1.0;
-  const voices=synth.getVoices();
-  const match=voices.find(v=>v.lang===currentLang||v.lang.startsWith(currentLang.split('-')[0]));
-  if(match)utt.voice=match;
-  btn.textContent='⏹ Stop';btn.classList.add('speaking');
-  utt.onend=()=>{btn.textContent='🔊 Listen in '+currentLangName;btn.classList.remove('speaking');currentUtt=null;};
-  utt.onerror=()=>{btn.textContent='🔊 Listen in '+currentLangName;btn.classList.remove('speaking');};
-  synth.speak(utt);
-};
-if(synth){synth.onvoiceschanged=()=>synth.getVoices();synth.getVoices();}
-
-// Populate sidebar chips on desktop
-const sidebarChips=document.getElementById('sidebar-chips');
-if(sidebarChips){
-  const chips=[
-    {e:'🏖️',t:'Best beaches in Byndoor'},
-    {e:'🛕',t:'Temples to visit'},
-    {e:'🏨',t:'Hotels & stays'},
-    {e:'🍽️',t:'Local food to try'},
-    {e:'🗺️',t:'Plan a 2 day trip'},
-    {e:'🌦️',t:'Weather today'}
-  ];
-  chips.forEach(ch=>{
-    const d=document.createElement('div');
-    d.className='sidebar-chip';
-    d.textContent=ch.e+' '+ch.t;
-    d.onclick=()=>{document.getElementById('msg-input').value=ch.t;sendMessage();};
-    sidebarChips.appendChild(d);
-  });
+function scrollBottom(){
+  const ca=document.getElementById('chat-area');
+  ca.scrollTop=ca.scrollHeight;
 }
 
-// VOICE INPUT — Speech to Text
+// ── HELPERS ──
+window.quickAsk=t=>{document.getElementById('msg-input').value=t;sendMessage();};
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+
+// ── VOICE SPEAK ──
+window.doSpeak=function(btn,mid){
+  const el=document.getElementById(mid);if(!el)return;
+  const raw=el.dataset.text||'';
+  if(synth.speaking){
+    synth.cancel();
+    document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊 Listen in '+langName;});
+    return;
+  }
+  const clean=raw.replace(/[*#_\-•]/g,'').replace(/\n/g,' ').replace(/[^\p{L}\p{N}\p{Z}\p{P}]/gu,'').replace(/\s+/g,' ').trim();
+  const u=new SpeechSynthesisUtterance(clean);
+  u.lang=lang;u.rate=0.92;u.pitch=1;
+  u.onend=()=>{btn.classList.remove('speaking');btn.textContent='🔊 Listen in '+langName;};
+  btn.classList.add('speaking');btn.textContent='⏹ Stop';
+  currentUtt=u;synth.speak(u);
+};
+
+// ── VOICE INPUT ──
 window.toggleMic=function(){
-  if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window)){alert('Voice input works only in Chrome browser.');return;}
+  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice input not supported.');return;}
   if(isListening){recognition?.stop();return;}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recognition=new SR();recognition.lang=currentLang;recognition.continuous=false;recognition.interimResults=true;
-  const mic=document.getElementById('mic-btn'),inp=document.getElementById('msg-input');
-  recognition.onstart=()=>{isListening=true;mic.classList.add('listening');mic.textContent='🔴';inp.placeholder='Listening…';};
-  recognition.onresult=e=>{inp.value=Array.from(e.results).map(r=>r[0].transcript).join('');autoResize(inp);};
-  recognition.onend=()=>{isListening=false;mic.classList.remove('listening');mic.textContent='🎙️';inp.placeholder='Ask anything about Byndoor…';if(inp.value.trim())sendMessage();};
-  recognition.onerror=e=>{isListening=false;mic.classList.remove('listening');mic.textContent='🎙️';inp.placeholder='Ask anything about Byndoor…';if(e.error!=='no-speech')alert('Mic error: '+e.error+'. Allow microphone permission in Chrome.');};
+  recognition=new SR();recognition.lang=lang;recognition.interimResults=false;
+  recognition.onstart=()=>{isListening=true;document.getElementById('mic-btn').classList.add('listening');};
+  recognition.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('msg-input').value=t;autoResize(document.getElementById('msg-input'));sendMessage();};
+  recognition.onend=recognition.onerror=()=>{isListening=false;document.getElementById('mic-btn').classList.remove('listening');};
   recognition.start();
 };
 
+// ── LANGUAGE ──
 window.openLang=()=>document.getElementById('lang-panel').classList.add('open');
 window.closeLang=e=>{if(e.target===document.getElementById('lang-panel'))document.getElementById('lang-panel').classList.remove('open');};
 window.setLang=function(name,code){
-  currentLang=code;currentLangName=name;
+  lang=code;langName=name;
   document.getElementById('lang-label').textContent=name;
-  document.querySelectorAll('.lang-opt').forEach(x=>x.classList.remove('active'));
-  event.target.classList.add('active');
+  document.querySelectorAll('.lang-opt').forEach(b=>b.classList.toggle('active',b.textContent.includes(name)));
   document.getElementById('lang-panel').classList.remove('open');
-  if(recognition)recognition.lang=code;
-  addMsg('ai','Language changed to '+name+'! 🌐 I will now speak and reply in '+name+'. How can I help you?',true);
+  addMsg('ai','Language set to '+name+' 🌐 How can I help you explore Byndoor?',true);
 };
-window.quickAsk=function(q){document.getElementById('msg-input').value=q;sendMessage();};
-window.handleKey=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}};
-window.autoResize=function(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';};
-window.sendMessage=sendMessage;
 </script>
-</div></div></body>
+</body>
 </html>
