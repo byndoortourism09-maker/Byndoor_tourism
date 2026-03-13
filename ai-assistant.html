@@ -161,7 +161,7 @@
     <button class="sug" onclick="quickAsk('Temples near Byndoor with timings?')">🛕 Temples</button>
   </div>
 </div>
-<div id="welcome-screen" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;background:var(--sand)">
+<div id="welcome-screen" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:30px 16px 16px;background:var(--sand);min-height:0">
   <div class="welcome-emoji">🌊</div>
   <div class="welcome-title">Namaste! I'm your Byndoor Guide</div>
   <div class="welcome-sub">Your personal travel guide for Byndoor Taluk. Ask me about beaches, temples, hotels, food, transport or let me plan your trip!</div>
@@ -312,6 +312,8 @@ function addMsg(role,text,showVoice=false){
   const welcome=document.getElementById('welcome-screen');
   if(welcome){welcome.style.display='none';}
   msgs.style.display='flex';
+  msgs.style.flex='1';
+  msgs.style.minHeight='0';
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   const isAi=role==='ai';
   const div=document.createElement('div');
