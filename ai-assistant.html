@@ -8,8 +8,8 @@
 <style>
 :root{--p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;--dark:#0f172a;--sand:#fdf6ec;--muted:#64748b;--bdr:#e8e4de;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:#e8ddd4;overflow:hidden}
-body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex;flex-direction:column;height:100%}
+html,body{height:100%;overflow:hidden;background:var(--sand)}
+body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex;flex-direction:column}
 
 /* HEADER */
 .hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 3px 16px rgba(0,0,0,.2);z-index:10}
@@ -23,80 +23,63 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 .hd-lang{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:5px 12px;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
 
 /* CHIPS */
-.chips{padding:8px 14px;background:rgba(255,255,255,.95);border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none;z-index:9}
+.chips{padding:8px 14px;background:#fff;border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip-row{display:flex;gap:7px;width:max-content}
-.chip{background:#fff;border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.7rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
+.chip{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
 .chip:active{background:var(--p);color:#fff;border-color:var(--p)}
 
-/* CHAT BACKGROUND — scrollable, has bottom padding for input bar */
-.msgs-wrap{
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  background:#e8ddd4;
-  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230a7c6e' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  /* IMPORTANT: padding at bottom = input bar height so last message not hidden */
-  padding-bottom:72px;
-}
+/* MESSAGES SCROLL — fills remaining height */
+.msgs-wrap{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--sand)}
+.msgs{display:flex;flex-direction:column;gap:14px;padding:16px 14px 24px}
 
 /* WELCOME */
-.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;text-align:center;min-height:55vh}
-.w-wave{font-size:3.5rem;display:inline-block;animation:wv 2.5s ease-in-out infinite;margin-bottom:10px}
-@keyframes wv{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.w-card{background:rgba(255,255,255,.92);border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.1);max-width:320px;width:100%}
-.w-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--dark);margin-bottom:7px}
-.w-sub{font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:16px}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.feat{background:var(--sand);border-radius:10px;padding:9px 10px;display:flex;align-items:center;gap:7px;text-align:left}
-.feat-ico{font-size:1rem;flex-shrink:0}
-.feat-txt{font-size:.68rem;font-weight:600;color:var(--dark)}
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px 20px;text-align:center;min-height:300px}
+.w-wave{font-size:3rem;display:inline-block;animation:wv 2.5s ease-in-out infinite;margin-bottom:12px}
+@keyframes wv{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.w-title{font-family:'Playfair Display',serif;font-size:1.18rem;color:var(--dark);margin-bottom:8px}
+.w-sub{font-size:.77rem;color:var(--muted);line-height:1.7;max-width:290px;margin-bottom:18px}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.feat{background:#fff;border-radius:14px;padding:11px 12px;display:flex;align-items:center;gap:9px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:left}
+.feat-ico{font-size:1.1rem;flex-shrink:0}
+.feat-txt{font-size:.72rem;font-weight:600;color:var(--dark);line-height:1.3}
 
 /* MESSAGES */
-.msgs{display:flex;flex-direction:column;gap:4px;padding:12px 10px 8px}
-.msg{display:flex;gap:7px;align-items:flex-end;animation:mIn .22s ease;margin-bottom:3px}
-@keyframes mIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.msg{display:flex;gap:8px;align-items:flex-end;animation:mIn .25s ease}
+@keyframes mIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .msg.user{flex-direction:row-reverse}
-.av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.78rem;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem}
 .ai-av{background:linear-gradient(135deg,#0a7c6e,#0ea5e9)}
 .user-av{background:linear-gradient(135deg,#f97316,#fbbf24)}
 
-/* Bubble tails like WhatsApp */
-.bubble{max-width:80%;padding:8px 12px 5px;font-size:.88rem;line-height:1.6;word-break:break-word;overflow-wrap:break-word;position:relative}
-.ai-bubble{background:#fff;color:var(--dark);border-radius:0px 12px 12px 12px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
-.user-bubble{background:#dcf8c6;color:#111;border-radius:12px 0px 12px 12px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-/* Triangle tail for AI */
-.ai-bubble::before{content:'';position:absolute;top:0;left:-7px;width:0;height:0;border-top:8px solid #fff;border-left:8px solid transparent}
-/* Triangle tail for user */
-.user-bubble::before{content:'';position:absolute;top:0;right:-7px;width:0;height:0;border-top:8px solid #dcf8c6;border-right:8px solid transparent}
+/* ORIGINAL BUBBLE STYLE — clean white AI, teal gradient user */
+.bubble{max-width:78%;padding:11px 14px;border-radius:18px;font-size:.84rem;line-height:1.7;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
+.ai-bubble{background:#fff;color:var(--dark);border-radius:18px 18px 18px 4px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.user-bubble{background:linear-gradient(135deg,#0a7c6e,#0d9e8d);color:#fff;border-radius:18px 18px 4px 18px}
+.bubble-time{font-size:.6rem;opacity:.6;margin-top:5px;display:block}
+.msg.user .bubble-time{text-align:right}
 
-.btime{font-size:.58rem;color:#999;margin-top:3px;display:flex;justify-content:flex-end;gap:4px;align-items:center}
+/* AI text — original style with colored headings, bullet items */
+.ai-bubble strong{color:var(--p);font-weight:700}
+.ai-sec{display:block;margin:8px 0 4px;font-weight:700;color:var(--p);font-size:.85rem}
+.ai-item{display:flex;gap:7px;margin:4px 0;font-size:.82rem}
+.ai-item::before{content:'•';color:var(--acc);font-weight:700;flex-shrink:0}
+.ai-num{display:flex;gap:8px;margin:4px 0;font-size:.82rem;align-items:flex-start}
+.ai-nbadge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:2px}
 
-/* AI text blocks */
-.ap{display:block;margin:2px 0}
-.ah{display:block;font-weight:700;color:var(--p);margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #f0ede8;font-size:.88rem}
-.al{display:block;padding-left:16px;position:relative;margin:3px 0}
-.al::before{content:'•';color:var(--p);font-weight:900;position:absolute;left:2px}
-.an{display:flex;gap:7px;align-items:flex-start;margin:3px 0}
-.nbadge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:2px}
-.aspace{display:block;height:5px}
-
-/* Typing dots */
-.typing-bub{background:#fff;padding:12px 16px;border-radius:0 12px 12px 12px;box-shadow:0 1px 4px rgba(0,0,0,.12);display:inline-flex;gap:4px;align-items:center;position:relative}
-.typing-bub::before{content:'';position:absolute;top:0;left:-7px;width:0;height:0;border-top:8px solid #fff;border-left:8px solid transparent}
-.typing-bub span{width:7px;height:7px;border-radius:50%;background:var(--p);opacity:.5;display:inline-block;animation:td .9s infinite}
-.typing-bub span:nth-child(2){animation-delay:.2s}
-.typing-bub span:nth-child(3){animation-delay:.4s}
+/* Typing indicator */
+.typing{display:inline-flex;gap:4px;align-items:center;padding:4px 2px}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--p);opacity:.5;display:inline-block;animation:td .9s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
 @keyframes td{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-7px);opacity:1}}
 
 /* Voice */
-.voice-row{margin-top:6px}
-.speak-btn{background:#f0f0f0;border:none;border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
-.speak-btn.speaking{background:var(--p);color:#fff}
+.voice-row{margin-top:8px}
+.speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.speak-btn.speaking{background:var(--p);color:#fff;border-color:var(--p)}
 
-/* ── INPUT BAR — FIXED to bottom of visual viewport ── */
+/* INPUT BAR — fixed to bottom, moves up with keyboard via visualViewport */
 .input-bar{
   position:fixed;
   bottom:0;
@@ -104,22 +87,24 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
   transform:translateX(-50%);
   width:100%;
   max-width:520px;
-  background:#f0ebe3;
-  padding:8px 10px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom));
+  background:#fff;
+  border-top:1px solid var(--bdr);
+  padding:10px 12px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom));
   display:flex;
   align-items:flex-end;
   gap:8px;
+  box-shadow:0 -3px 16px rgba(0,0,0,.07);
   z-index:100;
-  border-top:1px solid #d0c8be;
 }
-.inp-wrap{flex:1;min-width:0;background:#fff;border-radius:24px;padding:9px 14px;display:flex;align-items:flex-end;gap:8px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.inp-wrap{flex:1;min-width:0;background:var(--sand);border:2px solid var(--bdr);border-radius:24px;padding:9px 14px;display:flex;align-items:flex-end;gap:8px;transition:border-color .2s}
+.inp-wrap:focus-within{border-color:var(--p)}
 #msg-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--dark);resize:none;max-height:100px;min-height:22px;line-height:1.5}
 #msg-input::placeholder{color:#bbb}
-.mic-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:#888;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mic-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:var(--muted);font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .mic-btn.on{color:var(--p);animation:mp 1s infinite}
 @keyframes mp{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-.send-btn{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);border:none;color:#fff;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(10,124,110,.4);transition:transform .15s,opacity .15s}
+.send-btn{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(10,124,110,.35);transition:transform .15s,opacity .15s}
 .send-btn:active{transform:scale(.9)}
 .send-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
 
@@ -156,26 +141,25 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
   </div>
 </div>
 
-<div class="msgs-wrap" id="msgs-wrap">
+<!-- SCROLLABLE MESSAGES — padded so input bar never covers last message -->
+<div class="msgs-wrap" id="msgs-wrap" style="padding-bottom:80px">
   <div class="welcome" id="welcome">
     <span class="w-wave">🌊</span>
-    <div class="w-card">
-      <div class="w-title">Namaste! I'm your Byndoor Guide</div>
-      <div class="w-sub">Ask me about beaches, temples, hotels, food, transport — or let me plan your perfect trip!</div>
-      <div class="feat-grid">
-        <div class="feat"><span class="feat-ico">📍</span><span class="feat-txt">Places &amp; Attractions</span></div>
-        <div class="feat"><span class="feat-ico">🗺️</span><span class="feat-txt">Trip Planning</span></div>
-        <div class="feat"><span class="feat-ico">🌤️</span><span class="feat-txt">Weather Advisory</span></div>
-        <div class="feat"><span class="feat-ico">🔊</span><span class="feat-txt">Voice Reply</span></div>
-        <div class="feat"><span class="feat-ico">🌐</span><span class="feat-txt">8 Languages</span></div>
-        <div class="feat"><span class="feat-ico">🎙️</span><span class="feat-txt">Voice Input</span></div>
-      </div>
+    <div class="w-title">Namaste! I'm your Byndoor Guide</div>
+    <div class="w-sub">Ask me about beaches, temples, hotels, food, transport — or let me plan your perfect trip!</div>
+    <div class="feat-grid">
+      <div class="feat"><span class="feat-ico">📍</span><span class="feat-txt">Places &amp; Attractions</span></div>
+      <div class="feat"><span class="feat-ico">🗺️</span><span class="feat-txt">Trip Planning</span></div>
+      <div class="feat"><span class="feat-ico">🌤️</span><span class="feat-txt">Weather Advisory</span></div>
+      <div class="feat"><span class="feat-ico">🔊</span><span class="feat-txt">Voice Reply</span></div>
+      <div class="feat"><span class="feat-ico">🌐</span><span class="feat-txt">8 Languages</span></div>
+      <div class="feat"><span class="feat-ico">🎙️</span><span class="feat-txt">Voice Input</span></div>
     </div>
   </div>
   <div class="msgs" id="msgs"></div>
 </div>
 
-<!-- INPUT BAR fixed to bottom -->
+<!-- INPUT BAR — fixed bottom, keyboard-aware -->
 <div class="input-bar" id="input-bar">
   <div class="inp-wrap">
     <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1"
@@ -204,29 +188,23 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-// ── KEY: Use visualViewport to keep input above keyboard ──
-const bar = document.getElementById('input-bar');
-const wrap = document.getElementById('msgs-wrap');
+// ── KEYBOARD FIX — input bar follows keyboard using visualViewport ──
+const inputBar = document.getElementById('input-bar');
+const msgsWrap = document.getElementById('msgs-wrap');
 
-function onViewport(){
+function adjustForKeyboard(){
   if(!window.visualViewport) return;
   const vv = window.visualViewport;
-  // Position input bar just above keyboard
-  const offsetBottom = window.innerHeight - vv.height - vv.offsetTop;
-  bar.style.bottom = Math.max(0, offsetBottom) + 'px';
-  // Shrink msgs-wrap so it doesn't go behind input bar
-  const barH = bar.offsetHeight;
-  wrap.style.paddingBottom = (barH + 8) + 'px';
-  // Scroll to bottom when keyboard opens
-  setTimeout(()=>{ wrap.scrollTop = wrap.scrollHeight; }, 100);
+  const keyboardH = window.innerHeight - vv.height;
+  inputBar.style.bottom = Math.max(0, keyboardH) + 'px';
+  msgsWrap.style.paddingBottom = (inputBar.offsetHeight + Math.max(0, keyboardH) + 8) + 'px';
+  setTimeout(() => { msgsWrap.scrollTop = msgsWrap.scrollHeight; }, 80);
 }
-
 if(window.visualViewport){
-  window.visualViewport.addEventListener('resize', onViewport);
-  window.visualViewport.addEventListener('scroll', onViewport);
+  window.visualViewport.addEventListener('resize', adjustForKeyboard);
+  window.visualViewport.addEventListener('scroll', adjustForKeyboard);
 }
-// Run once on load
-window.addEventListener('load', onViewport);
+window.addEventListener('load', adjustForKeyboard);
 
 // ── FIREBASE ──
 firebase.initializeApp({
@@ -244,7 +222,7 @@ window.PL=[]; window.WD=null;
   try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&timezone=Asia/Kolkata&forecast_days=2');window.WD=await r.json();}catch(e){}
 })();
 
-let lang='en-IN',langName='English',hist=[],synth=window.speechSynthesis,rec=null,listening=false,msgN=0,started=false;
+let lang='en-IN', langName='English', hist=[], synth=window.speechSynthesis, rec=null, listening=false, msgN=0, started=false, currentUtt=null;
 
 function sysPr(){
   const wd={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
@@ -256,34 +234,40 @@ function sysPr(){
     p='\nPLACES:\n';
     ['attractions','stay','food','transport','nearby'].forEach(c=>{if(g[c])g[c].slice(0,15).forEach(x=>{p+='['+c+'] '+x.name+(x.about?' - '+x.about.slice(0,55):'')+'\n';});});
   }
-  return 'You are Byndoor Travel Assistant, a friendly expert guide for Byndoor Taluk, Karnataka, India.'
-    +'\nFORMAT: Plain text only. No asterisks, no #, no markdown. Lists use "- item" each on new line. Numbered lists use "1. item". Give complete detailed answers, never cut short.'
-    +'\nPlaces: Maravanthe Beach, Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple.'
+  return 'You are Byndoor Travel Assistant, a warm and knowledgeable local guide for Byndoor Taluk, Karnataka, India.'
+    +'\nFORMAT RULES: No markdown. No asterisks (*). No hash (#). For bullet lists write "- item" on its own line. For numbered lists write "1. item". Separate paragraphs with a blank line. Give complete answers, never cut short.'
+    +'\nPlaces: Maravanthe Beach (NH66 between sea+river), Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple, Trasi Coconut Island.'
     +'\nNearby: Murudeshwar 58km, Udupi 55km, Kundapur 15km, Mangalore 110km.'
-    +'\nFood: Fish curry, Neer dosa, Prawn curry, Bangda fry, Kane fish, Goli baje.'
-    +'\nBest season: Oct-Mar. Monsoon: Jun-Sep (heavy rain, avoid).'
-    +'\nBe warm, use emojis naturally. If asked who built you: Discover Byndoor team.'
-    +(lang!=='en-IN'?'\nReply ENTIRELY in '+langName+'.':'')
+    +'\nFood: Fish curry rice, Neer dosa, Prawn curry, Bangda fry, Kane fish, Goli baje, Kori rotti.'
+    +'\nBest season: Oct-Mar. Avoid Jun-Sep (heavy monsoon). Transport: NH-66 highway, Mangalore airport 110km, Byndoor/Kundapur railway.'
+    +'\nBe warm and friendly. Use emojis naturally. If asked who built you: Discover Byndoor team.'
+    +(lang!=='en-IN'?'\nRespond ENTIRELY in '+langName+'.':'')
     +w+p;
 }
 
 async function sendMessage(){
   const inp=document.getElementById('msg-input');
-  const txt=inp.value.trim();if(!txt)return;
-  inp.value='';inp.style.height='auto';
+  const txt=inp.value.trim(); if(!txt) return;
+  inp.value=''; inp.style.height='auto';
   addMsg('user',txt);
   hist.push({role:'user',content:txt});
-  const btn=document.getElementById('send-btn');btn.disabled=true;
+  const btn=document.getElementById('send-btn'); btn.disabled=true;
   const tid=showTyping();
   try{
-    const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemPrompt:sysPr(),messages:hist.slice(-12)})});
+    const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({systemPrompt:sysPr(),messages:hist.slice(-12)})
+    });
     removeTyping(tid);
     const data=await res.json();
-    if(!res.ok)throw new Error(data.error||'Failed');
+    if(!res.ok) throw new Error(data.error||'Failed');
     const reply=data.reply||'Sorry, please try again.';
     addMsg('ai',reply,true);
     hist.push({role:'assistant',content:reply});
-  }catch(e){removeTyping(tid);addMsg('ai','Sorry, something went wrong. Please try again 🙏');}
+  }catch(e){
+    removeTyping(tid);
+    addMsg('ai','Sorry, something went wrong. Please try again 🙏');
+  }
   btn.disabled=false;
 }
 
@@ -294,65 +278,99 @@ function addMsg(role,text,voice=false){
   const d=document.createElement('div');
   d.className='msg '+(isAi?'ai':'user');
   let vhtml='';
-  if(isAi&&voice){msgN++;const mid='m'+msgN;d.id=mid;d.dataset.text=text;vhtml='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="doSpeak(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';}
-  d.innerHTML='<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div><div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+(isAi?renderAI(text):'<span class="ap">'+esc(text)+'</span>')+vhtml+'<div class="btime">'+now+(isAi?'':' ✓✓')+'</div></div>';
+  if(isAi&&voice){
+    msgN++; const mid='m'+msgN;
+    d.id=mid; d.dataset.text=text;
+    vhtml='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="speakText(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';
+  }
+  const content = isAi ? fmtAI(text) : '<span>'+esc(text)+'</span>';
+  d.innerHTML='<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div>'
+    +'<div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+content+vhtml+'<span class="bubble-time">'+now+'</span></div>';
   document.getElementById('msgs').appendChild(d);
   scrollDown();
 }
 
-function renderAI(raw){
-  const t=raw.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/^#+\s*/gm,'');
-  let html='';
+// ORIGINAL FORMAT FUNCTION — renders rich text the way it looked before
+function fmtAI(raw){
+  // Strip markdown symbols but keep structure
+  let t = raw
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'$1');
+  let html = '';
   for(const line of t.split('\n')){
-    const l=line.trim();
-    if(!l){html+='<span class="aspace"></span>';continue;}
-    if(/^-\s/.test(l)) html+='<span class="al">'+esc(l.replace(/^-\s/,''))+'</span>';
-    else if(/^\d+\.\s/.test(l)){const m=l.match(/^(\d+)\.\s(.*)/);if(m)html+='<span class="an"><span class="nbadge">'+m[1]+'</span><span>'+esc(m[2])+'</span></span>';}
-    else html+='<span class="ap">'+esc(l)+'</span>';
+    const l = line.trim();
+    if(!l){ html += '<br/>'; continue; }
+    if(/^#{1,3}\s/.test(l)){
+      html += '<span class="ai-sec">'+esc2(l.replace(/^#{1,3}\s/,''))+'</span>';
+    } else if(/^[-–•]\s/.test(l)){
+      html += '<div class="ai-item">'+esc2(l.replace(/^[-–•]\s/,''))+'</div>';
+    } else if(/^\d+\.\s/.test(l)){
+      const m=l.match(/^(\d+)\.\s(.*)/);
+      if(m) html += '<div class="ai-num"><span class="ai-nbadge">'+m[1]+'</span><span>'+esc2(m[2])+'</span></div>';
+    } else {
+      html += '<p style="margin:3px 0">'+esc2(l)+'</p>';
+    }
   }
   return html;
 }
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+// esc2 allows <strong> tags through
+function esc2(s){return s.replace(/&(?!amp;|lt;|gt;)/g,'&amp;').replace(/<(?!\/?strong)/g,'&lt;');}
 
 function showTyping(){
   if(!started){started=true;document.getElementById('welcome').style.display='none';}
   const id='t'+Date.now();
-  const d=document.createElement('div');d.className='msg ai';d.id=id;
-  d.innerHTML='<div class="av ai-av">🌊</div><div class="typing-bub"><span></span><span></span><span></span></div>';
+  const d=document.createElement('div'); d.className='msg ai'; d.id=id;
+  d.innerHTML='<div class="av ai-av">🌊</div><div class="bubble ai-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
   document.getElementById('msgs').appendChild(d);
-  scrollDown();return id;
+  scrollDown(); return id;
 }
 function removeTyping(id){document.getElementById(id)?.remove();}
-function scrollDown(){const w=document.getElementById('msgs-wrap');setTimeout(()=>{w.scrollTop=w.scrollHeight;},60);}
+function scrollDown(){setTimeout(()=>{msgsWrap.scrollTop=msgsWrap.scrollHeight;},60);}
 
 window.quickAsk=t=>{document.getElementById('msg-input').value=t;sendMessage();};
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 
-window.doSpeak=function(btn,mid){
-  const el=document.getElementById(mid);if(!el)return;
-  if(synth.speaking){synth.cancel();document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊 Listen in '+langName;});return;}
-  const clean=el.dataset.text.replace(/[*#_\-•]/g,' ').replace(/\n/g,' ').replace(/\s+/g,' ').trim();
-  const u=new SpeechSynthesisUtterance(clean);u.lang=lang;u.rate=0.92;u.pitch=1;
-  u.onend=()=>{btn.classList.remove('speaking');btn.textContent='🔊 Listen in '+langName;};
-  btn.classList.add('speaking');btn.textContent='⏹ Stop';synth.speak(u);
+// VOICE SPEAK
+window.speakText=function(btn,mid){
+  const el=document.getElementById(mid); if(!el) return;
+  if(synth.speaking){
+    synth.cancel();
+    document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊 Listen in '+langName;});
+    if(currentUtt&&currentUtt._mid===mid) return;
+  }
+  const raw=el.dataset.text||''; if(!raw) return;
+  const clean=raw.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/#{1,3} /g,'').replace(/^[-•]\s/gm,'').replace(/\n/g,' ').replace(/\s+/g,' ').trim();
+  const utt=new SpeechSynthesisUtterance(clean);
+  utt._mid=mid; currentUtt=utt;
+  utt.lang=lang; utt.rate=0.9; utt.pitch=1; utt.volume=1;
+  const voices=synth.getVoices();
+  const match=voices.find(v=>v.lang===lang||v.lang.startsWith(lang.split('-')[0]));
+  if(match) utt.voice=match;
+  btn.textContent='⏹ Stop'; btn.classList.add('speaking');
+  utt.onend=utt.onerror=()=>{btn.textContent='🔊 Listen in '+langName;btn.classList.remove('speaking');currentUtt=null;};
+  synth.speak(utt);
 };
+if(synth){synth.onvoiceschanged=()=>synth.getVoices();synth.getVoices();}
 
+// VOICE INPUT
 window.toggleMic=function(){
-  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice input not supported.');return;}
+  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice input works only in Chrome.');return;}
   if(listening){rec?.stop();return;}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  rec=new SR();rec.lang=lang;rec.interimResults=false;
+  rec=new SR(); rec.lang=lang; rec.interimResults=false;
   rec.onstart=()=>{listening=true;document.getElementById('mic-btn').classList.add('on');};
   rec.onresult=e=>{document.getElementById('msg-input').value=e.results[0][0].transcript;autoResize(document.getElementById('msg-input'));sendMessage();};
   rec.onend=rec.onerror=()=>{listening=false;document.getElementById('mic-btn').classList.remove('on');};
   rec.start();
 };
 
+// LANGUAGE
 window.openLang=()=>document.getElementById('lang-panel').classList.add('open');
 window.closeLang=e=>{if(e.target===document.getElementById('lang-panel'))document.getElementById('lang-panel').classList.remove('open');};
 window.setLang=function(name,code){
-  lang=code;langName=name;
+  lang=code; langName=name;
   document.getElementById('lang-label').textContent=name;
   document.querySelectorAll('.lang-opt').forEach(b=>b.classList.toggle('active',b.textContent.includes(name)));
   document.getElementById('lang-panel').classList.remove('open');
