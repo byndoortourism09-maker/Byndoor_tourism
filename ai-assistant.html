@@ -61,11 +61,11 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 
 /* AI text — original style with colored headings, bullet items */
 .ai-bubble strong{color:var(--p);font-weight:700}
-.ai-sec{display:block;margin:8px 0 4px;font-weight:700;color:var(--p);font-size:.87rem;border-left:3px solid var(--p);padding-left:8px}
-.ai-item{display:flex;gap:7px;margin:4px 0;font-size:.84rem;font-weight:400;color:var(--dark)}
-.ai-item::before{content:'•';color:var(--acc);font-weight:900;flex-shrink:0;font-size:1rem}
-.ai-num{display:flex;gap:8px;margin:4px 0;font-size:.82rem;align-items:flex-start}
-.ai-nbadge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.ai-sec{display:block;margin:10px 0 5px;font-weight:700;color:var(--dark);font-size:.88rem}
+.ai-item{display:block;padding-left:14px;position:relative;margin:5px 0;font-size:.84rem;line-height:1.65}
+.ai-item::before{content:'•';color:var(--acc);font-weight:900;position:absolute;left:2px;top:1px}
+.ai-num{display:flex;gap:8px;margin:5px 0;font-size:.84rem;line-height:1.65;align-items:flex-start}
+.ai-nbadge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:3px}
 
 /* Typing indicator */
 .typing{display:inline-flex;gap:4px;align-items:center;padding:4px 2px}
@@ -235,7 +235,8 @@ function sysPr(){
     ['attractions','stay','food','transport','nearby'].forEach(c=>{if(g[c])g[c].slice(0,15).forEach(x=>{p+='['+c+'] '+x.name+(x.about?' - '+x.about.slice(0,55):'')+'\n';});});
   }
   return 'You are Byndoor Travel Assistant, a warm and knowledgeable local guide for Byndoor Taluk, Karnataka, India.'
-    +'\nFORMAT RULES: No markdown. No asterisks (*). No hash (#). For bullet lists write "- item" on its own line. For numbered lists write "1. item". Separate paragraphs with a blank line. Give complete answers, never cut short.'
+    +'\nFORMAT RULES: No markdown. No asterisks (*). No hash (#). For bullet lists write "- item" on its own line. For numbered lists write "1. item". Separate paragraphs with a blank line.'
+    +'\nCOMPLETION RULES: Always finish your full answer. Never stop mid-sentence. Never truncate. If listing items, always complete the full list before ending.'
     +'\nPlaces: Maravanthe Beach (NH66 between sea+river), Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple, Trasi Coconut Island.'
     +'\nNearby: Murudeshwar 58km, Udupi 55km, Kundapur 15km, Mangalore 110km.'
     +'\nFood: Fish curry rice, Neer dosa, Prawn curry, Bangda fry, Kane fish, Goli baje, Kori rotti.'
@@ -256,7 +257,7 @@ async function sendMessage(){
   try{
     const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({systemPrompt:sysPr(),messages:hist.slice(-12)})
+      body:JSON.stringify({systemPrompt:sysPr(), messages:hist.slice(-12)})
     });
     removeTyping(tid);
     const data=await res.json();
@@ -301,15 +302,16 @@ function fmtAI(raw){
     const l = line.trim();
     if(!l){ html += '<br/>'; continue; }
     if(/^#{1,3}\s/.test(l)){
-      html += '<span class="ai-sec">'+esc2(l.replace(/^#{1,3}\s/,''))+'</span>';
+      html += '<span class="ai-sec">'+l.replace(/^#{1,3}\s/,'')+'</span>';
     } else if(/^[-–•]\s/.test(l)){
       const txt = l.replace(/^[-–•]\s/,'');
-      const fmt = txt.replace(/^([^:]+:)/, '<strong style="color:var(--p)">$1</strong>');
+      // Bold only "Title:" part inline, rest flows naturally after it
+      const fmt = txt.replace(/^([^:]{1,40}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
       html += '<div class="ai-item">'+fmt+'</div>';
     } else if(/^\d+\.\s/.test(l)){
-      const m=l.match(/^(\d+)\.\s(.*)/);
+      const m = l.match(/^(\d+)\.\s(.*)/);
       if(m){
-        const fmt = m[2].replace(/^([^:]+:)/, '<strong style="color:var(--p)">$1</strong>');
+        const fmt = m[2].replace(/^([^:]{1,40}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
         html += '<div class="ai-num"><span class="ai-nbadge">'+m[1]+'</span><span>'+fmt+'</span></div>';
       }
     } else {
