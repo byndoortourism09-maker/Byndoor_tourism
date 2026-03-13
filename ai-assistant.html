@@ -8,8 +8,8 @@
   <style>
   :root{--p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;--dark:#0f172a;--sand:#fdf6ec;--muted:#64748b;--bdr:#e8e4de;}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%;overflow:hidden;position:fixed;width:100%}
-  body{font-family:'DM Sans',sans-serif;background:var(--sand);display:flex;flex-direction:column;max-width:860px;margin:0 auto;height:100%;overflow:hidden}
+  html{height:100%}
+  body{font-family:'DM Sans',sans-serif;background:var(--sand);display:flex;flex-direction:column;max-width:860px;margin:0 auto;height:100vh;overflow:hidden;position:relative}
   .hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,.15)}
   .hd-back{background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0}
   .hd-avatar{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
@@ -26,7 +26,7 @@
   .sug-row{display:flex;gap:7px;width:max-content}
   .sug{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:6px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .2s}
   .sug:active{background:var(--p);color:#fff;border-color:var(--p)}
-  .msgs{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;width:100%}
+  .msgs{flex:1;overflow-y:scroll;overflow-x:hidden;padding:16px 14px 20px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;width:100%;min-height:0;-webkit-overflow-scrolling:touch}
   .msgs::-webkit-scrollbar{width:4px}
   .msgs::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
   .msg{display:flex;gap:9px;align-items:flex-end;animation:msgIn .3s ease;max-width:100%;overflow:hidden}
@@ -161,21 +161,20 @@
     <button class="sug" onclick="quickAsk('Temples near Byndoor with timings?')">🛕 Temples</button>
   </div>
 </div>
-<div class="msgs" id="msgs">
-  <div class="welcome" id="welcome-screen">
-    <div class="welcome-emoji">🌊</div>
-    <div class="welcome-title">Namaste! I'm your Byndoor Guide</div>
-    <div class="welcome-sub">Your personal travel guide for Byndoor Taluk. Ask me about beaches, temples, hotels, food, transport or let me plan your trip!</div>
-    <div class="wf-grid">
-      <div class="wf"><span class="wf-ico">📍</span><span class="wf-txt">Places & Attractions</span></div>
-      <div class="wf"><span class="wf-ico">🗺️</span><span class="wf-txt">Trip Planning</span></div>
-      <div class="wf"><span class="wf-ico">🌤️</span><span class="wf-txt">Weather Advisory</span></div>
-      <div class="wf"><span class="wf-ico">🔊</span><span class="wf-txt">Voice Reply</span></div>
-      <div class="wf"><span class="wf-ico">🌐</span><span class="wf-txt">8 Languages</span></div>
-      <div class="wf"><span class="wf-ico">🎙️</span><span class="wf-txt">Voice Input</span></div>
-    </div>
+<div id="welcome-screen" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;background:var(--sand)">
+  <div class="welcome-emoji">🌊</div>
+  <div class="welcome-title">Namaste! I'm your Byndoor Guide</div>
+  <div class="welcome-sub">Your personal travel guide for Byndoor Taluk. Ask me about beaches, temples, hotels, food, transport or let me plan your trip!</div>
+  <div class="wf-grid">
+    <div class="wf"><span class="wf-ico">📍</span><span class="wf-txt">Places & Attractions</span></div>
+    <div class="wf"><span class="wf-ico">🗺️</span><span class="wf-txt">Trip Planning</span></div>
+    <div class="wf"><span class="wf-ico">🌤️</span><span class="wf-txt">Weather Advisory</span></div>
+    <div class="wf"><span class="wf-ico">🔊</span><span class="wf-txt">Voice Reply</span></div>
+    <div class="wf"><span class="wf-ico">🌐</span><span class="wf-txt">8 Languages</span></div>
+    <div class="wf"><span class="wf-ico">🎙️</span><span class="wf-txt">Voice Input</span></div>
   </div>
 </div>
+<div class="msgs" id="msgs" style="display:none"></div>
 <div class="input-bar">
   <div class="input-wrap">
     <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
@@ -309,9 +308,10 @@ async function sendMessage(){
 
 function addMsg(role,text,showVoice=false){
   const msgs=document.getElementById('msgs');
-  // Hide welcome screen once chat starts
+  // On first message: hide welcome, show chat
   const welcome=document.getElementById('welcome-screen');
-  if(welcome)welcome.remove();
+  if(welcome){welcome.style.display='none';}
+  msgs.style.display='flex';
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   const isAi=role==='ai';
   const div=document.createElement('div');
