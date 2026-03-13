@@ -1,19 +1,15 @@
-const CACHE_NAME = 'byndoor-v2';
+const CACHE_NAME = 'byndoor-v5';
 const ASSETS = [
   '/Byndoor_tourism/',
   '/Byndoor_tourism/index.html',
   '/Byndoor_tourism/manifest.json'
 ];
 
-// Install — cache core assets
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
-  );
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
-// Activate — clean old caches
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -23,15 +19,13 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// Fetch — network first, fallback to cache
 self.addEventListener('fetch', e => {
+  // Always fetch fresh from network for HTML files
+  if (e.request.destination === 'document') {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    return;
+  }
   e.respondWith(
-    fetch(e.request)
-      .then(res => {
-        const clone = res.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-        return res;
-      })
-      .catch(() => caches.match(e.request))
+    caches.match(e.request).then(cached => cached || fetch(e.request))
   );
 });
