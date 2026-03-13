@@ -11,8 +11,7 @@
 html,body{height:100%;overflow:hidden;background:var(--sand)}
 body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex;flex-direction:column}
 
-/* HEADER */
-.hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 3px 16px rgba(0,0,0,.2);z-index:10}
+.hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 3px 16px rgba(0,0,0,.2)}
 .hd-back{background:rgba(255,255,255,.18);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0}
 .hd-av{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:2px solid rgba(255,255,255,.35)}
 .hd-info{flex:1;min-width:0}
@@ -22,18 +21,15 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .hd-lang{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:5px 12px;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
 
-/* CHIPS */
 .chips{padding:8px 14px;background:#fff;border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip-row{display:flex;gap:7px;width:max-content}
-.chip{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
+.chip{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
 .chip:active{background:var(--p);color:#fff;border-color:var(--p)}
 
-/* MESSAGES SCROLL — fills remaining height */
 .msgs-wrap{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--sand)}
 .msgs{display:flex;flex-direction:column;gap:14px;padding:16px 14px 24px}
 
-/* WELCOME */
 .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px 20px;text-align:center;min-height:300px}
 .w-wave{font-size:3rem;display:inline-block;animation:wv 2.5s ease-in-out infinite;margin-bottom:12px}
 @keyframes wv{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
@@ -44,59 +40,39 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 .feat-ico{font-size:1.1rem;flex-shrink:0}
 .feat-txt{font-size:.72rem;font-weight:600;color:var(--dark);line-height:1.3}
 
-/* MESSAGES */
 .msg{display:flex;gap:8px;align-items:flex-end;animation:mIn .25s ease}
 @keyframes mIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .msg.user{flex-direction:row-reverse}
 .av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem}
 .ai-av{background:linear-gradient(135deg,#0a7c6e,#0ea5e9)}
 .user-av{background:linear-gradient(135deg,#f97316,#fbbf24)}
-
-/* ORIGINAL BUBBLE STYLE — clean white AI, teal gradient user */
 .bubble{max-width:78%;padding:11px 14px;border-radius:18px;font-size:.84rem;line-height:1.7;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
 .ai-bubble{background:#fff;color:var(--dark);border-radius:18px 18px 18px 4px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
 .user-bubble{background:linear-gradient(135deg,#0a7c6e,#0d9e8d);color:#fff;border-radius:18px 18px 4px 18px}
 .bubble-time{font-size:.6rem;opacity:.6;margin-top:5px;display:block}
 .msg.user .bubble-time{text-align:right}
 
-/* AI text — original style with colored headings, bullet items */
-.ai-bubble strong{color:var(--p);font-weight:700}
-.ai-sec{display:block;margin:10px 0 5px;font-weight:700;color:var(--dark);font-size:.88rem}
-.ai-item{display:block;padding-left:14px;position:relative;margin:5px 0;font-size:.84rem;line-height:1.65}
-.ai-item::before{content:'•';color:var(--acc);font-weight:900;position:absolute;left:2px;top:1px}
-.ai-num{display:flex;gap:8px;margin:5px 0;font-size:.84rem;line-height:1.65;align-items:flex-start}
+/* AI response elements */
+.ai-sec{display:block;font-weight:700;color:var(--dark);font-size:.88rem;margin:10px 0 4px}
+.ai-item{display:block;padding-left:14px;position:relative;margin:4px 0;line-height:1.6}
+.ai-item::before{content:'•';color:var(--acc);font-weight:900;position:absolute;left:2px}
+.ai-num{display:flex;gap:8px;margin:4px 0;line-height:1.6;align-items:flex-start}
 .ai-nbadge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:3px}
+.ai-p{display:block;margin:3px 0}
 
-/* Typing indicator */
-.typing{display:inline-flex;gap:4px;align-items:center;padding:4px 2px}
+/* Typing dots */
+.typing{display:inline-flex;gap:4px;align-items:center;padding:4px 0}
 .typing span{width:7px;height:7px;border-radius:50%;background:var(--p);opacity:.5;display:inline-block;animation:td .9s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
 .typing span:nth-child(3){animation-delay:.4s}
 @keyframes td{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-7px);opacity:1}}
 
-/* Voice */
 .voice-row{margin-top:8px}
-.speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif}
 .speak-btn.speaking{background:var(--p);color:#fff;border-color:var(--p)}
 
-/* INPUT BAR — fixed to bottom, moves up with keyboard via visualViewport */
-.input-bar{
-  position:fixed;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:100%;
-  max-width:520px;
-  background:#fff;
-  border-top:1px solid var(--bdr);
-  padding:10px 12px;
-  padding-bottom:calc(10px + env(safe-area-inset-bottom));
-  display:flex;
-  align-items:flex-end;
-  gap:8px;
-  box-shadow:0 -3px 16px rgba(0,0,0,.07);
-  z-index:100;
-}
+/* Input bar fixed to bottom, moves above keyboard */
+.input-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;border-top:1px solid var(--bdr);padding:10px 12px;display:flex;align-items:flex-end;gap:8px;box-shadow:0 -3px 16px rgba(0,0,0,.07);z-index:100}
 .inp-wrap{flex:1;min-width:0;background:var(--sand);border:2px solid var(--bdr);border-radius:24px;padding:9px 14px;display:flex;align-items:flex-end;gap:8px;transition:border-color .2s}
 .inp-wrap:focus-within{border-color:var(--p)}
 #msg-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--dark);resize:none;max-height:100px;min-height:22px;line-height:1.5}
@@ -108,7 +84,6 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 .send-btn:active{transform:scale(.9)}
 .send-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
 
-/* LANGUAGE PANEL */
 .lang-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
 .lang-panel.open{display:flex}
 .lang-sheet{background:#fff;border-radius:24px 24px 0 0;padding:22px 18px 36px;width:100%;max-width:520px}
@@ -141,7 +116,6 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
   </div>
 </div>
 
-<!-- SCROLLABLE MESSAGES — padded so input bar never covers last message -->
 <div class="msgs-wrap" id="msgs-wrap" style="padding-bottom:80px">
   <div class="welcome" id="welcome">
     <span class="w-wave">🌊</span>
@@ -159,7 +133,6 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
   <div class="msgs" id="msgs"></div>
 </div>
 
-<!-- INPUT BAR — fixed bottom, keyboard-aware -->
 <div class="input-bar" id="input-bar">
   <div class="inp-wrap">
     <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1"
@@ -188,23 +161,20 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-// ── KEYBOARD FIX — input bar follows keyboard using visualViewport ──
+// ── KEYBOARD FIX ──
 const inputBar = document.getElementById('input-bar');
 const msgsWrap = document.getElementById('msgs-wrap');
-
 function adjustForKeyboard(){
   if(!window.visualViewport) return;
-  const vv = window.visualViewport;
-  const keyboardH = window.innerHeight - vv.height;
-  inputBar.style.bottom = Math.max(0, keyboardH) + 'px';
-  msgsWrap.style.paddingBottom = (inputBar.offsetHeight + Math.max(0, keyboardH) + 8) + 'px';
-  setTimeout(() => { msgsWrap.scrollTop = msgsWrap.scrollHeight; }, 80);
+  const kb = window.innerHeight - window.visualViewport.height;
+  inputBar.style.bottom = Math.max(0,kb) + 'px';
+  msgsWrap.style.paddingBottom = (inputBar.offsetHeight + Math.max(0,kb) + 8) + 'px';
+  setTimeout(()=>{ msgsWrap.scrollTop = msgsWrap.scrollHeight; }, 80);
 }
 if(window.visualViewport){
   window.visualViewport.addEventListener('resize', adjustForKeyboard);
   window.visualViewport.addEventListener('scroll', adjustForKeyboard);
 }
-window.addEventListener('load', adjustForKeyboard);
 
 // ── FIREBASE ──
 firebase.initializeApp({
@@ -216,170 +186,168 @@ firebase.initializeApp({
   appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"
 });
 const db = firebase.firestore();
-window.PL=[]; window.WD=null;
+window.PL = []; window.WD = null;
 (async()=>{
-  try{const s=await db.collection('places').get();window.PL=s.docs.map(d=>({id:d.id,...d.data()}));}catch(e){}
-  try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&timezone=Asia/Kolkata&forecast_days=2');window.WD=await r.json();}catch(e){}
+  try{ const s = await db.collection('places').get(); window.PL = s.docs.map(d=>({id:d.id,...d.data()})); }catch(e){}
+  try{ const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&timezone=Asia/Kolkata&forecast_days=2'); window.WD = await r.json(); }catch(e){}
 })();
 
-let lang='en-IN', langName='English', hist=[], synth=window.speechSynthesis, rec=null, listening=false, msgN=0, started=false, currentUtt=null;
+// ── STATE ──
+let lang='en-IN', langName='English', hist=[], synth=window.speechSynthesis;
+let rec=null, listening=false, msgN=0, started=false, currentUtt=null;
 
+// ── SYSTEM PROMPT ──
 function sysPr(){
   const wd={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
   let w='';
-  if(window.WD){const c=window.WD.current,d=window.WD.daily;w='\nWEATHER NOW: '+(wd[c.weather_code]||'Unknown')+', '+Math.round(c.temperature_2m)+'°C, Humidity '+c.relative_humidity_2m+'%, Wind '+Math.round(c.wind_speed_10m)+' km/h. Tomorrow max '+d?.temperature_2m_max?.[1]+'°C.';}
+  if(window.WD){ const c=window.WD.current,d=window.WD.daily; w='\nWEATHER: '+(wd[c.weather_code]||'Unknown')+', '+Math.round(c.temperature_2m)+'°C, Humidity '+c.relative_humidity_2m+'%, Wind '+Math.round(c.wind_speed_10m)+' km/h. Tomorrow max '+d?.temperature_2m_max?.[1]+'°C.'; }
   let p='';
   if(window.PL.length){
-    const g={};window.PL.forEach(x=>{const c=x.category||'o';if(!g[c])g[c]=[];g[c].push(x);});
+    const g={}; window.PL.forEach(x=>{ const c=x.category||'o'; if(!g[c])g[c]=[]; g[c].push(x); });
     p='\nPLACES:\n';
-    ['attractions','stay','food','transport','nearby'].forEach(c=>{if(g[c])g[c].slice(0,15).forEach(x=>{p+='['+c+'] '+x.name+(x.about?' - '+x.about.slice(0,55):'')+'\n';});});
+    ['attractions','stay','food','transport','nearby'].forEach(c=>{ if(g[c]) g[c].slice(0,15).forEach(x=>{ p+='['+c+'] '+x.name+(x.about?' - '+x.about.slice(0,55):'')+'\n'; }); });
   }
   return 'You are Byndoor Travel Assistant, a warm and knowledgeable local guide for Byndoor Taluk, Karnataka, India.'
-    +'\nFORMAT RULES: No markdown. No asterisks (*). No hash (#). For bullet lists write "- item" on its own line. For numbered lists write "1. item". Separate paragraphs with a blank line.'
-    +'\nCOMPLETION RULES: Always finish your full answer. Never stop mid-sentence. Never truncate. If listing items, always complete the full list before ending.'
-    +'\nPlaces: Maravanthe Beach (NH66 between sea+river), Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple, Trasi Coconut Island.'
+    +'\nFORMAT: No markdown. No asterisks. No hash symbols. For lists write "- Title: description" each on its own line. For numbered lists write "1. Title: description". Always complete your full answer, never stop mid-sentence.'
+    +'\nPlaces: Maravanthe Beach (NH66 between sea and river), Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple, Trasi Coconut Island.'
     +'\nNearby: Murudeshwar 58km, Udupi 55km, Kundapur 15km, Mangalore 110km.'
     +'\nFood: Fish curry rice, Neer dosa, Prawn curry, Bangda fry, Kane fish, Goli baje, Kori rotti.'
-    +'\nBest season: Oct-Mar. Avoid Jun-Sep (heavy monsoon). Transport: NH-66 highway, Mangalore airport 110km, Byndoor/Kundapur railway.'
-    +'\nBe warm and friendly. Use emojis naturally. If asked who built you: Discover Byndoor team.'
+    +'\nBest season: Oct-Mar. Avoid Jun-Sep monsoon. Transport: NH-66, Mangalore airport 110km, Byndoor/Kundapur railway.'
+    +'\nBe warm. Use emojis naturally. If asked who built you: say Discover Byndoor team.'
     +(lang!=='en-IN'?'\nRespond ENTIRELY in '+langName+'.':'')
     +w+p;
 }
 
+// ── SEND MESSAGE ──
 async function sendMessage(){
-  const inp=document.getElementById('msg-input');
-  const txt=inp.value.trim(); if(!txt) return;
+  const inp = document.getElementById('msg-input');
+  const txt = inp.value.trim(); if(!txt) return;
   inp.value=''; inp.style.height='auto';
-  addMsg('user',txt);
-  hist.push({role:'user',content:txt});
-  const btn=document.getElementById('send-btn'); btn.disabled=true;
-  const tid=showTyping();
+  addMsg('user', txt);
+  hist.push({role:'user', content:txt});
+  const btn = document.getElementById('send-btn'); btn.disabled=true;
+  const tid = showTyping();
   try{
-    const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
-      method:'POST',headers:{'Content-Type':'application/json'},
+    const res = await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({systemPrompt:sysPr(), messages:hist.slice(-12)})
     });
     removeTyping(tid);
-    const data=await res.json();
-    if(!res.ok) throw new Error(data.error||'Failed');
-    const reply=data.reply||'Sorry, please try again.';
-    addMsg('ai',reply,true);
-    hist.push({role:'assistant',content:reply});
-  }catch(e){
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Request failed');
+    const reply = data.reply || 'Sorry, no response received.';
+    addMsg('ai', reply, true);
+    hist.push({role:'assistant', content:reply});
+  } catch(e){
     removeTyping(tid);
-    addMsg('ai','Error: '+e.message+' — Please try again 🙏');
-    console.error('Chat error:',e);
+    addMsg('ai', 'Sorry, something went wrong: '+e.message+'. Please try again 🙏');
   }
   btn.disabled=false;
 }
 
-function addMsg(role,text,voice=false){
-  if(!started){started=true;document.getElementById('welcome').style.display='none';}
-  const isAi=role==='ai';
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const d=document.createElement('div');
-  d.className='msg '+(isAi?'ai':'user');
-  let vhtml='';
-  if(isAi&&voice){
+// ── ADD MESSAGE ──
+function addMsg(role, text, voice=false){
+  if(!started){ started=true; document.getElementById('welcome').style.display='none'; }
+  const isAi = role==='ai';
+  const now = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const d = document.createElement('div');
+  d.className = 'msg '+(isAi?'ai':'user');
+  let vhtml = '';
+  if(isAi && voice){
     msgN++; const mid='m'+msgN;
     d.id=mid; d.dataset.text=text;
     vhtml='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="speakText(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';
   }
   const content = isAi ? fmtAI(text) : '<span>'+esc(text)+'</span>';
-  d.innerHTML='<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div>'
+  d.innerHTML = '<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div>'
     +'<div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+content+vhtml+'<span class="bubble-time">'+now+'</span></div>';
   document.getElementById('msgs').appendChild(d);
   scrollDown();
 }
 
-// FORMAT FUNCTION
+// ── FORMAT AI RESPONSE ──
 function fmtAI(raw){
-  // First escape ALL HTML special chars safely
-  let t = raw
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    // Now convert markdown bold to strong (safe since we already escaped)
-    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g,'$1');
-
-  let html = '';
-  for(const line of t.split('\n')){
+  // Escape HTML first for safety
+  const e = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let html='';
+  for(const line of e.split('\n')){
     const l = line.trim();
-    if(!l){ html += '<br/>'; continue; }
+    if(!l){ html+='<br/>'; continue; }
     if(/^#{1,3}\s/.test(l)){
-      html += '<span class="ai-sec">'+l.replace(/^#{1,3}\s/,'')+'</span>';
-    } else if(/^[-–•]\s/.test(l)){
-      const txt = l.replace(/^[-–•]\s/,'');
-      // Bold only "Title:" part (max 50 chars before colon)
-      const fmt = txt.replace(/^([^:]{1,50}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
-      html += '<div class="ai-item">'+fmt+'</div>';
+      // Section heading — dark bold
+      html+='<span class="ai-sec">'+l.replace(/^#{1,3}\s/,'')+'</span>';
+    } else if(/^[-–]\s/.test(l)){
+      // Bullet — bold teal "Title:" then normal text
+      const txt = l.replace(/^[-–]\s/,'');
+      const fmt = txt.replace(/^([^:]{1,50}:)\s*/,'<strong style="color:var(--p)">$1</strong> ');
+      html+='<div class="ai-item">'+fmt+'</div>';
     } else if(/^\d+\.\s/.test(l)){
+      // Numbered — bold teal "Title:" then normal text
       const m = l.match(/^(\d+)\.\s(.*)/);
       if(m){
-        const fmt = m[2].replace(/^([^:]{1,50}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
-        html += '<div class="ai-num"><span class="ai-nbadge">'+m[1]+'</span><span>'+fmt+'</span></div>';
+        const fmt = m[2].replace(/^([^:]{1,50}:)\s*/,'<strong style="color:var(--p)">$1</strong> ');
+        html+='<div class="ai-num"><span class="ai-nbadge">'+m[1]+'</span><span>'+fmt+'</span></div>';
       }
     } else {
-      html += '<p style="margin:3px 0">'+l+'</p>';
+      // Regular paragraph — handle **bold** after escaping
+      const p = l.replace(/\*\*([^*]+)\*\*/g,'<strong style="color:var(--p)">$1</strong>');
+      html+='<span class="ai-p">'+p+'</span>';
     }
   }
   return html;
 }
 
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  if(!started){started=true;document.getElementById('welcome').style.display='none';}
+// ── HELPERS ──
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function showTyping(){
+  if(!started){ started=true; document.getElementById('welcome').style.display='none'; }
   const id='t'+Date.now();
   const d=document.createElement('div'); d.className='msg ai'; d.id=id;
   d.innerHTML='<div class="av ai-av">🌊</div><div class="bubble ai-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
   document.getElementById('msgs').appendChild(d);
   scrollDown(); return id;
 }
-function removeTyping(id){document.getElementById(id)?.remove();}
-function scrollDown(){setTimeout(()=>{msgsWrap.scrollTop=msgsWrap.scrollHeight;},60);}
+function removeTyping(id){ document.getElementById(id)?.remove(); }
+function scrollDown(){ setTimeout(()=>{ msgsWrap.scrollTop=msgsWrap.scrollHeight; },60); }
+window.quickAsk = t=>{ document.getElementById('msg-input').value=t; sendMessage(); };
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
 
-window.quickAsk=t=>{document.getElementById('msg-input').value=t;sendMessage();};
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
-function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
-
-// VOICE SPEAK
-window.speakText=function(btn,mid){
+// ── VOICE SPEAK ──
+window.speakText = function(btn,mid){
   const el=document.getElementById(mid); if(!el) return;
   if(synth.speaking){
     synth.cancel();
     document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊 Listen in '+langName;});
-    if(currentUtt&&currentUtt._mid===mid) return;
+    return;
   }
-  const raw=el.dataset.text||''; if(!raw) return;
-  const clean=raw.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/#{1,3} /g,'').replace(/^[-•]\s/gm,'').replace(/\n/g,' ').replace(/\s+/g,' ').trim();
-  const utt=new SpeechSynthesisUtterance(clean);
-  utt._mid=mid; currentUtt=utt;
-  utt.lang=lang; utt.rate=0.9; utt.pitch=1; utt.volume=1;
-  const voices=synth.getVoices();
-  const match=voices.find(v=>v.lang===lang||v.lang.startsWith(lang.split('-')[0]));
+  const clean=(el.dataset.text||'').replace(/\*\*?([^*]+)\*\*?/g,'$1').replace(/#{1,3} /g,'').replace(/[-•]\s/g,'').replace(/\n/g,' ').replace(/\s+/g,' ').trim();
+  const utt=new SpeechSynthesisUtterance(clean); utt.lang=lang; utt.rate=0.9; utt.pitch=1; utt.volume=1;
+  const match=synth.getVoices().find(v=>v.lang===lang||v.lang.startsWith(lang.split('-')[0]));
   if(match) utt.voice=match;
   btn.textContent='⏹ Stop'; btn.classList.add('speaking');
-  utt.onend=utt.onerror=()=>{btn.textContent='🔊 Listen in '+langName;btn.classList.remove('speaking');currentUtt=null;};
+  utt.onend=utt.onerror=()=>{ btn.textContent='🔊 Listen in '+langName; btn.classList.remove('speaking'); };
   synth.speak(utt);
 };
-if(synth){synth.onvoiceschanged=()=>synth.getVoices();synth.getVoices();}
+if(synth){ synth.onvoiceschanged=()=>synth.getVoices(); synth.getVoices(); }
 
-// VOICE INPUT
-window.toggleMic=function(){
+// ── VOICE INPUT ──
+window.toggleMic = function(){
   if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice input works only in Chrome.');return;}
   if(listening){rec?.stop();return;}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   rec=new SR(); rec.lang=lang; rec.interimResults=false;
-  rec.onstart=()=>{listening=true;document.getElementById('mic-btn').classList.add('on');};
-  rec.onresult=e=>{document.getElementById('msg-input').value=e.results[0][0].transcript;autoResize(document.getElementById('msg-input'));sendMessage();};
-  rec.onend=rec.onerror=()=>{listening=false;document.getElementById('mic-btn').classList.remove('on');};
+  rec.onstart=()=>{ listening=true; document.getElementById('mic-btn').classList.add('on'); };
+  rec.onresult=e=>{ document.getElementById('msg-input').value=e.results[0][0].transcript; autoResize(document.getElementById('msg-input')); sendMessage(); };
+  rec.onend=rec.onerror=()=>{ listening=false; document.getElementById('mic-btn').classList.remove('on'); };
   rec.start();
 };
 
-// LANGUAGE
-window.openLang=()=>document.getElementById('lang-panel').classList.add('open');
-window.closeLang=e=>{if(e.target===document.getElementById('lang-panel'))document.getElementById('lang-panel').classList.remove('open');};
-window.setLang=function(name,code){
+// ── LANGUAGE ──
+window.openLang  = ()=>document.getElementById('lang-panel').classList.add('open');
+window.closeLang = e=>{ if(e.target===document.getElementById('lang-panel')) document.getElementById('lang-panel').classList.remove('open'); };
+window.setLang   = function(name,code){
   lang=code; langName=name;
   document.getElementById('lang-label').textContent=name;
   document.querySelectorAll('.lang-opt').forEach(b=>b.classList.toggle('active',b.textContent.includes(name)));
