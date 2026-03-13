@@ -8,22 +8,11 @@
 <style>
 :root{--p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;--dark:#0f172a;--sand:#fdf6ec;--muted:#64748b;--bdr:#e8e4de;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-/* ── FULL SCREEN LAYOUT ── */
-html,body{height:100%;background:#f0ede8}
-body{
-  font-family:'DM Sans',sans-serif;
-  max-width:520px;
-  margin:0 auto;
-  /* JS will set exact px height */
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  position:relative;
-}
+html,body{height:100%;background:#e8ddd4;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex;flex-direction:column;height:100%}
 
 /* HEADER */
-.hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 3px 16px rgba(0,0,0,.2);z-index:5}
+.hd{background:linear-gradient(135deg,#064e3b,#0a7c6e,#0ea5e9);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 3px 16px rgba(0,0,0,.2);z-index:10}
 .hd-back{background:rgba(255,255,255,.18);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0}
 .hd-av{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:2px solid rgba(255,255,255,.35)}
 .hd-info{flex:1;min-width:0}
@@ -34,133 +23,103 @@ body{
 .hd-lang{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:5px 12px;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
 
 /* CHIPS */
-.chips{padding:8px 14px;background:#fff;border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.chips{padding:8px 14px;background:rgba(255,255,255,.95);border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none;z-index:9}
 .chips::-webkit-scrollbar{display:none}
 .chip-row{display:flex;gap:7px;width:max-content}
-.chip{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.7rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
-.chip:active,.chip:hover{background:var(--p);color:#fff;border-color:var(--p)}
+.chip{background:#fff;border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.7rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
+.chip:active{background:var(--p);color:#fff;border-color:var(--p)}
 
-/* MESSAGES AREA — scrolls */
+/* CHAT BACKGROUND — scrollable, has bottom padding for input bar */
 .msgs-wrap{
   flex:1;
   min-height:0;
   overflow-y:auto;
   overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
-  background:#f0ede8;
-  /* WhatsApp-style subtle pattern */
-  background-image:radial-gradient(circle,rgba(10,124,110,.04) 1px,transparent 1px);
-  background-size:20px 20px;
+  background:#e8ddd4;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230a7c6e' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  /* IMPORTANT: padding at bottom = input bar height so last message not hidden */
+  padding-bottom:72px;
 }
-.msgs{display:flex;flex-direction:column;gap:10px;padding:14px 12px 20px}
 
 /* WELCOME */
-.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;text-align:center;min-height:60vh}
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;text-align:center;min-height:55vh}
 .w-wave{font-size:3.5rem;display:inline-block;animation:wv 2.5s ease-in-out infinite;margin-bottom:10px}
 @keyframes wv{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.w-card{background:rgba(255,255,255,.92);border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.1);max-width:320px;width:100%}
 .w-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--dark);margin-bottom:7px}
-.w-sub{font-size:.78rem;color:var(--muted);line-height:1.7;max-width:290px;margin-bottom:20px}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:340px}
-.feat{background:#fff;border-radius:14px;padding:11px 12px;display:flex;align-items:center;gap:9px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:left;cursor:default}
-.feat-ico{font-size:1.1rem;flex-shrink:0}
-.feat-txt{font-size:.72rem;font-weight:600;color:var(--dark)}
+.w-sub{font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.feat{background:var(--sand);border-radius:10px;padding:9px 10px;display:flex;align-items:center;gap:7px;text-align:left}
+.feat-ico{font-size:1rem;flex-shrink:0}
+.feat-txt{font-size:.68rem;font-weight:600;color:var(--dark)}
 
 /* MESSAGES */
-.msg{display:flex;gap:8px;align-items:flex-end;animation:mIn .25s ease}
-@keyframes mIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.msgs{display:flex;flex-direction:column;gap:4px;padding:12px 10px 8px}
+.msg{display:flex;gap:7px;align-items:flex-end;animation:mIn .22s ease;margin-bottom:3px}
+@keyframes mIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .msg.user{flex-direction:row-reverse}
-.av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.85rem;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.78rem;box-shadow:0 2px 6px rgba(0,0,0,.15)}
 .ai-av{background:linear-gradient(135deg,#0a7c6e,#0ea5e9)}
 .user-av{background:linear-gradient(135deg,#f97316,#fbbf24)}
 
-.bubble{
-  max-width:78%;
-  padding:10px 14px 8px;
-  border-radius:18px;
-  font-size:.9rem;
-  line-height:1.6;
-  word-break:break-word;
-  overflow-wrap:break-word;
-}
-.ai-bubble{
-  background:#fff;
-  color:var(--dark);
-  border-radius:4px 18px 18px 18px;
-  box-shadow:0 1px 8px rgba(0,0,0,.1);
-}
-.user-bubble{
-  background:linear-gradient(135deg,#0a7c6e,#0d9e8d);
-  color:#fff;
-  border-radius:18px 4px 18px 18px;
-  box-shadow:0 1px 8px rgba(10,124,110,.3);
-}
-.btime{font-size:.6rem;opacity:.5;margin-top:4px;display:block}
-.msg.user .btime{text-align:right}
+/* Bubble tails like WhatsApp */
+.bubble{max-width:80%;padding:8px 12px 5px;font-size:.88rem;line-height:1.6;word-break:break-word;overflow-wrap:break-word;position:relative}
+.ai-bubble{background:#fff;color:var(--dark);border-radius:0px 12px 12px 12px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.user-bubble{background:#dcf8c6;color:#111;border-radius:12px 0px 12px 12px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* Triangle tail for AI */
+.ai-bubble::before{content:'';position:absolute;top:0;left:-7px;width:0;height:0;border-top:8px solid #fff;border-left:8px solid transparent}
+/* Triangle tail for user */
+.user-bubble::before{content:'';position:absolute;top:0;right:-7px;width:0;height:0;border-top:8px solid #dcf8c6;border-right:8px solid transparent}
 
-/* AI text — each element is block, stacks vertically */
-.ap{display:block;margin:2px 0;line-height:1.65}
-.ah{display:block;font-weight:700;color:var(--p);margin:10px 0 4px;padding-bottom:4px;border-bottom:1.5px solid #eef8f7;font-size:.9rem}
-.al{display:block;padding-left:18px;position:relative;margin:4px 0;line-height:1.55}
-.al::before{content:'●';color:var(--acc);font-size:.55rem;position:absolute;left:3px;top:5px}
-.an{display:flex;gap:8px;align-items:flex-start;margin:4px 0}
-.nbadge{background:var(--p);color:#fff;border-radius:50%;width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0;margin-top:2px}
-.aspace{display:block;height:6px}
+.btime{font-size:.58rem;color:#999;margin-top:3px;display:flex;justify-content:flex-end;gap:4px;align-items:center}
+
+/* AI text blocks */
+.ap{display:block;margin:2px 0}
+.ah{display:block;font-weight:700;color:var(--p);margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #f0ede8;font-size:.88rem}
+.al{display:block;padding-left:16px;position:relative;margin:3px 0}
+.al::before{content:'•';color:var(--p);font-weight:900;position:absolute;left:2px}
+.an{display:flex;gap:7px;align-items:flex-start;margin:3px 0}
+.nbadge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.aspace{display:block;height:5px}
 
 /* Typing dots */
-.typing-bub{background:#fff;padding:13px 18px;border-radius:4px 18px 18px 18px;box-shadow:0 1px 8px rgba(0,0,0,.1);display:inline-flex;gap:5px;align-items:center}
-.typing-bub span{width:8px;height:8px;border-radius:50%;background:var(--p);opacity:.6;display:inline-block;animation:td .9s infinite}
+.typing-bub{background:#fff;padding:12px 16px;border-radius:0 12px 12px 12px;box-shadow:0 1px 4px rgba(0,0,0,.12);display:inline-flex;gap:4px;align-items:center;position:relative}
+.typing-bub::before{content:'';position:absolute;top:0;left:-7px;width:0;height:0;border-top:8px solid #fff;border-left:8px solid transparent}
+.typing-bub span{width:7px;height:7px;border-radius:50%;background:var(--p);opacity:.5;display:inline-block;animation:td .9s infinite}
 .typing-bub span:nth-child(2){animation-delay:.2s}
 .typing-bub span:nth-child(3){animation-delay:.4s}
-@keyframes td{0%,60%,100%{transform:translateY(0);opacity:.6}30%{transform:translateY(-8px);opacity:1}}
+@keyframes td{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-7px);opacity:1}}
 
 /* Voice */
-.voice-row{margin-top:8px;padding-top:6px;border-top:1px solid #f0ede8}
-.speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:5px 13px;font-size:.7rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
-.speak-btn.speaking{background:var(--p);color:#fff;border-color:var(--p)}
+.voice-row{margin-top:6px}
+.speak-btn{background:#f0f0f0;border:none;border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.speak-btn.speaking{background:var(--p);color:#fff}
 
-/* ── INPUT BAR — always at bottom like WhatsApp ── */
+/* ── INPUT BAR — FIXED to bottom of visual viewport ── */
 .input-bar{
-  flex-shrink:0;
-  background:#f0ede8;
-  padding:8px 12px 10px;
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:520px;
+  background:#f0ebe3;
+  padding:8px 10px;
+  padding-bottom:calc(8px + env(safe-area-inset-bottom));
   display:flex;
   align-items:flex-end;
   gap:8px;
+  z-index:100;
+  border-top:1px solid #d0c8be;
 }
-.inp-wrap{
-  flex:1;min-width:0;
-  background:#fff;
-  border:none;
-  border-radius:26px;
-  padding:10px 14px;
-  display:flex;
-  align-items:flex-end;
-  gap:8px;
-  box-shadow:0 1px 6px rgba(0,0,0,.1);
-}
-#msg-input{
-  flex:1;border:none;outline:none;background:transparent;
-  font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--dark);
-  resize:none;max-height:100px;min-height:22px;line-height:1.5;
-}
+.inp-wrap{flex:1;min-width:0;background:#fff;border-radius:24px;padding:9px 14px;display:flex;align-items:flex-end;gap:8px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+#msg-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--dark);resize:none;max-height:100px;min-height:22px;line-height:1.5}
 #msg-input::placeholder{color:#bbb}
-.mic-btn{
-  width:28px;height:28px;border-radius:50%;
-  background:transparent;border:none;
-  color:var(--muted);font-size:1.05rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:color .2s;
-}
+.mic-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:#888;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .mic-btn.on{color:var(--p);animation:mp 1s infinite}
 @keyframes mp{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-.send-btn{
-  width:44px;height:44px;flex-shrink:0;border-radius:50%;
-  background:linear-gradient(135deg,#0a7c6e,#0ea5e9);
-  border:none;color:#fff;font-size:1.15rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 3px 14px rgba(10,124,110,.4);
-  transition:transform .15s,opacity .15s;
-}
+.send-btn{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);border:none;color:#fff;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(10,124,110,.4);transition:transform .15s,opacity .15s}
 .send-btn:active{transform:scale(.9)}
 .send-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
 
@@ -176,7 +135,6 @@ body{
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="hd">
   <a href="index.html" class="hd-back">←</a>
   <div class="hd-av">🌊</div>
@@ -187,7 +145,6 @@ body{
   <button class="hd-lang" onclick="openLang()">🌐 <span id="lang-label">English</span></button>
 </div>
 
-<!-- CHIPS -->
 <div class="chips">
   <div class="chip-row">
     <button class="chip" onclick="quickAsk('Best places to visit in Byndoor?')">🏖️ Best places</button>
@@ -199,26 +156,27 @@ body{
   </div>
 </div>
 
-<!-- MESSAGES SCROLL AREA -->
 <div class="msgs-wrap" id="msgs-wrap">
   <div class="welcome" id="welcome">
     <span class="w-wave">🌊</span>
-    <div class="w-title">Namaste! I'm your Byndoor Guide</div>
-    <div class="w-sub">Ask me about beaches, temples, hotels, food, transport — or let me plan your perfect trip!</div>
-    <div class="feat-grid">
-      <div class="feat"><span class="feat-ico">📍</span><span class="feat-txt">Places &amp; Attractions</span></div>
-      <div class="feat"><span class="feat-ico">🗺️</span><span class="feat-txt">Trip Planning</span></div>
-      <div class="feat"><span class="feat-ico">🌤️</span><span class="feat-txt">Weather Advisory</span></div>
-      <div class="feat"><span class="feat-ico">🔊</span><span class="feat-txt">Voice Reply</span></div>
-      <div class="feat"><span class="feat-ico">🌐</span><span class="feat-txt">8 Languages</span></div>
-      <div class="feat"><span class="feat-ico">🎙️</span><span class="feat-txt">Voice Input</span></div>
+    <div class="w-card">
+      <div class="w-title">Namaste! I'm your Byndoor Guide</div>
+      <div class="w-sub">Ask me about beaches, temples, hotels, food, transport — or let me plan your perfect trip!</div>
+      <div class="feat-grid">
+        <div class="feat"><span class="feat-ico">📍</span><span class="feat-txt">Places &amp; Attractions</span></div>
+        <div class="feat"><span class="feat-ico">🗺️</span><span class="feat-txt">Trip Planning</span></div>
+        <div class="feat"><span class="feat-ico">🌤️</span><span class="feat-txt">Weather Advisory</span></div>
+        <div class="feat"><span class="feat-ico">🔊</span><span class="feat-txt">Voice Reply</span></div>
+        <div class="feat"><span class="feat-ico">🌐</span><span class="feat-txt">8 Languages</span></div>
+        <div class="feat"><span class="feat-ico">🎙️</span><span class="feat-txt">Voice Input</span></div>
+      </div>
     </div>
   </div>
   <div class="msgs" id="msgs"></div>
 </div>
 
-<!-- INPUT BAR — bottom like WhatsApp -->
-<div class="input-bar">
+<!-- INPUT BAR fixed to bottom -->
+<div class="input-bar" id="input-bar">
   <div class="inp-wrap">
     <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1"
       onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
@@ -227,7 +185,6 @@ body{
   <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
 </div>
 
-<!-- LANGUAGE PANEL -->
 <div class="lang-panel" id="lang-panel" onclick="closeLang(event)">
   <div class="lang-sheet">
     <h3>🌐 Choose Language</h3>
@@ -247,18 +204,29 @@ body{
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-// ── FIX HEIGHT — use visualViewport so keyboard doesn't hide input ──
-function fixHeight(){
-  const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-  document.body.style.height = h + 'px';
+// ── KEY: Use visualViewport to keep input above keyboard ──
+const bar = document.getElementById('input-bar');
+const wrap = document.getElementById('msgs-wrap');
+
+function onViewport(){
+  if(!window.visualViewport) return;
+  const vv = window.visualViewport;
+  // Position input bar just above keyboard
+  const offsetBottom = window.innerHeight - vv.height - vv.offsetTop;
+  bar.style.bottom = Math.max(0, offsetBottom) + 'px';
+  // Shrink msgs-wrap so it doesn't go behind input bar
+  const barH = bar.offsetHeight;
+  wrap.style.paddingBottom = (barH + 8) + 'px';
+  // Scroll to bottom when keyboard opens
+  setTimeout(()=>{ wrap.scrollTop = wrap.scrollHeight; }, 100);
 }
-fixHeight();
+
 if(window.visualViewport){
-  window.visualViewport.addEventListener('resize', fixHeight);
-  window.visualViewport.addEventListener('scroll', fixHeight);
-} else {
-  window.addEventListener('resize', fixHeight);
+  window.visualViewport.addEventListener('resize', onViewport);
+  window.visualViewport.addEventListener('scroll', onViewport);
 }
+// Run once on load
+window.addEventListener('load', onViewport);
 
 // ── FIREBASE ──
 firebase.initializeApp({
@@ -270,186 +238,117 @@ firebase.initializeApp({
   appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"
 });
 const db = firebase.firestore();
-window.PL = []; window.WD = null;
+window.PL=[]; window.WD=null;
 (async()=>{
   try{const s=await db.collection('places').get();window.PL=s.docs.map(d=>({id:d.id,...d.data()}));}catch(e){}
   try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&timezone=Asia/Kolkata&forecast_days=2');window.WD=await r.json();}catch(e){}
 })();
 
-// ── STATE ──
-let lang='en-IN', langName='English';
-let hist=[], synth=window.speechSynthesis, rec=null, listening=false, msgN=0, started=false;
+let lang='en-IN',langName='English',hist=[],synth=window.speechSynthesis,rec=null,listening=false,msgN=0,started=false;
 
-// ── SYSTEM PROMPT ──
 function sysPr(){
-  const wDesc={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
+  const wd={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
   let w='';
-  if(window.WD){
-    const c=window.WD.current, d=window.WD.daily;
-    w='\nCURRENT WEATHER IN BYNDOOR: '+(wDesc[c.weather_code]||'Unknown')+', Temperature: '+Math.round(c.temperature_2m)+'°C, Humidity: '+c.relative_humidity_2m+'%, Wind: '+Math.round(c.wind_speed_10m)+' km/h, Rain: '+c.precipitation+'mm. Tomorrow max: '+d?.temperature_2m_max?.[1]+'°C.';
-  }
+  if(window.WD){const c=window.WD.current,d=window.WD.daily;w='\nWEATHER NOW: '+(wd[c.weather_code]||'Unknown')+', '+Math.round(c.temperature_2m)+'°C, Humidity '+c.relative_humidity_2m+'%, Wind '+Math.round(c.wind_speed_10m)+' km/h. Tomorrow max '+d?.temperature_2m_max?.[1]+'°C.';}
   let p='';
   if(window.PL.length){
-    const g={};window.PL.forEach(x=>{const c=x.category||'other';if(!g[c])g[c]=[];g[c].push(x);});
-    p='\nPLACES IN DATABASE:\n';
-    ['attractions','stay','food','transport','nearby'].forEach(cat=>{
-      if(g[cat]) g[cat].slice(0,15).forEach(x=>{
-        p+='['+cat+'] '+x.name+(x.subtype?' ('+x.subtype+')':'')+(x.about?' - '+x.about.slice(0,60):'')+'\n';
-      });
-    });
+    const g={};window.PL.forEach(x=>{const c=x.category||'o';if(!g[c])g[c]=[];g[c].push(x);});
+    p='\nPLACES:\n';
+    ['attractions','stay','food','transport','nearby'].forEach(c=>{if(g[c])g[c].slice(0,15).forEach(x=>{p+='['+c+'] '+x.name+(x.about?' - '+x.about.slice(0,55):'')+'\n';});});
   }
-  return 'You are Byndoor Travel Assistant — a warm, knowledgeable local guide for Byndoor Taluk, Udupi District, Karnataka, India.'
-    +'\nCRITICAL FORMATTING: Plain text only. Zero markdown. No asterisks (*). No hash (#). No underscores. No dashes for emphasis. For bullet lists write "- item" on its own line. For numbered lists write "1. item" on its own line. Paragraphs separated by blank lines.'
-    +'\nGive complete, helpful answers. Do not cut responses short.'
-    +'\nKey attractions: Maravanthe Beach (unique NH66 between sea and river), Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Teertha Falls, Someshwara Temple, Trasi Coconut Island.'
-    +'\nNearby cities: Murudeshwar 58km, Udupi 55km, Kundapur 15km, Mangalore 110km, Bangalore 420km.'
-    +'\nBest season: October to March. Avoid June-September (heavy monsoon).'
-    +'\nLocal food must-try: Fish curry rice, Neer dosa, Prawn curry, Bangda (mackerel) fry, Kane (ladyfish), Kori rotti, Goli baje.'
-    +'\nTransport: NH-66 highway, nearest airport Mangalore (110km), nearest railway Byndoor station or Kundapur.'
-    +'\nBe warm, use emojis naturally. If asked who built you: say the Discover Byndoor team.'
-    +(lang!=='en-IN'?'\nRespond ENTIRELY in '+langName+'. Translate everything.':'')
+  return 'You are Byndoor Travel Assistant, a friendly expert guide for Byndoor Taluk, Karnataka, India.'
+    +'\nFORMAT: Plain text only. No asterisks, no #, no markdown. Lists use "- item" each on new line. Numbered lists use "1. item". Give complete detailed answers, never cut short.'
+    +'\nPlaces: Maravanthe Beach, Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple.'
+    +'\nNearby: Murudeshwar 58km, Udupi 55km, Kundapur 15km, Mangalore 110km.'
+    +'\nFood: Fish curry, Neer dosa, Prawn curry, Bangda fry, Kane fish, Goli baje.'
+    +'\nBest season: Oct-Mar. Monsoon: Jun-Sep (heavy rain, avoid).'
+    +'\nBe warm, use emojis naturally. If asked who built you: Discover Byndoor team.'
+    +(lang!=='en-IN'?'\nReply ENTIRELY in '+langName+'.':'')
     +w+p;
 }
 
-// ── SEND MESSAGE ──
 async function sendMessage(){
   const inp=document.getElementById('msg-input');
-  const txt=inp.value.trim(); if(!txt) return;
-  inp.value=''; inp.style.height='auto';
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='auto';
   addMsg('user',txt);
   hist.push({role:'user',content:txt});
-  const btn=document.getElementById('send-btn'); btn.disabled=true;
+  const btn=document.getElementById('send-btn');btn.disabled=true;
   const tid=showTyping();
   try{
-    const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({systemPrompt:sysPr(), messages:hist.slice(-12)})
-    });
+    const res=await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemPrompt:sysPr(),messages:hist.slice(-12)})});
     removeTyping(tid);
     const data=await res.json();
-    if(!res.ok) throw new Error(data.error||'Request failed');
+    if(!res.ok)throw new Error(data.error||'Failed');
     const reply=data.reply||'Sorry, please try again.';
     addMsg('ai',reply,true);
     hist.push({role:'assistant',content:reply});
-  }catch(e){
-    removeTyping(tid);
-    addMsg('ai','Sorry, something went wrong. Please check your connection and try again 🙏');
-  }
+  }catch(e){removeTyping(tid);addMsg('ai','Sorry, something went wrong. Please try again 🙏');}
   btn.disabled=false;
 }
 
-// ── ADD MESSAGE ──
 function addMsg(role,text,voice=false){
-  if(!started){
-    started=true;
-    document.getElementById('welcome').style.display='none';
-  }
+  if(!started){started=true;document.getElementById('welcome').style.display='none';}
   const isAi=role==='ai';
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   const d=document.createElement('div');
   d.className='msg '+(isAi?'ai':'user');
   let vhtml='';
-  if(isAi&&voice){
-    msgN++;
-    const mid='m'+msgN;
-    d.id=mid;
-    d.dataset.text=text;
-    vhtml='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="doSpeak(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';
-  }
-  const content = isAi ? renderAI(text) : '<span class="ap">'+esc(text)+'</span>';
-  d.innerHTML=
-    '<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div>'+
-    '<div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+content+vhtml+'<span class="btime">'+now+'</span></div>';
+  if(isAi&&voice){msgN++;const mid='m'+msgN;d.id=mid;d.dataset.text=text;vhtml='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="doSpeak(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';}
+  d.innerHTML='<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div><div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+(isAi?renderAI(text):'<span class="ap">'+esc(text)+'</span>')+vhtml+'<div class="btime">'+now+(isAi?'':' ✓✓')+'</div></div>';
   document.getElementById('msgs').appendChild(d);
   scrollDown();
 }
 
-// ── RENDER AI TEXT — line by line, all block elements ──
 function renderAI(raw){
-  // Remove all markdown symbols
-  let t = raw
-    .replace(/\*\*(.*?)\*\*/g,'$1')
-    .replace(/\*(.*?)\*/g,'$1')
-    .replace(/__(.*?)__/g,'$1')
-    .replace(/^#+\s+/gm,'');
+  const t=raw.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/^#+\s*/gm,'');
   let html='';
-  const lines=t.split('\n');
-  for(let i=0;i<lines.length;i++){
-    const l=lines[i].trim();
-    if(!l){
-      // blank line = spacer
-      html+='<span class="aspace"></span>';
-      continue;
-    }
-    if(/^-\s+/.test(l)){
-      html+='<span class="al">'+esc(l.replace(/^-\s+/,''))+'</span>';
-    } else if(/^\d+\.\s+/.test(l)){
-      const m=l.match(/^(\d+)\.\s+(.*)/);
-      if(m) html+='<span class="an"><span class="nbadge">'+m[1]+'</span><span>'+esc(m[2])+'</span></span>';
-    } else {
-      html+='<span class="ap">'+esc(l)+'</span>';
-    }
+  for(const line of t.split('\n')){
+    const l=line.trim();
+    if(!l){html+='<span class="aspace"></span>';continue;}
+    if(/^-\s/.test(l)) html+='<span class="al">'+esc(l.replace(/^-\s/,''))+'</span>';
+    else if(/^\d+\.\s/.test(l)){const m=l.match(/^(\d+)\.\s(.*)/);if(m)html+='<span class="an"><span class="nbadge">'+m[1]+'</span><span>'+esc(m[2])+'</span></span>';}
+    else html+='<span class="ap">'+esc(l)+'</span>';
   }
   return html;
 }
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// ── TYPING ──
 function showTyping(){
   if(!started){started=true;document.getElementById('welcome').style.display='none';}
   const id='t'+Date.now();
-  const d=document.createElement('div');
-  d.className='msg ai';d.id=id;
+  const d=document.createElement('div');d.className='msg ai';d.id=id;
   d.innerHTML='<div class="av ai-av">🌊</div><div class="typing-bub"><span></span><span></span><span></span></div>';
   document.getElementById('msgs').appendChild(d);
-  scrollDown();
-  return id;
+  scrollDown();return id;
 }
 function removeTyping(id){document.getElementById(id)?.remove();}
-function scrollDown(){
-  const w=document.getElementById('msgs-wrap');
-  setTimeout(()=>{w.scrollTop=w.scrollHeight;},50);
-}
+function scrollDown(){const w=document.getElementById('msgs-wrap');setTimeout(()=>{w.scrollTop=w.scrollHeight;},60);}
 
-// ── HELPERS ──
 window.quickAsk=t=>{document.getElementById('msg-input').value=t;sendMessage();};
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 
-// ── VOICE SPEAK ──
 window.doSpeak=function(btn,mid){
   const el=document.getElementById(mid);if(!el)return;
-  if(synth.speaking){
-    synth.cancel();
-    document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊 Listen in '+langName;});
-    return;
-  }
+  if(synth.speaking){synth.cancel();document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊 Listen in '+langName;});return;}
   const clean=el.dataset.text.replace(/[*#_\-•]/g,' ').replace(/\n/g,' ').replace(/\s+/g,' ').trim();
-  const u=new SpeechSynthesisUtterance(clean);
-  u.lang=lang;u.rate=0.92;u.pitch=1;
+  const u=new SpeechSynthesisUtterance(clean);u.lang=lang;u.rate=0.92;u.pitch=1;
   u.onend=()=>{btn.classList.remove('speaking');btn.textContent='🔊 Listen in '+langName;};
-  btn.classList.add('speaking');btn.textContent='⏹ Stop';
-  synth.speak(u);
+  btn.classList.add('speaking');btn.textContent='⏹ Stop';synth.speak(u);
 };
 
-// ── VOICE INPUT ──
 window.toggleMic=function(){
-  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice input not supported on this browser.');return;}
+  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice input not supported.');return;}
   if(listening){rec?.stop();return;}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  rec=new SR();rec.lang=lang;rec.interimResults=false;rec.maxAlternatives=1;
+  rec=new SR();rec.lang=lang;rec.interimResults=false;
   rec.onstart=()=>{listening=true;document.getElementById('mic-btn').classList.add('on');};
-  rec.onresult=e=>{
-    document.getElementById('msg-input').value=e.results[0][0].transcript;
-    autoResize(document.getElementById('msg-input'));
-    sendMessage();
-  };
+  rec.onresult=e=>{document.getElementById('msg-input').value=e.results[0][0].transcript;autoResize(document.getElementById('msg-input'));sendMessage();};
   rec.onend=rec.onerror=()=>{listening=false;document.getElementById('mic-btn').classList.remove('on');};
   rec.start();
 };
 
-// ── LANGUAGE ──
 window.openLang=()=>document.getElementById('lang-panel').classList.add('open');
 window.closeLang=e=>{if(e.target===document.getElementById('lang-panel'))document.getElementById('lang-panel').classList.remove('open');};
 window.setLang=function(name,code){
