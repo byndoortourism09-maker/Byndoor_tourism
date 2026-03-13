@@ -267,7 +267,8 @@ async function sendMessage(){
     hist.push({role:'assistant',content:reply});
   }catch(e){
     removeTyping(tid);
-    addMsg('ai','Sorry, something went wrong. Please try again 🙏');
+    addMsg('ai','Error: '+e.message+' — Please try again 🙏');
+    console.error('Chat error:',e);
   }
   btn.disabled=false;
 }
@@ -291,12 +292,17 @@ function addMsg(role,text,voice=false){
   scrollDown();
 }
 
-// ORIGINAL FORMAT FUNCTION — renders rich text the way it looked before
+// FORMAT FUNCTION
 function fmtAI(raw){
-  // Strip markdown symbols but keep structure
+  // First escape ALL HTML special chars safely
   let t = raw
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'$1');
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    // Now convert markdown bold to strong (safe since we already escaped)
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'$1');
+
   let html = '';
   for(const line of t.split('\n')){
     const l = line.trim();
@@ -305,26 +311,23 @@ function fmtAI(raw){
       html += '<span class="ai-sec">'+l.replace(/^#{1,3}\s/,'')+'</span>';
     } else if(/^[-–•]\s/.test(l)){
       const txt = l.replace(/^[-–•]\s/,'');
-      // Bold only "Title:" part inline, rest flows naturally after it
-      const fmt = txt.replace(/^([^:]{1,40}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
+      // Bold only "Title:" part (max 50 chars before colon)
+      const fmt = txt.replace(/^([^:]{1,50}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
       html += '<div class="ai-item">'+fmt+'</div>';
     } else if(/^\d+\.\s/.test(l)){
       const m = l.match(/^(\d+)\.\s(.*)/);
       if(m){
-        const fmt = m[2].replace(/^([^:]{1,40}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
+        const fmt = m[2].replace(/^([^:]{1,50}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
         html += '<div class="ai-num"><span class="ai-nbadge">'+m[1]+'</span><span>'+fmt+'</span></div>';
       }
     } else {
-      html += '<p style="margin:3px 0">'+esc2(l)+'</p>';
+      html += '<p style="margin:3px 0">'+l+'</p>';
     }
   }
   return html;
 }
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-// esc2 allows <strong> tags through
-function esc2(s){return s.replace(/&(?!amp;|lt;|gt;)/g,'&amp;').replace(/<(?!\/?strong)/g,'&lt;');}
 
-function showTyping(){
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   if(!started){started=true;document.getElementById('welcome').style.display='none';}
   const id='t'+Date.now();
   const d=document.createElement('div'); d.className='msg ai'; d.id=id;
