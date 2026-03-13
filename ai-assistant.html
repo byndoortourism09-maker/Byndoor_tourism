@@ -193,13 +193,12 @@
 
   /* ─── INPUT BAR ─── */
   .input-bar{
-    flex-shrink:0;           /* NEVER let this shrink */
+    flex-shrink:0;
     background:#fff;
-    border-top:1px solid var(--bdr);
+    border-bottom:1px solid var(--bdr);
     padding:10px 12px;
-    padding-bottom:calc(10px + env(safe-area-inset-bottom));
     display:flex;align-items:flex-end;gap:8px;
-    box-shadow:0 -3px 16px rgba(0,0,0,.07);
+    box-shadow:0 3px 16px rgba(0,0,0,.07);
     z-index:10;
   }
   .inp-wrap{
@@ -280,6 +279,16 @@
   </div>
 </div>
 
+<!-- INPUT BAR — top position -->
+<div class="input-bar">
+  <div class="inp-wrap">
+    <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1"
+      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input">🎙️</button>
+  </div>
+  <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+</div>
+
 <!-- SCROLLABLE CHAT AREA -->
 <div class="chat-area" id="chat-area">
 
@@ -301,15 +310,7 @@
 
 </div>
 
-<!-- INPUT BAR -->
-<div class="input-bar">
-  <div class="inp-wrap">
-    <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1"
-      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-    <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input">🎙️</button>
-  </div>
-  <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
-</div>
+
 
 <!-- LANGUAGE PANEL -->
 <div class="lang-panel" id="lang-panel" onclick="closeLang(event)">
