@@ -200,25 +200,29 @@ let lang='en-IN', langName='English', hist=[], synth=window.speechSynthesis;
 let rec=null, listening=false, msgN=0, started=false, currentUtt=null;
 
 // ── SYSTEM PROMPT ──
+// Build system prompt ONCE and cache it — not rebuilt every message
+let _sysPr = '';
 function sysPr(){
-  const wd={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Slight rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
+  if(_sysPr && lang==='en-IN') return _sysPr; // return cached if English
+  const wd={0:'Clear',1:'Clear',2:'Cloudy',3:'Overcast',51:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',80:'Showers',95:'Storm'};
+  // Weather — only temp and condition, minimal tokens
   let w='';
-  if(window.WD){ const c=window.WD.current,d=window.WD.daily; w='\nWEATHER: '+(wd[c.weather_code]||'Unknown')+', '+Math.round(c.temperature_2m)+'°C, Humidity '+c.relative_humidity_2m+'%, Wind '+Math.round(c.wind_speed_10m)+' km/h. Tomorrow max '+d?.temperature_2m_max?.[1]+'°C.'; }
+  if(window.WD){ const c=window.WD.current; w=' Weather:'+Math.round(c.temperature_2m)+'°C '+(wd[c.weather_code]||'').toLowerCase()+'.'; }
+  // Places — names only, no descriptions (saves ~200 tokens per request)
   let p='';
   if(window.PL.length){
-    const g={}; window.PL.forEach(x=>{ const c=x.category||'o'; if(!g[c])g[c]=[]; g[c].push(x); });
-    p='\nPLACES:\n';
-    ['attractions','stay','food','transport','nearby'].forEach(c=>{ if(g[c]) g[c].slice(0,15).forEach(x=>{ p+='['+c+'] '+x.name+(x.about?' - '+x.about.slice(0,55):'')+'\n'; }); });
+    const names = window.PL.map(x=>x.name).slice(0,20).join(', ');
+    p=' Local places: '+names+'.';
   }
-  return 'You are Byndoor Travel Assistant, a warm and knowledgeable local guide for Byndoor Taluk, Karnataka, India.'
-    +'\nFORMAT: No markdown. No asterisks. No hash symbols. For lists write "- Title: description" each on its own line. For numbered lists write "1. Title: description". Always complete your full answer, never stop mid-sentence.'
-    +'\nPlaces: Maravanthe Beach (NH66 between sea and river), Trasi Beach, Someshwara Beach, Kollur Mookambika Temple (32km), Belkal Falls, Someshwara Temple, Trasi Coconut Island.'
-    +'\nNearby: Murudeshwar 58km, Udupi 55km, Kundapur 15km, Mangalore 110km.'
-    +'\nFood: Fish curry rice, Neer dosa, Prawn curry, Bangda fry, Kane fish, Goli baje, Kori rotti.'
-    +'\nBest season: Oct-Mar. Avoid Jun-Sep monsoon. Transport: NH-66, Mangalore airport 110km, Byndoor/Kundapur railway.'
-    +'\nBe warm. Use emojis naturally. If asked who built you: say Discover Byndoor team.'
-    +(lang!=='en-IN'?'\nRespond ENTIRELY in '+langName+'.':'')
+  _sysPr = 'Byndoor Travel Assistant. Expert guide for Byndoor Taluk, Karnataka, India.'
+    +' Format: plain text, no markdown. Lists: "- Title: info". Always give complete answers.'
+    +' Key info: Maravanthe Beach(NH66), Trasi Beach, Someshwara Beach, Kollur Temple(32km), Belkal Falls.'
+    +' Nearby: Murudeshwar 58km, Udupi 55km, Mangalore 110km. Season: Oct-Mar.'
+    +' Food: Fish curry, Neer dosa, Prawn curry, Bangda fry.'
+    +' Creator: Discover Byndoor team.'
+    +(lang!=='en-IN'?' Reply in '+langName+'.':'')
     +w+p;
+  return _sysPr;
 }
 
 // ── SEND MESSAGE ──
@@ -234,7 +238,7 @@ async function sendMessage(){
     const res = await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({systemPrompt:sysPr(), messages:hist.slice(-12)})
+      body:JSON.stringify({systemPrompt:sysPr(), messages:hist.slice(-6)})
     });
     removeTyping(tid);
     const data = await res.json();
