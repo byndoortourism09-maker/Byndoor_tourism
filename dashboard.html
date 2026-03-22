@@ -689,7 +689,7 @@ window.savePlace=async()=>{
         showNearby:document.getElementById('att-nearby')?.checked||false,
         youtubeURL:gV('att-youtube')||null,instagramURL:gV('att-instagram')||null,
         trending:document.getElementById('att-trending')?.checked||false,
-        photos:attExtraPhotos.length?attExtraPhotos:undefined,
+        photos:attExtraPhotos.length?attExtraPhotos:[],
         cardBg:selBg.att||GRADS[0],photoURL};
     } else if(curForm==='events'){
       const name=gV('evt-name');if(!name){alert('Please enter event name!');return;}
@@ -709,7 +709,7 @@ window.savePlace=async()=>{
         about:gV('stay-about')||null,facilities:gV('stay-facilities')||null,
         lat:parseFloat(gV('stay-lat'))||null,lng:parseFloat(gV('stay-lng'))||null,
         youtubeURL:gV('stay-youtube')||null,instagramURL:gV('stay-instagram')||null,
-        photos:stayExtraPhotos.length?stayExtraPhotos:undefined,
+        photos:stayExtraPhotos.length?stayExtraPhotos:[],
         cardBg:selBg.stay||GRADS[3],photoURL};
     } else if(curForm==='food'){
       const name=gV('food-name');if(!name){alert('Please enter a name!');return;}
@@ -731,7 +731,7 @@ window.savePlace=async()=>{
         emoji:gV('nearby-emoji')||null,about:gV('nearby-about')||null,
         lat:nearbyLat,lng:nearbyLng,
         youtubeURL:gV('nearby-youtube')||null,instagramURL:gV('nearby-instagram')||null,
-        photos:nearbyExtraPhotos.length?nearbyExtraPhotos:undefined,
+        photos:nearbyExtraPhotos.length?nearbyExtraPhotos:[],
         cardBg:selBg.nearby||GRADS[0],photoURL};
     } else if(curForm==='guide'){
       const name=gV('guide-name');if(!name){alert('Please enter guide name!');return;}
