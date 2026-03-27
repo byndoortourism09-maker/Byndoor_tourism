@@ -142,6 +142,7 @@
 <!-- MODAL -->
 <div class="modal-ov" id="modal">
   <div class="modal">
+    <input type="hidden" id="edit-id-field" value=""/>
     <div class="modal-hd"><span id="modal-title">Add Place</span><button class="modal-x" onclick="closeModal()">✕</button></div>
 
     <!-- FORM TYPE SELECTOR -->
@@ -560,7 +561,9 @@ async function uploadPhoto(file,k){
 
 // OPEN MODAL
 window.openModal=(id)=>{
-  editId=null;resetAll();
+  editId=null;
+  document.getElementById('edit-id-field').value='';
+  resetAll();
   document.getElementById('modal-title').textContent='➕ Add New Place';
   document.getElementById('save-lbl').textContent='Save';
   document.getElementById('modal').classList.add('open');
@@ -568,7 +571,9 @@ window.openModal=(id)=>{
 
 window.openEdit=(id)=>{
   const p=allPlaces.find(x=>x.id===id);if(!p)return;
-  editId=id;resetAll();
+  editId=id;
+  document.getElementById('edit-id-field').value=id;
+  resetAll();
   // Set correct form tab
   const formMap={attractions:'attractions',events:'events',stay:'stay',hotels:'stay',food:'food',transport:'transport',nearby:'nearby'};
   const ft=formMap[p.category]||'attractions';
@@ -769,11 +774,12 @@ window.savePlace=async()=>{
     }
     if(!data){return;}
     data.updatedAt=serverTimestamp();
-    if(editId)await updateDoc(doc(db,'places',editId),data);
+    const eid = document.getElementById('edit-id-field').value;
+    if(eid){await updateDoc(doc(db,'places',eid),data);}
     else{data.createdAt=serverTimestamp();await addDoc(collection(db,'places'),data);}
     closeModal();await load();
   }catch(e){alert('Error: '+e.message);}
-  finally{btn.disabled=false;spin.style.display='none';lbl.textContent=editId?'Update':'Save';}
+  finally{btn.disabled=false;spin.style.display='none';lbl.textContent=document.getElementById('edit-id-field').value?'Update':'Save';}
 };
 
 // DELETE
