@@ -829,6 +829,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))sd.cl
 
 // DETAIL
 window.openDp=function(id){
+  history.pushState({page:'dp',id:id},'',' ');
   const p=places.find(x=>x.id===id);if(!p)return;curPlace=p;
   stopDpSlide();
   const hero=document.getElementById('dp-hero');
@@ -1066,7 +1067,7 @@ function goDpSlide(rail,dots,i){
 }
 
 // SHEET
-window.showSheet=function(k){const s=SHEETS[k];if(!s)return;document.getElementById('s-title').textContent=s.t;document.getElementById('s-body').innerHTML=s.b;document.getElementById('sov').classList.add('open');};
+window.showSheet=function(k){const s=SHEETS[k];if(!s)return;document.getElementById('s-title').textContent=s.t;document.getElementById('s-body').innerHTML=s.b;document.getElementById('sov').classList.add('open');history.pushState({page:'sheet',key:k},'','  ');};
 window.closeSheet=function(e){if(!e||e.target===document.getElementById('sov'))document.getElementById('sov').classList.remove('open');};
 window.submitFb=function(){const m=document.getElementById('fb-msg')?.value;if(!m?.trim()){toast('Please write your feedback!');return;}toast('✅ Thank you for your feedback!');closeSheet();};
 
@@ -1114,6 +1115,28 @@ if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(
 
 // BOOT
 load();loadWeather();
+
+// ── ANDROID BACK BUTTON HANDLER ──
+window.addEventListener('popstate', function(e){
+  // Close detail page if open
+  const dp = document.getElementById('dp');
+  if(dp && dp.style.display !== 'none'){
+    closeDp(); return;
+  }
+  // Close sheet if open
+  const sov = document.getElementById('sov');
+  if(sov && sov.classList.contains('open')){
+    closeSheet(); return;
+  }
+  // Close search drop if open
+  const sd = document.getElementById('srch-drop');
+  if(sd && sd.classList.contains('open')){
+    sd.classList.remove('open'); return;
+  }
+  // Nothing open — let browser go back (exits app)
+});
+// Push initial state so first back doesn't immediately exit
+history.pushState({page:'home'},'','');
 </script>
 
 <!-- AI ASSISTANT FLOATING BUTTON -->
