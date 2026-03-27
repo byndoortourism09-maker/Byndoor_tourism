@@ -567,6 +567,7 @@ window.openModal=(id)=>{
   document.getElementById('modal-title').textContent='➕ Add New Place';
   document.getElementById('save-lbl').textContent='Save';
   document.getElementById('modal').classList.add('open');
+  history.pushState({page:'modal'},'','');
 };
 
 window.openEdit=(id)=>{
@@ -783,7 +784,7 @@ window.savePlace=async()=>{
 };
 
 // DELETE
-window.confirmDel=(id)=>{delId=id;document.getElementById('conf').classList.add('open');};
+window.confirmDel=(id)=>{delId=id;document.getElementById('conf').classList.add('open');history.pushState({page:'conf'},'','');};
 window.closeConf=()=>{document.getElementById('conf').classList.remove('open');delId=null;};
 document.getElementById('conf-yes').addEventListener('click',async()=>{
   if(!delId)return;
@@ -795,6 +796,23 @@ document.getElementById('conf-yes').addEventListener('click',async()=>{
 function gV(id){return document.getElementById(id)?.value?.trim()||'';}
 function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function catE(c){return{attractions:'🏛️',stay:'🏨',hotels:'🏨',food:'🍛',events:'🎉',transport:'🚌',nearby:'🗺️'}[c]||'📍';}
+
+// ── ANDROID BACK BUTTON HANDLER ──
+window.addEventListener('popstate', function(e){
+  // Close confirm dialog if open
+  const conf = document.getElementById('conf');
+  if(conf && conf.classList.contains('open')){
+    closeConf(); return;
+  }
+  // Close modal if open
+  const modal = document.getElementById('modal');
+  if(modal && modal.classList.contains('open')){
+    closeModal(); return;
+  }
+  // Nothing open — let browser go back (to login/previous page)
+});
+// Push initial state
+history.pushState({page:'dashboard'},'','');
 </script>
 </body>
 </html>
