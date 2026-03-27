@@ -662,7 +662,6 @@ function resetAll(){
     document.querySelectorAll(`#cs-${k} .cswatch`).forEach(s=>s.classList.remove('on'));
     selBg[k]=null;photoFiles[k]=null;existingPhotos[k]=null;if(extraPhotoFiles[k])extraPhotoFiles[k]=[];const ep=document.getElementById('ph-'+k+'-extra-prev');if(ep)ep.innerHTML='';
   });
-  editId=null;
   // Reset form tabs
   document.querySelectorAll('#ftabs .ftab').forEach((x,i)=>x.classList.toggle('active',i===0));
   document.querySelectorAll('.fpanel').forEach((x,i)=>x.classList.toggle('active',i===0));
