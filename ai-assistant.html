@@ -352,7 +352,7 @@ window.toggleMic = function(){
 };
 
 // ── LANGUAGE ──
-window.openLang  = ()=>document.getElementById('lang-panel').classList.add('open');
+window.openLang  = ()=>{document.getElementById('lang-panel').classList.add('open');history.pushState({page:'lang'},'','');};
 window.closeLang = e=>{ if(e.target===document.getElementById('lang-panel')) document.getElementById('lang-panel').classList.remove('open'); };
 window.setLang   = function(name,code){
   lang=code; langName=name;
@@ -361,6 +361,16 @@ window.setLang   = function(name,code){
   document.getElementById('lang-panel').classList.remove('open');
   addMsg('ai','Language changed to '+name+' 🌐 How can I help you explore Byndoor?',true);
 };
+
+// ── ANDROID BACK BUTTON ──
+window.addEventListener('popstate', function(){
+  const lp = document.getElementById('lang-panel');
+  if(lp && lp.classList.contains('open')){
+    lp.classList.remove('open'); return;
+  }
+  window.location.href = 'index.html';
+});
+history.pushState({page:'chat'},'','');
 </script>
 </body>
 </html>
