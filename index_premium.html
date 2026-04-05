@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="theme-color" content="#0a7c6e"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-title" content="Byndoor"/>
+  <meta name="description" content="Discover Byndoor — Hidden Gem of Coastal Karnataka"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <title>Discover Byndoor 🌊</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+  :root{
+    --p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;--gold:#fbbf24;
+    --pink:#e11d7a;--sea:#0ea5e9;--sand:#fdf6ec;--dark:#0f172a;
+    --muted:#64748b;--bdr:#e8e4de;--r:18px;--r2:12px;
+    --g1:linear-gradient(135deg,#0a7c6e,#0ea5e9);
+    --g2:linear-gradient(135deg,#f97316,#fbbf24);
+    --g3:linear-gradient(135deg,#e11d7a,#f97316);
+    --g4:linear-gradient(135deg,#7c3aed,#0ea5e9);
+    --g5:linear-gradient(135deg,#0f172a,#1e40af);
+    --g6:linear-gradient(135deg,#dc2626,#991b1b);
+    --card:#fff;--bg:#f0f4f4;
+  }
+  /* DARK MODE */
+  body.dark{
+    --sand:#0d1f1c;--dark:#f1f5f9;--card:#1a2e2b;--bg:#0a1a17;
+    --bdr:#1e3530;--muted:#94a3b8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+
+  /* INSTALL BANNER */
+  #install-banner{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--dark);color:#fff;padding:10px 16px;z-index:999;align-items:center;gap:10px}
+  #install-banner.show{display:flex}
+  #install-banner p{flex:1;font-size:.78rem;font-weight:600}
+  #ibtn{background:var(--acc);color:#fff;border:none;border-radius:20px;padding:5px 14px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+  #dbtn{background:none;border:none;color:#aaa;font-size:1.1rem;cursor:pointer}
+
+  /* ── HERO ── */
+  .hero-bg{position:relative;overflow:hidden;padding:0 0 60px}
+  .hero-media{height:72vh;min-height:420px;position:relative;overflow:hidden}
+  .hero-gradient{position:absolute;inset:0;background:linear-gradient(160deg,#064e3b 0%,#0a7c6e 45%,#0ea5e9 100%);z-index:0;transition:background 1.5s ease}
+  .hero-orbs{position:absolute;inset:0;z-index:1;overflow:hidden}
+  .orb{position:absolute;border-radius:50%;animation:orb-float 10s ease-in-out infinite}
+  .orb1{width:280px;height:280px;top:-100px;right:-80px;background:radial-gradient(circle,rgba(14,165,233,.35),transparent 70%);animation-duration:12s}
+  .orb2{width:180px;height:180px;bottom:80px;left:-60px;background:radial-gradient(circle,rgba(5,150,105,.4),transparent 70%);animation-duration:9s;animation-delay:-3s}
+  .orb3{width:120px;height:120px;top:35%;right:10%;background:radial-gradient(circle,rgba(249,115,22,.25),transparent 70%);animation-duration:7s;animation-delay:-5s}
+  @keyframes orb-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(12px,-15px) scale(1.05)}66%{transform:translate(-8px,10px) scale(.97)}}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.05) 0%,transparent 40%,rgba(0,0,0,.55) 100%);z-index:2}
+  .hero-top{position:absolute;top:0;left:0;right:0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;z-index:5}
+  .hero-logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;display:flex;align-items:center;gap:7px;text-shadow:0 1px 8px rgba(0,0,0,.2)}
+  .hero-logo-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  .hero-top-right{display:flex;align-items:center;gap:8px}
+  .dark-toggle{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 12px;color:#fff;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px}
+  .weather-chip{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);color:#fff;padding:6px 13px;border-radius:30px;font-size:.73rem;font-weight:600;display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.2);cursor:pointer}
+  .hero-content{position:absolute;bottom:0;left:0;right:0;padding:0 18px 22px;z-index:5}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);backdrop-filter:blur(6px);color:rgba(255,255,255,.95);font-size:.67rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;border:1px solid rgba(255,255,255,.22)}
+  .hero-title{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:900;color:#fff;line-height:1.08;text-shadow:0 2px 20px rgba(0,0,0,.3);margin-bottom:8px}
+  .hero-title em{font-style:italic;color:#fbbf24}
+  .hero-sub{color:rgba(255,255,255,.82);font-size:.8rem;line-height:1.65;font-weight:400;margin-bottom:16px}
+  .hero-btns{display:flex;gap:9px;flex-wrap:wrap}
+  .btn-primary{background:linear-gradient(135deg,#f5a623,#f97316);color:#fff;border:none;border-radius:25px;padding:11px 22px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 6px 20px rgba(249,115,22,.45);display:flex;align-items:center;gap:6px;transition:transform .18s,box-shadow .18s;text-decoration:none}
+  .btn-primary:active{transform:scale(.95);box-shadow:none}
+  .btn-ghost{background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:25px;padding:11px 18px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .18s;text-decoration:none}
+  .btn-ghost:active{background:rgba(255,255,255,.28)}
+  .hero-curve{position:absolute;bottom:-1px;left:-5%;width:110%;height:52px;background:var(--bg);border-radius:55% 55% 0 0/100% 100% 0 0;z-index:3}
+
+  /* ── WEATHER WIDGET ── */
+  .weather-widget{margin:0 16px;margin-top:-32px;position:relative;z-index:10;background:var(--card);border-radius:20px;padding:14px 16px;box-shadow:0 8px 32px rgba(0,0,0,.12);display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.8)}
+  body.dark .weather-widget{border-color:var(--bdr);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+  .ww-icon{font-size:2.4rem;flex-shrink:0;animation:ww-bob 3s ease-in-out infinite}
+  @keyframes ww-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .ww-main{flex:1}
+  .ww-temp{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--p);line-height:1}
+  .ww-desc{font-size:.78rem;font-weight:600;color:var(--dark);margin-top:2px}
+  .ww-loc{font-size:.65rem;color:var(--muted)}
+  .ww-pills{display:flex;gap:7px}
+  .wpill{text-align:center;background:var(--bg);border-radius:10px;padding:6px 10px}
+  .wpill-v{font-size:.78rem;font-weight:700;color:var(--p)}
+  .wpill-l{font-size:.6rem;color:var(--muted);margin-top:1px}
+
+  /* ── SKELETON LOADING ── */
+  .skel{background:linear-gradient(90deg,#e8e4de 25%,#f4f0ea 50%,#e8e4de 75%);background-size:200% 100%;animation:skel-shine 1.4s infinite;border-radius:8px}
+  body.dark .skel{background:linear-gradient(90deg,#1e3530 25%,#243d39 50%,#1e3530 75%);background-size:200% 100%}
+  @keyframes skel-shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .skel-card{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.07)}
+  .skel-img{height:115px}
+  .skel-body{padding:10px}
+  .skel-line{margin-bottom:6px}
+
+  /* ── BEAUTY CARD ── */
+  .beauty-wrap{padding:18px 16px 0}
+  .beauty-card{border-radius:20px;padding:20px;background:linear-gradient(145deg,#064e3b,#0a7c6e 50%,#0c8a9f);color:#fff;position:relative;overflow:hidden}
+  .beauty-card::after{content:'🌊🌴';position:absolute;right:-8px;bottom:-14px;font-size:4rem;opacity:.14;letter-spacing:-4px}
+  .beauty-head{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:8px}
+  .beauty-body{font-size:.79rem;line-height:1.75;opacity:.92}
+  .beauty-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .bchip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.67rem;font-weight:600;padding:3px 11px;border-radius:20px}
+
+  /* ── SEARCH ── */
+  .search-wrap{padding:16px 16px 0;position:relative;z-index:40}
+  .search-box{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:50px;padding:12px 18px;box-shadow:0 4px 20px rgba(0,0,0,.09);border:2px solid transparent;transition:border-color .2s,box-shadow .2s}
+  .search-box:focus-within{border-color:var(--p);box-shadow:0 4px 20px rgba(10,124,110,.15)}
+  .search-box input{border:none;outline:none;flex:1;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--dark);background:transparent}
+  .search-box input::placeholder{color:#c4bfb8}
+  .srch-clear{cursor:pointer;color:#bbb;font-size:.85rem;display:none;padding:2px 4px}
+  .search-drop{display:none;position:absolute;top:calc(100% - 4px);left:16px;right:16px;background:var(--card);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.15);overflow:hidden;max-height:300px;overflow-y:auto}
+  .search-drop.open{display:block}
+  .sitem{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;border-bottom:1px solid var(--bdr);transition:background .15s}
+  .sitem:last-child{border:none}
+  .sitem:active,.sitem:hover{background:var(--bg)}
+  .sitem-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+  .sitem-name{font-size:.85rem;font-weight:600}
+  .sitem-cat{font-size:.68rem;color:var(--muted);margin-top:1px}
+  .snone{padding:18px;text-align:center;font-size:.8rem;color:var(--muted)}
+
+  /* ── SECTION HEADERS ── */
+  .sh{display:flex;justify-content:space-between;align-items:center;padding:20px 16px 10px}
+  .sh h2{font-family:'Playfair Display',serif;font-size:1.12rem}
+  .sh-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
+
+  /* ── TRENDING ── */
+  .trend-outer{padding:0 16px}
+  .trend-wrap{border-radius:var(--r);overflow:hidden;position:relative;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+  .trend-rail{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+  .tslide{flex-shrink:0;width:100%;height:220px;position:relative;cursor:pointer;overflow:hidden}
+  .tslide img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transform:scale(1.05);transition:transform 6s ease}
+  .tslide.active img{transform:scale(1)}
+  .tslide-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem}
+  .tslide-ov{position:absolute;inset:0;background:linear-gradient(transparent 25%,rgba(0,0,0,.75))}
+  .tslide-info{position:absolute;bottom:14px;left:16px;right:16px;color:#fff}
+  .tslide-badge{display:inline-block;background:var(--acc);color:#fff;font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:10px;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+  .tslide-name{font-family:'Playfair Display',serif;font-size:1.2rem;text-shadow:0 1px 8px rgba(0,0,0,.4)}
+  .tslide-cat{font-size:.7rem;opacity:.85;margin-top:2px;display:flex;align-items:center;gap:5px}
+  .tdots{display:flex;justify-content:center;gap:5px;margin-top:8px}
+  .tdot{width:6px;height:6px;border-radius:50%;background:#d1ccc4;border:none;cursor:pointer;padding:0;transition:all .3s}
+  .tdot.on{background:var(--p);width:20px;border-radius:3px}
+
+  /* ── NEARBY SCROLL ── */
+  .nscroll{display:flex;gap:12px;padding:0 16px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px}
+  .nscroll::-webkit-scrollbar{display:none}
+  .ncard{flex-shrink:0;width:148px;background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.1);cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .ncard:active{transform:scale(.96);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+  .ncard-img{height:105px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+  .ncard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .ncard-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,rgba(0,0,0,.35))}
+  .ncard-body{padding:10px 11px 13px}
+  .ncard-name{font-family:'Playfair Display',serif;font-size:.88rem;line-height:1.25;color:var(--dark)}
+  .ncard-dist{font-size:.67rem;color:var(--p);font-weight:700;margin-top:4px;display:flex;align-items:center;gap:3px}
+
+  /* ── TABS ── */
+  .tabs-wrap{padding:18px 16px 0;overflow-x:auto;scrollbar-width:none}
+  .tabs-wrap::-webkit-scrollbar{display:none}
+  .tabs{display:flex;gap:8px}
+  .tab{flex-shrink:0;border:none;cursor:pointer;padding:9px 17px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;background:var(--card);color:var(--muted);box-shadow:0 2px 8px rgba(0,0,0,.07);transition:all .25s}
+  .tab.active{color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+  .tab[data-tab="attractions"].active{background:var(--g1)}
+  .tab[data-tab="events"].active{background:var(--g3)}
+  .tab[data-tab="stay"].active{background:var(--g4)}
+  .tab[data-tab="food"].active{background:var(--g2)}
+  .tab[data-tab="transport"].active{background:var(--g5)}
+  .tab[data-tab="emergency"].active{background:var(--g6)}
+
+  /* ── SECTIONS ── */
+  .sec{display:none;padding:8px 0 130px;animation:fu .3s ease}
+  .sec.active{display:block}
+  @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ── SEC BANNER ── */
+  .sbanner{margin:12px 16px;border-radius:var(--r);padding:16px 18px;color:#fff;position:relative;overflow:hidden}
+  .sbanner h2{font-family:'Playfair Display',serif;font-size:1.1rem}
+  .sbanner p{font-size:.76rem;opacity:.9;margin-top:3px}
+  .sbanner .deco{position:absolute;right:10px;bottom:-14px;font-size:3.8rem;opacity:.2}
+
+  /* ── SUB TABS ── */
+  .stabs{display:flex;gap:7px;padding:8px 16px;overflow-x:auto;scrollbar-width:none;margin-bottom:6px}
+  .stabs::-webkit-scrollbar{display:none}
+  .stab{flex-shrink:0;border:2px solid var(--bdr);cursor:pointer;padding:5px 13px;border-radius:25px;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;background:var(--card);color:var(--muted);transition:all .2s}
+  .stab.active{background:var(--p);color:#fff;border-color:var(--p)}
+
+  /* ── MAGAZINE CARDS (pcard) ── */
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
+
+  /* Full-width first card */
+  .pgrid .pcard:first-child{grid-column:1/-1}
+  .pgrid .pcard:first-child .pcard-img{height:180px}
+  .pgrid .pcard:first-child .pcard-name{font-size:1.1rem}
+
+  .pcard{background:var(--card);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+  .pcard:active{transform:scale(.97);box-shadow:0 1px 6px rgba(0,0,0,.07)}
+  .pcard-img{height:120px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+  .pcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .4s ease}
+  .pcard:active .pcard-img img{transform:scale(1.04)}
+  .pcard-ov{position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.6))}
+  .pcard-bdg{position:absolute;top:8px;left:8px;background:var(--acc);color:#fff;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px}
+  .pcard-rating{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);color:#fbbf24;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:8px;display:flex;align-items:center;gap:3px}
+  .pcard-body{padding:10px 11px 12px}
+  .pcard-name{font-family:'Playfair Display',serif;font-size:.92rem;line-height:1.25;color:var(--dark)}
+  .pcard-sub{font-size:.65rem;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:4px}
+  .pcard-crowd{font-size:.6rem;font-weight:700;margin-top:5px;padding:2px 8px;border-radius:8px;display:inline-block}
+  .crowd-low{background:#dcfce7;color:#15803d}
+  .crowd-mid{background:#fef9c3;color:#854d0e}
+  .crowd-high{background:#fee2e2;color:#dc2626}
+
+  /* ── LIST CARD ── */
+  .lcard{background:var(--card);border-radius:var(--r);margin:0 16px 12px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.07);cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .lcard:active{transform:scale(.99);box-shadow:0 1px 6px rgba(0,0,0,.07)}
+  .lcard-img{height:148px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+  .lcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .4s}
+  .lcard:active .lcard-img img{transform:scale(1.03)}
+  .lcard-body{padding:12px 14px 14px}
+  .lcard-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .lcard-name{font-family:'Playfair Display',serif;font-size:1rem}
+  .lcard-price{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--p);white-space:nowrap}
+  .lcard-price small{font-size:.68rem;color:#aaa;font-family:'DM Sans',sans-serif}
+  .lcard-stars{font-size:.78rem;color:var(--gold);margin-top:2px}
+  .lcard-desc{font-size:.77rem;color:var(--muted);margin-top:5px;line-height:1.6}
+  .lcard-addr{font-size:.72rem;color:var(--muted);margin-top:4px}
+  .chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .chip{font-size:.63rem;font-weight:600;padding:3px 9px;border-radius:8px}
+
+  /* ── EVENT CARD ── */
+  .ecard{display:flex;align-items:center;gap:13px;background:var(--card);border-radius:var(--r);padding:14px;margin:0 16px 11px;box-shadow:0 3px 12px rgba(0,0,0,.07);cursor:pointer;transition:transform .2s}
+  .ecard:active{transform:scale(.99)}
+  .edate{flex-shrink:0;width:52px;height:58px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+  .edate-d{font-family:'Playfair Display',serif;font-size:1.5rem;line-height:1}
+  .edate-m{font-size:.58rem;font-weight:700;text-transform:uppercase;opacity:.9}
+  .einfo-name{font-family:'Playfair Display',serif;font-size:.93rem}
+  .einfo-meta{font-size:.7rem;color:var(--muted);margin-top:3px;line-height:1.5}
+  .etag{display:inline-block;margin-top:5px;font-size:.62rem;font-weight:700;padding:2px 9px;border-radius:8px;color:#fff}
+
+  /* ── TRANSPORT ── */
+  .tpage{padding:0 16px}
+  .tcat-hd{display:flex;align-items:center;gap:8px;font-family:'Playfair Display',serif;font-size:1rem;margin:16px 0 10px}
+  .tcat-hd span{font-size:1.3rem}
+  .tcard{background:var(--card);border-radius:var(--r2);padding:14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .tcard-name{font-weight:700;font-size:.88rem}
+  .tcard-info{font-size:.74rem;color:var(--muted);margin-top:3px;line-height:1.6}
+  .tcard-bdg{display:inline-block;margin-top:6px;font-size:.62rem;font-weight:700;padding:2px 9px;border-radius:8px;color:#fff}
+  .tcall{background:var(--p);color:#fff;border:none;border-radius:18px;padding:5px 14px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+  .tempty{font-size:.8rem;color:var(--muted);font-style:italic;padding:4px 0}
+
+  /* ── EMERGENCY ── */
+  .epage{padding:0 16px}
+  .emcard{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:var(--r);padding:15px;margin-bottom:11px;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+  .emico{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+  .eminfo{flex:1}
+  .emname{font-weight:700;font-size:.9rem}
+  .emnum{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--p);margin-top:1px}
+  .emsub{font-size:.68rem;color:var(--muted);margin-top:2px}
+  .emcall{background:var(--p);color:#fff;border:none;border-radius:20px;padding:7px 16px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+
+  /* ── BOTTOM NAV ── */
+  .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--bdr);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}
+  .nbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 2px 11px;gap:2px;cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.54rem;font-weight:700;color:#bbb;transition:color .2s;min-width:0}
+  .nbtn .ico{font-size:1.15rem;transition:transform .2s}
+  .nbtn.active{color:var(--p)}
+  .nbtn.active .ico{transform:scale(1.2)}
+
+  /* ── DETAIL PAGE (CINEMATIC) ── */
+  #dp{display:none;position:fixed;inset:0;background:var(--sand);z-index:500;overflow-y:auto;max-width:430px;margin:0 auto}
+  .dp-hero{height:300px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:5rem}
+  .dp-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transform:scale(1.08);animation:ken-burns 8s ease-out forwards}
+  @keyframes ken-burns{from{transform:scale(1.08)}to{transform:scale(1)}}
+  .dp-ov{position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,20,40,.85))}
+  .dp-name{position:absolute;bottom:18px;left:16px;right:16px;font-family:'Playfair Display',serif;font-size:1.55rem;color:#fff;line-height:1.2;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+  .dp-name-sub{font-size:.75rem;opacity:.82;font-family:'DM Sans',sans-serif;font-weight:400;margin-top:3px}
+  .dp-back{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);border:none;color:#fff;padding:7px 15px;border-radius:25px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;z-index:2;display:flex;align-items:center;gap:5px}
+  .dp-body{padding:16px 16px 120px}
+  .dp-meta-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .dp-stars{color:var(--gold);font-size:1.05rem}
+  .dp-rat{font-size:.78rem;color:var(--muted)}
+  .dp-bdg{display:inline-block;font-size:.68rem;font-weight:700;padding:3px 13px;border-radius:20px}
+  .dp-crowd-badge{font-size:.68rem;font-weight:700;padding:3px 11px;border-radius:20px}
+  .dp-h{font-family:'Playfair Display',serif;font-size:1rem;margin:18px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--bdr)}
+  .dp-about{font-size:.84rem;line-height:1.85;color:var(--muted)}
+  .igrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0}
+  .iitem{background:var(--card);border-radius:11px;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .iitem-l{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  .iitem-v{font-family:'Playfair Display',serif;font-size:.9rem;margin-top:3px}
+  .tipbox{background:linear-gradient(135deg,#fff7ed,#ffedd5);border-radius:12px;padding:12px 14px;margin:8px 0;border-left:4px solid var(--acc)}
+  .tipbox p{font-size:.78rem;color:#78350f;line-height:1.7}
+  .mwrap{border-radius:13px;overflow:hidden;height:172px;background:#e0f2f1;margin:8px 0}
+  .mwrap iframe{width:100%;height:100%;border:none}
+  .discbox{background:#fff5f5;border-radius:11px;padding:11px 13px;border-left:3px solid #fca5a5;margin-top:8px}
+  .discbox p{font-size:.72rem;color:#7f1d1d;line-height:1.7}
+  .dp-actions{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--bdr);padding:10px 16px;display:flex;gap:8px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:100;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  .abtn{flex:1;text-align:center;padding:10px;border-radius:25px;font-size:.78rem;font-weight:700;color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+  /* ── SLIDESHOW (existing) ── */
+  .dp-photo-slide{position:relative;height:300px;overflow:hidden}
+  .dp-slide-rail{display:flex;height:100%;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+  .dp-slide-item{flex-shrink:0;width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;font-size:5rem}
+  .dp-slide-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .dp-slide-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
+  .dp-slide-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;padding:0;transition:all .25s}
+  .dp-slide-dot.on{background:#fff;width:18px;border-radius:3px}
+
+  /* ── AI FAB ── */
+  .ai-fab{position:fixed;bottom:80px;right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);color:#fff;font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:200;box-shadow:0 6px 24px rgba(10,124,110,.45);text-decoration:none;border:none;transition:transform .2s}
+  .ai-fab:active{transform:scale(.92)}
+  .ai-fab-pulse{position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(10,124,110,.4);animation:fab-pulse 2s ease-out infinite}
+  .ai-fab-pulse2{position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(10,124,110,.2);animation:fab-pulse 2s ease-out infinite .6s}
+  @keyframes fab-pulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.4);opacity:0}}
+  .ai-fab-bubble{position:fixed;bottom:142px;right:14px;background:var(--card);border-radius:16px 16px 4px 16px;padding:10px 14px;font-size:.75rem;font-weight:600;color:var(--dark);box-shadow:0 4px 20px rgba(0,0,0,.15);max-width:180px;z-index:200;animation:bubble-in .4s cubic-bezier(.34,1.56,.64,1) forwards;display:none;line-height:1.5}
+  .ai-fab-bubble.show{display:block}
+  @keyframes bubble-in{from{opacity:0;transform:scale(.8) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  .ai-fab-label{position:fixed;bottom:88px;right:76px;background:rgba(0,0,0,.65);color:#fff;font-size:.65rem;font-weight:600;padding:4px 10px;border-radius:10px;z-index:200;pointer-events:none;white-space:nowrap}
+
+  /* ── FOOTER ── */
+  .footer{background:var(--dark);color:#fff;padding:28px 18px 20px;margin-top:12px}
+  .ft-logo{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:3px}
+  .ft-tag{font-size:.72rem;color:#475569;margin-bottom:18px}
+  .ft-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+  .ft-btn{background:rgba(255,255,255,.05);color:#94a3b8;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:left;display:flex;align-items:center;gap:7px;transition:background .2s}
+  .ft-btn:hover,.ft-btn:active{background:rgba(255,255,255,.1);color:#fff}
+  .ft-full{grid-column:1/-1}
+  .ft-hr{border:none;border-top:1px solid rgba(255,255,255,.07);margin-bottom:14px}
+  .ft-copy{font-size:.68rem;color:#334155;line-height:1.9}
+  .ft-social{display:flex;gap:12px;margin-bottom:16px}
+  .ft-sico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(255,255,255,.07);cursor:pointer;transition:background .2s;text-decoration:none}
+  .ft-sico:active{background:rgba(255,255,255,.15)}
+
+  /* ── SHEET ── */
+  .sov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:800;align-items:flex-end;justify-content:center}
+  .sov.open{display:flex}
+  .sheet{background:var(--card);border-radius:24px 24px 0 0;padding:22px 20px 50px;width:100%;max-width:430px;max-height:82vh;overflow-y:auto}
+  .sheet-hd{font-family:'Playfair Display',serif;font-size:1.15rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .sheet-x{background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999}
+  .sheet h3{font-family:'Playfair Display',serif;font-size:.92rem;margin:13px 0 4px;color:var(--p)}
+  .sheet p{font-size:.79rem;color:var(--muted);line-height:1.8;margin-bottom:7px}
+  .fb-field{width:100%;border:2px solid var(--bdr);border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;margin-bottom:10px;background:var(--card);color:var(--dark);transition:border .2s}
+  .fb-field:focus{border-color:var(--p)}
+  textarea.fb-field{min-height:95px;resize:vertical}
+  .fb-sub{width:100%;background:var(--p);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer}
+
+  /* ── LOADING / EMPTY ── */
+  .loading{display:flex;align-items:center;justify-content:center;padding:48px;flex-direction:column;gap:12px}
+  .spinner{width:30px;height:30px;border:3px solid var(--bdr);border-top-color:var(--p);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .empty{text-align:center;padding:40px 20px;color:var(--muted);grid-column:1/-1}
+  .empty-ico{font-size:2.8rem;margin-bottom:10px}
+  .empty p{font-size:.8rem}
+
+  /* ── TOAST ── */
+  .toast{display:none;position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:8px 20px;border-radius:25px;font-size:.77rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.35)}
+  .toast.show{display:block}
+
+  /* ── MAP ── */
+  #map-container{height:calc(100vh - 180px);border-radius:var(--r);overflow:hidden;margin:12px 16px}
+  .map-filter-bar{display:flex;gap:7px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
+  .map-filter-bar::-webkit-scrollbar{display:none}
+  </style>
+</head>
+<body>
+
+<div id="install-banner">
+  <p>📲 Add Byndoor app to home screen!</p>
+  <button id="ibtn">Install</button>
+  <button id="dbtn">✕</button>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero-bg">
+  <div class="hero-media">
+    <div class="hero-gradient" id="hero-gradient"></div>
+    <div class="hero-orbs">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-top">
+      <div class="hero-logo">
+        <span class="hero-logo-dot"></span>
+        🌊 Discover Byndoor
+      </div>
+      <div class="hero-top-right">
+        <button class="dark-toggle" onclick="toggleDark()" id="dark-btn">🌙 Dark</button>
+        <div class="weather-chip" id="weather-chip">☀️ <span id="chip-temp">29°C</span></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">📍 Byndoor Taluk · Udupi District · Karnataka</div>
+      <div class="hero-title">Coastal<br/><em>Karnataka's</em><br/>Hidden Gem</div>
+      <div class="hero-sub">Maravanthe · Kollur · Trasi · Navunda<br/>Beaches · Temples · Waterfalls · Seafood</div>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="document.querySelector('.tabs-wrap').scrollIntoView({behavior:'smooth'})">🏖️ Explore Places</button>
+        <a class="btn-ghost" href="ai-assistant.html">🤖 Ask AI Guide</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-curve"></div>
+</div>
+
+<!-- ── WEATHER WIDGET ── -->
+<div class="weather-widget">
+  <div class="ww-icon" id="ww-ico">☀️</div>
+  <div class="ww-main">
+    <div class="ww-temp" id="ww-temp">29°C</div>
+    <div class="ww-desc" id="ww-desc">Sunny &amp; Clear</div>
+    <div class="ww-loc">Byndoor, Karnataka</div>
+  </div>
+  <div class="ww-pills">
+    <div class="wpill"><div class="wpill-v" id="ww-hum">72%</div><div class="wpill-l">Humidity</div></div>
+    <div class="wpill"><div class="wpill-v" id="ww-rain">0mm</div><div class="wpill-l">Rain</div></div>
+    <div class="wpill"><div class="wpill-v" id="ww-wind">12</div><div class="wpill-l">km/h</div></div>
+  </div>
+</div>
+
+<!-- ── BEAUTY ── -->
+<div class="beauty-wrap">
+  <div class="beauty-card">
+    <div class="beauty-head">🌊 Welcome to Byndoor Taluk</div>
+    <div class="beauty-body">Byndoor Taluk is a stunning stretch of coastal Karnataka where the Western Ghats meet the Arabian Sea. From the world-famous Maravanthe Beach — where NH 66 runs between the sea and the Sauparnika river — to the divine Kollur Mookambika Temple, pristine Trasi beach, and thundering waterfalls hidden in the Ghats.</div>
+    <div class="beauty-chips">
+      <span class="bchip">🏖️ Maravanthe Beach</span>
+      <span class="bchip">🛕 Kollur Mookambika</span>
+      <span class="bchip">🌊 Sauparnika River</span>
+      <span class="bchip">🦋 Butterfly Camp</span>
+      <span class="bchip">💧 Waterfalls</span>
+      <span class="bchip">🦀 Fresh Seafood</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── SEARCH ── -->
+<div class="search-wrap">
+  <div class="search-box">
+    <span style="color:#c4bfb8;font-size:.95rem">🔍</span>
+    <input id="srch" type="text" placeholder="Search beaches, temples, hotels…" autocomplete="off"/>
+    <span class="srch-clear" id="srch-clear" onclick="clearSearch()">✕</span>
+  </div>
+  <div class="search-drop" id="srch-drop"></div>
+</div>
+
+<!-- ── TRENDING ── -->
+<div class="sh">
+  <div>
+    <h2>🔥 Trending Now</h2>
+    <div class="sh-sub">Popular places in Byndoor</div>
+  </div>
+</div>
+<div class="trend-outer">
+  <div class="trend-wrap">
+    <div class="trend-rail" id="trend-rail"></div>
+  </div>
+  <div class="tdots" id="tdots"></div>
+</div>
+
+<!-- ── NEARBY ── -->
+<div class="sh" style="padding-top:14px">
+  <div>
+    <h2>🗺️ Explore Nearby</h2>
+    <div class="sh-sub">Day trips from Byndoor</div>
+  </div>
+</div>
+<div class="nscroll" id="nearby-list"></div>
+
+<!-- ── TABS ── -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" data-tab="attractions">🏛️ Attractions</button>
+    <button class="tab" data-tab="events">🎉 Events</button>
+    <button class="tab" data-tab="stay">🏨 Stay</button>
+    <button class="tab" data-tab="food">🍛 Food</button>
+    <button class="tab" data-tab="transport">🚌 Transport</button>
+    <button class="tab" data-tab="emergency">🚨 Emergency</button>
+    <button class="tab" data-tab="map">🗺️ Map</button>
+    <button class="tab" data-tab="more">☰ More</button>
+  </div>
+</div>
+
+<!-- ── ATTRACTIONS ── -->
+<div class="sec active" id="attractions">
+  <div class="sbanner" style="background:var(--g1)"><h2>Explore Byndoor's Wonders</h2><p>Beaches, temples, waterfalls, wildlife &amp; more</p><div class="deco">🌅</div></div>
+  <div class="stabs" id="stabs">
+    <button class="stab active" data-sub="all">All</button>
+    <button class="stab" data-sub="beaches">🏖️ Beaches</button>
+    <button class="stab" data-sub="temples">🛕 Temples</button>
+    <button class="stab" data-sub="waterfalls">💧 Waterfalls &amp; Lakes</button>
+    <button class="stab" data-sub="hills">⛰️ Hills</button>
+    <button class="stab" data-sub="rivers">🌊 River Activities</button>
+    <button class="stab" data-sub="sea-sports">🤿 Sea Sports</button>
+    <button class="stab" data-sub="wildlife">🦋 Wildlife</button>
+    <button class="stab" data-sub="historical">🏛️ Historical</button>
+    <button class="stab" data-sub="cultural">🎭 Cultural</button>
+    <button class="stab" data-sub="others">📍 Others</button>
+  </div>
+  <div id="att-grid" class="pgrid">
+    <!-- SKELETON LOADING -->
+    <div class="skel-card" style="grid-column:1/-1"><div class="skel skel-img" style="height:180px"></div><div class="skel-body"><div class="skel skel-line" style="height:14px;width:70%"></div><div class="skel skel-line" style="height:10px;width:45%"></div></div></div>
+    <div class="skel-card"><div class="skel skel-img" style="height:115px"></div><div class="skel-body"><div class="skel skel-line" style="height:12px;width:80%"></div><div class="skel skel-line" style="height:9px;width:55%"></div></div></div>
+    <div class="skel-card"><div class="skel skel-img" style="height:115px"></div><div class="skel-body"><div class="skel skel-line" style="height:12px;width:65%"></div><div class="skel skel-line" style="height:9px;width:40%"></div></div></div>
+  </div>
+</div>
+
+<!-- ── EVENTS ── -->
+<div class="sec" id="events">
+  <div class="sbanner" style="background:var(--g3)"><h2>Byndoor Celebrates!</h2><p>Festivals, cultural nights &amp; local events</p><div class="deco">🎊</div></div>
+  <div id="evt-list"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+
+<!-- ── STAY ── -->
+<div class="sec" id="stay">
+  <div class="sbanner" style="background:var(--g4)"><h2>Rest in Coastal Comfort</h2><p>Hotels, resorts, homestays &amp; camps</p><div class="deco">🌴</div></div>
+  <div id="stay-list"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+
+<!-- ── FOOD ── -->
+<div class="sec" id="food">
+  <div class="sbanner" style="background:var(--g2)"><h2>Taste Coastal Karnataka!</h2><p>Fresh seafood, coconut curries &amp; local delicacies</p><div class="deco">🦐</div></div>
+  <div id="food-list"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+
+<!-- ── TRANSPORT ── -->
+<div class="sec" id="transport">
+  <div class="sbanner" style="background:var(--g5)"><h2>Getting Around Byndoor</h2><p>Trains, buses, taxis &amp; auto rickshaws</p><div class="deco">🚌</div></div>
+  <div class="tpage" id="transport-body"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+
+<!-- ── EMERGENCY ── -->
+<div class="sec" id="emergency">
+  <div class="sbanner" style="background:var(--g6)"><h2>Emergency Contacts</h2><p>Byndoor &amp; Karnataka emergency services</p><div class="deco">🚨</div></div>
+  <div class="epage">
+    <div class="emcard"><div class="emico" style="background:#FEE2E2">👮</div><div class="eminfo"><div class="emname">Police Station</div><div class="emnum">100</div><div class="emsub">Byndoor Police · 24/7</div></div><button class="emcall" onclick="window.open('tel:100')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#FEE2E2">🚑</div><div class="eminfo"><div class="emname">Ambulance</div><div class="emnum">108</div><div class="emsub">Karnataka Emergency · Free</div></div><button class="emcall" onclick="window.open('tel:108')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#FEF3C7">🚒</div><div class="eminfo"><div class="emname">Fire Service</div><div class="emnum">101</div><div class="emsub">Fire &amp; Rescue · Emergency</div></div><button class="emcall" onclick="window.open('tel:101')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#DCFCE7">🏥</div><div class="eminfo"><div class="emname">CHC Byndoor Hospital</div><div class="emnum">08254-253027</div><div class="emsub">Community Health Centre</div></div><button class="emcall" onclick="window.open('tel:08254253027')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#EDE9FE">🆘</div><div class="eminfo"><div class="emname">National Emergency</div><div class="emnum">112</div><div class="emsub">Police · Fire · Medical</div></div><button class="emcall" onclick="window.open('tel:112')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#E0F2FE">🌊</div><div class="eminfo"><div class="emname">Coast Guard</div><div class="emnum">1554</div><div class="emsub">Sea Emergency · Distress at Sea</div></div><button class="emcall" onclick="window.open('tel:1554')">Call</button></div>
+  </div>
+</div>
+
+<!-- ── MAP ── -->
+<div class="sec" id="map">
+  <div class="sbanner" style="background:var(--g1)"><h2>🗺️ Tourist Map</h2><p>All places on an interactive map</p><div class="deco">📍</div></div>
+  <div class="map-filter-bar" id="map-filter-bar">
+    <button class="stab active" onclick="filterMap('all',this)">All</button>
+    <button class="stab" onclick="filterMap('attractions',this)">🏛️ Attractions</button>
+    <button class="stab" onclick="filterMap('stay',this)">🏨 Stay</button>
+    <button class="stab" onclick="filterMap('food',this)">🍛 Food</button>
+    <button class="stab" onclick="filterMap('nearby',this)">🗺️ Nearby</button>
+  </div>
+  <div id="map-container"></div>
+</div>
+
+<!-- ── MORE ── -->
+<div class="sec" id="more">
+  <div class="sbanner" style="background:linear-gradient(135deg,#374151,#1f2937)"><h2>More</h2><p>Guides, emergency &amp; more</p><div class="deco">☰</div></div>
+  <div style="padding:0 16px" id="guide-list"></div>
+  <div class="footer">
+    <div class="ft-logo">🌊 Discover Byndoor</div>
+    <div class="ft-tag">Karnataka's Coastal Hidden Gem</div>
+    <div class="ft-social" id="ft-social">
+      <a class="ft-sico" id="fs-fb" href="#" target="_blank">📘</a>
+      <a class="ft-sico" id="fs-yt" href="#" target="_blank">▶️</a>
+      <a class="ft-sico" id="fs-ig" href="#" target="_blank">📸</a>
+      <a class="ft-sico" id="fs-tw" href="#" target="_blank">🐦</a>
+    </div>
+    <div class="ft-grid">
+      <button class="ft-btn" onclick="showSheet('about')">ℹ️ About App</button>
+      <button class="ft-btn" onclick="showSheet('privacy')">🔒 Privacy Policy</button>
+      <button class="ft-btn" onclick="showSheet('terms')">📋 Terms of Use</button>
+      <button class="ft-btn" onclick="showSheet('contact')">📞 Contact Us</button>
+      <button class="ft-btn ft-full" onclick="showSheet('feedback')">💬 Feedback &amp; Suggestions</button>
+    </div>
+    <hr class="ft-hr"/>
+    <div class="ft-copy">© 2025 Discover Byndoor · Made with ❤️ for Byndoor Taluk<br/>Data updates in real-time · Free &amp; Open to all</div>
+  </div>
+</div>
+
+<!-- ── BOTTOM NAV ── -->
+<nav class="bnav">
+  <button class="nbtn active" data-nav="attractions"><span class="ico">🏛️</span>Explore</button>
+  <button class="nbtn" data-nav="events"><span class="ico">🎉</span>Events</button>
+  <button class="nbtn" data-nav="stay"><span class="ico">🏨</span>Stay</button>
+  <button class="nbtn" data-nav="food"><span class="ico">🍛</span>Food</button>
+  <button class="nbtn" data-nav="transport"><span class="ico">🚌</span>Transport</button>
+  <button class="nbtn" data-nav="emergency"><span class="ico">🚨</span>SOS</button>
+</nav>
+
+<!-- ── DETAIL PAGE ── -->
+<div id="dp">
+  <div id="dp-hero" class="dp-hero">
+    <span id="dp-emoji"></span>
+    <div class="dp-ov"></div>
+    <button class="dp-back" onclick="closeDp()">← Back</button>
+    <div class="dp-name" id="dp-name"></div>
+  </div>
+  <div id="dp-body" class="dp-body"></div>
+  <div id="dp-actions" class="dp-actions"></div>
+</div>
+
+<!-- ── AI FAB ── -->
+<div class="ai-fab-bubble" id="ai-bubble">👋 Hi! Ask me anything about Byndoor 🌊</div>
+<a class="ai-fab" href="ai-assistant.html" id="ai-fab">
+  <div class="ai-fab-pulse"></div>
+  <div class="ai-fab-pulse2"></div>
+  🤖
+</a>
+
+<!-- ── SHEET ── -->
+<div class="sov" id="sov" onclick="closeSheet(event)">
+  <div class="sheet">
+    <div class="sheet-hd"><span id="s-title"></span><button class="sheet-x" onclick="closeSheet()">✕</button></div>
+    <div id="s-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DARK MODE ──
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const btn = document.getElementById('dark-btn');
+  btn.textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+  localStorage.setItem('byndoor-dark', document.body.classList.contains('dark') ? '1' : '0');
+}
+if(localStorage.getItem('byndoor-dark')==='1'){
+  document.body.classList.add('dark');
+  document.getElementById('dark-btn').textContent='☀️ Light';
+}
+
+// ── AI FAB GREETING BUBBLE ──
+setTimeout(()=>{
+  const bubble = document.getElementById('ai-bubble');
+  bubble.classList.add('show');
+  setTimeout(()=>bubble.classList.remove('show'), 4000);
+}, 3000);
+
+// ── CROWD INDICATOR ──
+function getCrowdLevel(){
+  const h = new Date().getHours();
+  const d = new Date().getDay(); // 0=Sun
+  if(d===0||d===6){ // weekend
+    if(h>=9&&h<=18) return {label:'🔴 Peak time', cls:'crowd-high'};
+    return {label:'🟡 Moderate', cls:'crowd-mid'};
+  }
+  if(h>=10&&h<=16) return {label:'🟡 Moderate', cls:'crowd-mid'};
+  if(h<8||h>19) return {label:'🟢 Quiet now', cls:'crowd-low'};
+  return {label:'🟢 Less crowded', cls:'crowd-low'};
+}
+
+// ── HERO WEATHER MOOD ──
+function setHeroMood(weatherCode, hour){
+  const grad = document.getElementById('hero-gradient');
+  if(!grad) return;
+  if(weatherCode>=61&&weatherCode<=82){
+    // Rainy — moody dark
+    grad.style.background='linear-gradient(160deg,#0f2027 0%,#203a43 45%,#2c5364 100%)';
+  } else if(hour<7||hour>19){
+    // Night
+    grad.style.background='linear-gradient(160deg,#0a0a2e 0%,#16213e 45%,#0f3460 100%)';
+  } else if(hour<10){
+    // Sunrise — golden
+    grad.style.background='linear-gradient(160deg,#f97316 0%,#0a7c6e 55%,#0ea5e9 100%)';
+  } else {
+    // Default day
+    grad.style.background='linear-gradient(160deg,#064e3b 0%,#0a7c6e 45%,#0ea5e9 100%)';
+  }
+}
+setHeroMood(0, new Date().getHours());
+</script>
+<script>
+const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
+
+// Nearby is now loaded from Firebase (places with showNearby=true)
+// Nearby places loaded from Firebase (category="nearby")
+
+const SHEETS={
+  about:{t:"ℹ️ About This App",b:`<p><strong>Discover Byndoor</strong> is the official tourism guide for Byndoor, a beautiful coastal town in Udupi District, Karnataka.</p><h3>Features</h3><p>✅ Attractions with sub-categories<br/>✅ Live weather updates<br/>✅ Google Maps directions<br/>✅ Bus, train & taxi info<br/>✅ Emergency contacts<br/>✅ Nearby sightseeing<br/>✅ Works offline after first visit</p><h3>Version</h3><p>Version 2.0 · Made with ❤️ for Byndoor</p>`},
+  privacy:{t:"🔒 Privacy Policy",b:`<p><em>Last updated: 2025</em></p><h3>Data Collection</h3><p>We do not collect personal information. No login needed to browse.</p><h3>Location</h3><p>Directions open Google Maps. We do not store your location.</p><h3>Third Party Services</h3><p>Firebase · Google Maps · Cloudinary · Open-Meteo · Netlify</p>`},
+  terms:{t:"📋 Terms of Use",b:`<p><em>Last updated: 2025</em></p><h3>Accuracy</h3><p>Entry fees and timings are for guidance only. Please verify locally.</p><h3>No Liability</h3><p>We are not liable for any inconvenience from information in this app.</p><h3>Jurisdiction</h3><p>Udupi District Courts, Karnataka, India.</p>`},
+  contact:{t:"📞 Contact Us",b:`<h3>Discover Byndoor</h3><p>📍 Byndoor, Udupi District, Karnataka — 576214</p><h3>Get in Touch</h3><p>📧 admin@byndoor.com<br/>📱 WhatsApp: +91 00000 00000</p><h3>List Your Business Free</h3><p>Want to list your hotel, restaurant or attraction? Contact us!</p>`},
+  feedback:{t:"💬 Feedback",b:`<p style="font-size:.8rem;color:#64748b;margin-bottom:14px">Help us improve Discover Byndoor!</p><input class="fb-field" id="fb-name" placeholder="Your name (optional)"/><input class="fb-field" id="fb-email" type="email" placeholder="Email (optional)"/><select class="fb-field" id="fb-type"><option value="">Feedback type…</option><option>General Feedback</option><option>Missing Place</option><option>Wrong Information</option><option>App Issue</option><option>Suggestion</option></select><textarea class="fb-field" id="fb-msg" placeholder="Your feedback…"></textarea><button class="fb-sub" onclick="submitFb()">Send Feedback 💬</button>`}
+};
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const app=initializeApp(FIREBASE_CONFIG);
+const db=getFirestore(app);
+
+let places=[],tab='attractions',sub='all',curPlace=null,tIdx=0,tTimer=null;
+
+// TABS
+const tabs=document.querySelectorAll('.tab'),secs=document.querySelectorAll('.sec'),navs=document.querySelectorAll('.nbtn');
+function goTab(t){
+  tab=t;
+  tabs.forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  secs.forEach(x=>x.classList.toggle('active',x.id===t));
+  navs.forEach(x=>x.classList.toggle('active',x.dataset.nav===t));
+  // Always scroll to tabs section so content is immediately visible
+  const tabsEl=document.querySelector('.tabs-wrap');
+  const top=tabsEl.getBoundingClientRect().top+window.pageYOffset-8;
+  window.scrollTo({top,behavior:'smooth'});
+  render(t);
+}
+tabs.forEach(x=>x.addEventListener('click',()=>goTab(x.dataset.tab)));
+navs.forEach(x=>x.addEventListener('click',()=>goTab(x.dataset.nav)));
+window.goTab=goTab;
+
+// SUB TABS
+document.querySelectorAll('.stab').forEach(x=>x.addEventListener('click',()=>{
+  document.querySelectorAll('.stab').forEach(s=>s.classList.remove('active'));
+  x.classList.add('active');sub=x.dataset.sub;renderAtt();
+}));
+
+// LOAD
+async function load(){
+  try{
+    const s=await getDocs(collection(db,'places'));
+    places=s.docs.map(d=>({id:d.id,...d.data()}));
+    render('attractions');buildTrending();buildNearby(places);buildFooterSocial();
+  }catch(e){
+    document.getElementById('att-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Could not load. Check connection.</p></div>';
+  }
+}
+
+function render(t){
+  if(t==='attractions')renderAtt();
+  else if(t==='events')renderEvt();
+  else if(t==='stay')renderStay();
+  else if(t==='food')renderFood();
+  else if(t==='transport')renderTransport();
+  else if(t==='more'){buildNearby(places);buildGuides();}
+  else if(t==='map')buildTouristMap();
+}
+
+// ATTRACTIONS
+function renderAtt(){
+  const el=document.getElementById('att-grid');
+  let ps=places.filter(p=>p.category==='attractions');
+  if(sub!=='all')ps=ps.filter(p=>(p.subtype||p.subcategory||'').toLowerCase().includes(sub));
+  if(!ps.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏛️</div><p>No places in this category yet.</p></div>';return;}
+  el.innerHTML=ps.map(p=>`
+    <div class="pcard" onclick="openDp('${p.id}')">
+      <div class="pcard-img" style="background:${p.cardBg||g(p.category)}">
+        ${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||ce(p.category)}</span>`}
+        <div class="pcard-ov"></div>
+        ${p.subtype?`<div class="pcard-bdg">${p.subtype}</div>`:''}
+        <div class="pcard-rating">⭐ ${p.rating||4}</div>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-name">${p.name}</div>
+        <div class="pcard-sub">📍 ${p.subtype||p.subcategory||'Byndoor'}</div>
+        <div class="pcard-crowd ${getCrowdLevel().cls}">${getCrowdLevel().label}</div>
+      </div>
+    </div>`).join('');
+}
+
+// EVENTS
+function renderEvt(){
+  const el=document.getElementById('evt-list');
+  const ps=places.filter(p=>p.category==='events');
+  if(!ps.length){el.innerHTML='<div class="empty"><div class="empty-ico">🎉</div><p>No events yet.</p></div>';return;}
+  el.innerHTML=ps.map(p=>{
+    const dt=p.eventDate?new Date(p.eventDate):null;
+    return`<div class="ecard" onclick="openDp('${p.id}')">
+      <div class="edate" style="background:${p.cardBg||g('events')}">
+        <div class="edate-d">${dt?dt.getDate():'—'}</div>
+        <div class="edate-m">${dt?dt.toLocaleString('default',{month:'short'}):'—'}</div>
+      </div>
+      <div>
+        <div class="einfo-name">${p.name}</div>
+        <div class="einfo-meta">📍 ${p.location||'Byndoor'}${p.timing?' · 🕐 '+p.timing:''}${p.entryFee?' · 🎟️ '+p.entryFee:''}</div>
+        <span class="etag" style="background:var(--pink)">${p.subcategory||'Event'}</span>
+      </div>
+    </div>`;}).join('');
+}
+
+// STAY
+function renderStay(){
+  const el=document.getElementById('stay-list');
+  const ps=places.filter(p=>p.category==='stay'||p.category==='hotels');
+  if(!ps.length){el.innerHTML='<div class="empty"><div class="empty-ico">🏨</div><p>No stays listed yet.</p></div>';return;}
+  el.innerHTML=ps.map(p=>listCard(p,true)).join('');
+}
+
+// FOOD
+function renderFood(){
+  const el=document.getElementById('food-list');
+  const ps=places.filter(p=>p.category==='food');
+  if(!ps.length){el.innerHTML='<div class="empty"><div class="empty-ico">🍛</div><p>No food places listed yet.</p></div>';return;}
+  el.innerHTML=ps.map(p=>listCard(p,false)).join('');
+}
+
+function listCard(p,showPrice){
+  const img=p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||ce(p.category)}</span>`;
+  return`<div class="lcard" onclick="openDp('${p.id}')">
+    <div class="lcard-img" style="background:${p.cardBg||g(p.category)}">${img}</div>
+    <div class="lcard-body">
+      <div class="lcard-row">
+        <div><div class="lcard-name">${p.name}</div><div class="lcard-stars">${'★'.repeat(Math.round(p.rating||4))}</div></div>
+        ${showPrice&&p.price?`<div class="lcard-price">₹${p.price}<small>/night</small></div>`:''}
+      </div>
+      ${p.address?`<div class="lcard-addr">📍 ${p.address}</div>`:''}
+      ${p.about?`<div class="lcard-desc">${p.about.slice(0,90)}${p.about.length>90?'…':''}</div>`:''}
+      ${p.facilities?`<div class="chip-row">${p.facilities.split(',').map(f=>`<span class="chip" style="background:${cb(p.category)};color:${cc(p.category)}">${f.trim()}</span>`).join('')}</div>`:''}
+    </div>
+  </div>`;
+}
+
+// TRANSPORT
+function renderTransport(){
+  const el=document.getElementById('transport-body');
+  const trains=places.filter(p=>p.category==='transport'&&p.transportType==='train');
+  const buses=places.filter(p=>p.category==='transport'&&p.transportType==='bus');
+  const cabs=places.filter(p=>p.category==='transport'&&(p.transportType==='cab'||p.transportType==='auto'));
+  let h='';
+  h+=`<div class="tcat-hd"><span>🚆</span> Train Services</div>`;
+  h+=trains.length?trains.map(t=>`<div class="tcard"><div class="tcard-name">${t.name}</div><div class="tcard-info">🛤️ ${t.route||'—'}${t.timing?'<br/>🕐 '+t.timing:''}</div><span class="tcard-bdg" style="background:var(--g5)">Train</span></div>`).join(''):`<div class="tcard"><div class="tempty">No trains added yet. Nearest stations: Byndoor, Kundapur.</div></div>`;
+  h+=`<div class="tcat-hd"><span>🚌</span> Bus Services</div>`;
+  h+=buses.length?buses.map(b=>`<div class="tcard"><div class="tcard-name">${b.name}</div><div class="tcard-info">🛣️ ${b.route||'—'}${b.timing?'<br/>🕐 '+b.timing:''}</div><span class="tcard-bdg" style="background:var(--p)">KSRTC</span></div>`).join(''):`<div class="tcard"><div class="tempty">No buses added yet. KSRTC buses available from Byndoor bus stand.</div></div>`;
+  h+=`<div class="tcat-hd"><span>🚕</span> Cab &amp; Auto Services</div>`;
+  h+=cabs.length?cabs.map(c=>`<div class="tcard"><div class="tcard-name">${c.name}</div><div class="tcard-info">${c.transportType==='auto'?'🛺 Auto Rickshaw':'🚕 Cab Service'}</div>${c.phone?`<button class="tcall" onclick="window.open('tel:${c.phone}')">📞 ${c.phone}</button>`:''}</div>`).join(''):`<div class="tcard"><div class="tempty">No cab/auto services added yet.</div></div>`;
+  el.innerHTML=h;
+}
+
+// TRENDING
+function buildTrending(){
+  let ts=places.filter(p=>p.trending===true);
+  if(!ts.length)ts=places.filter(p=>p.category==='attractions').slice(0,6); // fallback
+  const rail=document.getElementById('trend-rail');
+  const dots=document.getElementById('tdots');
+  if(!ts.length){
+    rail.innerHTML=`<div style="flex-shrink:0;width:100%;height:210px;display:flex;align-items:center;justify-content:center;background:var(--g1);color:#fff;font-size:.9rem;font-weight:600">Add attractions to see trending places!</div>`;
+    return;
+  }
+  rail.innerHTML=ts.map(p=>`
+    <div class="tslide" onclick="openDp('${p.id}')">
+      ${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<div class="tslide-bg" style="background:${p.cardBg||g(p.category)}">${p.emoji||ce(p.category)}</div>`}
+      <div class="tslide-ov"></div>
+      <div class="tslide-info"><div class="tslide-name">${p.name}</div><div class="tslide-cat">${p.subtype||p.subcategory||p.category||''}</div></div>
+    </div>`).join('');
+  dots.innerHTML=ts.map((_,i)=>`<button class="tdot${i===0?' on':''}" onclick="goSlide(${i})"></button>`).join('');
+  if(tTimer)clearInterval(tTimer);
+  tTimer=setInterval(()=>{tIdx=(tIdx+1)%ts.length;goSlide(tIdx);},3500);
+}
+window.goSlide=function(i){
+  tIdx=i;
+  document.getElementById('trend-rail').style.transform=`translateX(-${i*100}%)`;
+  document.querySelectorAll('.tdot').forEach((d,j)=>d.classList.toggle('on',j===i));
+};
+
+// NEARBY — loaded from Firebase category="nearby"
+function buildNearby(ps){
+  const el=document.getElementById('nearby-list');
+  const nearby=ps.filter(p=>p.category==='nearby');
+  if(!nearby.length){
+    el.innerHTML='<div style="padding:8px 0;font-size:.75rem;color:#bbb;font-style:italic">No nearby places added yet.</div>';
+    return;
+  }
+  el.innerHTML=nearby.map(n=>`
+    <div class="ncard" onclick="openDp('${n.id}')">
+      <div class="ncard-img" style="background:${n.cardBg||'linear-gradient(135deg,#0a7c6e,#0ea5e9)'}">
+        ${n.photoURL?`<img src="${n.photoURL}" alt="${n.name}" loading="lazy"/>`:`<span>${n.emoji||'📍'}</span>`}
+      </div>
+      <div class="ncard-body">
+        <div class="ncard-name">${n.name}</div>
+        <div class="ncard-dist">${n.emoji||'📍'} ${n.distance||''}</div>
+      </div>
+    </div>`).join('');
+}
+
+// SEARCH
+const si=document.getElementById('srch'),sd=document.getElementById('srch-drop');
+si.addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  document.getElementById('srch-clear').style.display=q?'inline':'none';
+  if(!q){sd.classList.remove('open');return;}
+  const res=places.filter(p=>p.name?.toLowerCase().includes(q)||p.about?.toLowerCase().includes(q)||p.subtype?.toLowerCase().includes(q)||p.subcategory?.toLowerCase().includes(q)).slice(0,8);
+  if(!res.length){sd.innerHTML=`<div class="snone">No results for "${this.value}"</div>`;sd.classList.add('open');return;}
+  sd.innerHTML=res.map(p=>`
+    <div class="sitem" onclick="srchPick('${p.id}')">
+      <div class="sitem-ico" style="background:${p.cardBg||g(p.category)}">${p.emoji||ce(p.category)}</div>
+      <div><div class="sitem-name">${p.name}</div><div class="sitem-cat">${p.category||''}${p.subtype?' · '+p.subtype:p.subcategory?' · '+p.subcategory:''}</div></div>
+    </div>`).join('');
+  sd.classList.add('open');
+});
+window.srchPick=function(id){sd.classList.remove('open');si.value='';document.getElementById('srch-clear').style.display='none';openDp(id);};
+window.clearSearch=function(){si.value='';sd.classList.remove('open');document.getElementById('srch-clear').style.display='none';};
+document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))sd.classList.remove('open');});
+
+// DETAIL
+window.openDp=function(id){
+  history.pushState({page:'dp',id:id},'',' ');
+  const p=places.find(x=>x.id===id);if(!p)return;curPlace=p;
+  stopDpSlide();
+  const hero=document.getElementById('dp-hero');
+  // Build photo list: main photo + extra photos
+  const allPhotos=[p.photoURL,...(p.photos||[])].filter(Boolean);
+  if(allPhotos.length>=2){
+    // Reset hero element
+    hero.className='dp-photo-slide';
+    hero.style.background='';
+    buildDpSlideshow(allPhotos,hero);
+    document.getElementById('dp-name').textContent=p.name;
+  } else {
+    hero.className='dp-hero';
+    hero.style.background=p.cardBg||g(p.category);
+    hero.innerHTML=`<span id="dp-emoji" style="${p.photoURL?'display:none':''}"></span><div class="dp-ov"></div><button class="dp-back" onclick="closeDp()">← Back</button><div id="dp-name" class="dp-name"></div>`;
+    if(p.photoURL){const i=document.createElement('img');i.src=p.photoURL;i.alt=p.name;hero.prepend(i);}
+    else{hero.querySelector('#dp-emoji').textContent=p.emoji||ce(p.category);}
+    document.getElementById('dp-name').textContent=p.name;
+  }
+  const r=Math.round(p.rating||5);
+  document.getElementById('dp-stars').textContent='★'.repeat(r)+'☆'.repeat(5-r);
+  document.getElementById('dp-rat').textContent=`(${(p.rating||5).toFixed(1)})`;
+  const b=document.getElementById('dp-bdg');b.textContent=(p.emoji||'')+' '+(p.subtype||p.subcategory||p.category||'');b.style.background=cb(p.category);b.style.color=cc(p.category);
+  document.getElementById('dp-about').textContent=p.about||'No description available.';
+  document.getElementById('dp-timing').textContent=p.timing||'—';
+  document.getElementById('dp-entry').textContent=p.entryFee?p.entryFee:(p.freeEntry?'🆓 Free Entry':'—');
+  document.getElementById('dp-best').textContent=p.bestTime||'—';
+  const tr=document.getElementById('dp-transport-row');
+  if(p.transport){tr.style.display='block';document.getElementById('dp-transport').textContent=p.transport;}else tr.style.display='none';
+  const rr=document.getElementById('dp-risk-row');
+  if(p.risk){rr.style.display='block';document.getElementById('dp-risk').textContent=p.risk;}else rr.style.display='none';
+  const tw=document.getElementById('dp-tips-row');
+  if(p.tips){tw.style.display='block';document.getElementById('dp-tips').textContent=p.tips;}else tw.style.display='none';
+  const tgw=document.getElementById('dp-tags-row');
+  if(p.tags?.length){tgw.style.display='block';document.getElementById('dp-tags').innerHTML=p.tags.map(t=>`<span class="chip" style="background:${cb(p.category)};color:${cc(p.category)}">${t}</span>`).join('');}else tgw.style.display='none';
+  const mw=document.getElementById('dp-map-row'),me=document.getElementById('dp-map');
+  if(p.lat&&p.lng){mw.style.display='block';me.innerHTML=`<iframe loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=${p.lat},${p.lng}&z=15&output=embed"></iframe>`;}
+  else if(p.name){mw.style.display='block';me.innerHTML=`<iframe loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=${encodeURIComponent(p.name+' Byndoor Karnataka')}&z=14&output=embed"></iframe>`;}
+  else mw.style.display='none';
+
+  // Social links (YouTube / Instagram)
+  const sw=document.getElementById('dp-social-row'),se=document.getElementById('dp-social');
+  const socials=[];
+  if(p.youtubeURL)socials.push(`<a href="${p.youtubeURL}" target="_blank" class="dp-social-btn" style="background:#FF0000">▶ YouTube</a>`);
+  if(p.instagramURL)socials.push(`<a href="${p.instagramURL}" target="_blank" class="dp-social-btn" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">📸 Instagram</a>`);
+  if(socials.length){sw.style.display='block';se.innerHTML=socials.join('');}else sw.style.display='none';
+
+  // More photos
+  const pw=document.getElementById('dp-photos-row'),pe=document.getElementById('dp-photos');
+  const extraPhotos=p.photos||[];
+  if(extraPhotos.length){
+    pw.style.display='block';
+    pe.innerHTML=extraPhotos.map(url=>`<img class="dp-photo-thumb" src="${url}" loading="lazy" onclick="openLightbox('${url}')" />`).join('');
+  }else pw.style.display='none';
+
+  document.getElementById('dp-dir').onclick=()=>{const u=p.lat&&p.lng?`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' Byndoor Karnataka')}`;window.open(u,'_blank');};
+  const cb2=document.getElementById('dp-call');
+  if(p.phone){cb2.style.display='block';cb2.onclick=()=>window.open(`tel:${p.phone}`);}else cb2.style.display='none';
+  document.getElementById('dp').style.display='block';
+  document.getElementById('dp').scrollTop=0;
+  document.body.style.overflow='hidden';
+};
+
+// PHOTO LIGHTBOX
+window.openLightbox=function(url){
+  let lb=document.getElementById('photo-lb');
+  if(!lb){
+    lb=document.createElement('div');lb.id='photo-lb';lb.className='photo-lightbox';
+    lb.innerHTML='<button class="photo-lightbox-close" onclick="document.getElementById(\'photo-lb\').classList.remove(\'open\')">✕</button><img id="photo-lb-img"/>';
+    lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open');});
+    document.body.appendChild(lb);
+  }
+  document.getElementById('photo-lb-img').src=url;
+  lb.classList.add('open');
+};
+window.closeDp=function(){stopDpSlide();document.getElementById('dp').style.display='none';document.body.style.overflow='';document.getElementById('dp-map').innerHTML='';};
+window.sharePlace=async function(){if(!curPlace)return;const d={title:`${curPlace.name} — Discover Byndoor`,text:`Check out ${curPlace.name} in Byndoor!`,url:window.location.href};if(navigator.share){try{await navigator.share(d);}catch(e){}}else{navigator.clipboard?.writeText(window.location.href);toast('🔗 Link copied!');}};
+
+
+// ============================================================
+// TOURIST MAP
+// ============================================================
+let mapBuilt=false,allMapMarkers=[],mapPlaces=[];
+function buildTouristMap(){
+  if(mapBuilt)return;
+  mapBuilt=true;
+  const container=document.getElementById('tourist-map-container');
+  // Use Google Maps embed with multiple markers via iframe — simple approach
+  const ps=places.filter(p=>p.lat&&p.lng&&p.category!=='transport');
+  mapPlaces=ps;
+  if(!ps.length){
+    container.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:2.5rem">📍</div><p style="margin-top:8px;font-size:.85rem">No places with location added yet</p></div>';
+    return;
+  }
+  // Build custom map using OpenStreetMap + Leaflet (free, no API key)
+  container.innerHTML='<div id="leaflet-map" style="width:100%;height:100%"></div>';
+  // Load Leaflet CSS + JS
+  if(!document.getElementById('leaflet-css')){
+    const lc=document.createElement('link');lc.id='leaflet-css';lc.rel='stylesheet';
+    lc.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(lc);
+  }
+  const script=document.createElement('script');
+  script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload=()=>initLeaflet(ps);
+  document.head.appendChild(script);
+}
+
+function initLeaflet(ps){
+  const map=L.map('leaflet-map').setView([13.8785,74.7313],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap',maxZoom:19
+  }).addTo(map);
+  const catColors={attractions:'#0a7c6e',stay:'#7c3aed',food:'#f97316',events:'#e11d7a',nearby:'#0ea5e9'};
+  ps.forEach(p=>{
+    const col=catColors[p.category]||'#0a7c6e';
+    const icon=L.divIcon({
+      html:`<div style="background:${col};width:30px;height:30px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;box-shadow:0 2px 8px rgba(0,0,0,.3)">${p.emoji||catEmoji(p.category)}</div>`,
+      className:'',iconSize:[30,30],iconAnchor:[15,15]
+    });
+    const marker=L.marker([p.lat,p.lng],{icon});
+    marker.bindPopup(`<div style="font-family:'DM Sans',sans-serif;min-width:140px">
+      <div style="font-weight:700;font-size:.88rem">${p.name}</div>
+      <div style="font-size:.72rem;color:#64748b;margin:2px 0">${p.subtype||p.subcategory||p.category||''}</div>
+      ${p.about?`<div style="font-size:.75rem;margin:4px 0;color:#374151">${p.about.slice(0,80)}…</div>`:''}
+      <button onclick="openDp('${p.id}')" style="background:#0a7c6e;color:#fff;border:none;border-radius:8px;padding:5px 12px;font-size:.72rem;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif">View Details</button>
+    </div>`,{maxWidth:200});
+    marker._category=p.category;
+    marker._id=p.id;
+    marker.addTo(map);
+    allMapMarkers.push(marker);
+  });
+  window._leafletMap=map;
+}
+
+function catEmoji(c){return{attractions:'🏛️',stay:'🏨',food:'🍛',events:'🎉',nearby:'📍',transport:'🚌'}[c]||'📍';}
+
+window.filterMapPins=function(cat){
+  document.querySelectorAll('.map-filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.mcat===cat));
+  allMapMarkers.forEach(m=>{
+    const show=cat==='all'||m._category===cat;
+    if(show)m.addTo(window._leafletMap||{addLayer:()=>{}});
+    else m.remove();
+  });
+};
+
+// ============================================================
+// TOURIST GUIDES
+// ============================================================
+function buildGuides(){
+  const el=document.getElementById('guides-list');
+  const guides=places.filter(p=>p.category==='guide');
+  if(!guides.length){
+    el.innerHTML='<div style="font-size:.8rem;color:#bbb;font-style:italic;padding:4px 0">No guides added yet.</div>';
+    return;
+  }
+  el.innerHTML=guides.map(g=>`
+    <div class="guide-card">
+      <div class="guide-avatar">${g.emoji||'🧭'}</div>
+      <div style="flex:1">
+        <div class="guide-name">${g.name}</div>
+        <div class="guide-lang">${g.about||'Local Tourist Guide'}</div>
+        ${g.distanceFromTown?`<div style="font-size:.7rem;color:var(--muted)">${g.distanceFromTown}</div>`:''}
+      </div>
+      ${g.phone?`<button class="guide-call" onclick="window.open('tel:${g.phone}')">📞 Call</button>`:''}
+    </div>`).join('');
+}
+
+// ============================================================
+// FOOTER SOCIAL ICONS (loaded from config in Firestore)
+// ============================================================
+function buildFooterSocial(){
+  const cfg=places.find(p=>p.category==='config')||{};
+  const map={fb:{id:'fs-fb',url:cfg.facebookURL},yt:{id:'fs-yt',url:cfg.youtubeURL},ig:{id:'fs-ig',url:cfg.instagramURL},tw:{id:'fs-tw',url:cfg.twitterURL}};
+  let anyShown=false;
+  Object.values(map).forEach(({id,url})=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(url){el.href=url;el.style.display='flex';anyShown=true;}
+    else el.style.display='none';
+  });
+  // If no config yet, show all as disabled placeholders
+  if(!anyShown){
+    ['fs-fb','fs-yt','fs-ig','fs-tw'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.style.display='flex';el.style.opacity='0.3';el.href='#';el.onclick=e=>e.preventDefault();}
+    });
+  }
+}
+
+// ============================================================
+// DETAIL PAGE PHOTO SLIDESHOW
+// ============================================================
+let dpSlideTimer=null,dpSlideIdx=0;
+function stopDpSlide(){if(dpSlideTimer){clearInterval(dpSlideTimer);dpSlideTimer=null;}}
+
+function buildDpSlideshow(photos, heroEl){
+  stopDpSlide();dpSlideIdx=0;
+  if(!photos||photos.length<2){
+    // single photo — keep existing hero as-is
+    return;
+  }
+  // Replace hero with slideshow
+  heroEl.innerHTML='';
+  heroEl.className='dp-photo-slide';
+  const rail=document.createElement('div');rail.className='dp-slide-rail';
+  photos.forEach((url,i)=>{
+    const item=document.createElement('div');item.className='dp-slide-item';
+    const img=document.createElement('img');img.src=url;img.alt='Photo '+(i+1);
+    item.appendChild(img);
+    rail.appendChild(item);
+  });
+  // overlay and name
+  const ov=document.createElement('div');ov.style.cssText='position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(10,20,40,.82));z-index:1';
+  const back=document.createElement('button');back.className='dp-back';back.textContent='← Back';back.onclick=closeDp;back.style.zIndex='2';
+  const name=document.createElement('div');name.id='dp-name';name.className='dp-name';
+  // dots
+  const dotsEl=document.createElement('div');dotsEl.className='dp-slide-dots';dotsEl.style.zIndex='3';
+  photos.forEach((_,i)=>{
+    const d=document.createElement('button');d.className='dp-slide-dot'+(i===0?' on':'');
+    d.onclick=()=>goDpSlide(rail,dotsEl,i);dotsEl.appendChild(d);
+  });
+  heroEl.appendChild(rail);heroEl.appendChild(ov);heroEl.appendChild(back);heroEl.appendChild(name);heroEl.appendChild(dotsEl);
+  // auto slide every 3 sec
+  dpSlideTimer=setInterval(()=>{
+    dpSlideIdx=(dpSlideIdx+1)%photos.length;
+    goDpSlide(rail,dotsEl,dpSlideIdx);
+  },3000);
+}
+
+function goDpSlide(rail,dots,i){
+  dpSlideIdx=i;
+  rail.style.transform=`translateX(-${i*100}%)`;
+  dots.querySelectorAll('.dp-slide-dot').forEach((d,j)=>d.classList.toggle('on',j===i));
+}
+
+// SHEET
+window.showSheet=function(k){const s=SHEETS[k];if(!s)return;document.getElementById('s-title').textContent=s.t;document.getElementById('s-body').innerHTML=s.b;document.getElementById('sov').classList.add('open');history.pushState({page:'sheet',key:k},'','  ');};
+window.closeSheet=function(e){if(!e||e.target===document.getElementById('sov'))document.getElementById('sov').classList.remove('open');};
+window.submitFb=function(){const m=document.getElementById('fb-msg')?.value;if(!m?.trim()){toast('Please write your feedback!');return;}toast('✅ Thank you for your feedback!');closeSheet();};
+
+// WEATHER
+async function loadWeather(){
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&timezone=Asia/Kolkata');
+    const d=await r.json();const c=d.current;
+    const temp=Math.round(c.temperature_2m),hum=c.relative_humidity_2m,rain=c.precipitation,wind=Math.round(c.wind_speed_10m);
+    const{ico,desc}=wInfo(c.weather_code);
+    document.getElementById('ww-ico').textContent=ico;
+    document.getElementById('ww-temp').textContent=temp+'°C';
+    document.getElementById('ww-desc').textContent=desc;
+    document.getElementById('ww-hum').textContent=hum+'%';
+    document.getElementById('ww-rain').textContent=rain+'mm';
+    document.getElementById('ww-wind').textContent=wind;
+    document.getElementById('chip-temp').textContent=temp+'°C';
+    document.getElementById('weather-chip').innerHTML=ico+' <span id="chip-temp">'+temp+'°C</span>'+(rain>0?' · 🌧️':'');
+  }catch(e){}
+}
+function wInfo(code){
+  if(code===0)return{ico:'☀️',desc:'Clear & Sunny'};
+  if(code<=2)return{ico:'⛅',desc:'Partly Cloudy'};
+  if(code<=3)return{ico:'☁️',desc:'Overcast'};
+  if(code<=67)return{ico:'🌧️',desc:'Rainy'};
+  if(code<=82)return{ico:'🌦️',desc:'Rain Showers'};
+  if(code<=99)return{ico:'⛈️',desc:'Thunderstorm'};
+  return{ico:'🌤️',desc:'Partly Cloudy'};
+}
+
+// HELPERS
+function g(c){return{attractions:'linear-gradient(135deg,#0a7c6e,#0ea5e9)',stay:'linear-gradient(135deg,#7c3aed,#0ea5e9)',hotels:'linear-gradient(135deg,#7c3aed,#0ea5e9)',food:'linear-gradient(135deg,#f97316,#fbbf24)',events:'linear-gradient(135deg,#e11d7a,#f97316)',transport:'linear-gradient(135deg,#0f172a,#1e40af)'}[c]||'linear-gradient(135deg,#0a7c6e,#0ea5e9)';}
+function cb(c){return{attractions:'#E0F7FA',stay:'#EDE9FE',hotels:'#EDE9FE',food:'#FFF3E0',events:'#FCE4EC',transport:'#EFF6FF'}[c]||'#eee';}
+function cc(c){return{attractions:'#006064',stay:'#4C1D95',hotels:'#4C1D95',food:'#7C2D12',events:'#831843',transport:'#1E3A8A'}[c]||'#555';}
+function ce(c){return{attractions:'🏛️',stay:'🏨',hotels:'🏨',food:'🍛',events:'🎉',transport:'🚌'}[c]||'📍';}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+// PWA
+let dP;const banner=document.getElementById('install-banner');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dP=e;banner?.classList.add('show');});
+document.getElementById('ibtn')?.addEventListener('click',async()=>{banner?.classList.remove('show');if(dP){dP.prompt();dP=null;}});
+document.getElementById('dbtn')?.addEventListener('click',()=>banner?.classList.remove('show'));
+window.addEventListener('offline',()=>toast('📵 Offline — cached content'));
+if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
+// BOOT
+load();loadWeather();
+
+// ── ANDROID BACK BUTTON HANDLER ──
+window.addEventListener('popstate', function(e){
+  // Close detail page if open
+  const dp = document.getElementById('dp');
+  if(dp && dp.style.display !== 'none'){
+    closeDp(); return;
+  }
+  // Close sheet if open
+  const sov = document.getElementById('sov');
+  if(sov && sov.classList.contains('open')){
+    closeSheet(); return;
+  }
+  // Close search drop if open
+  const sd = document.getElementById('srch-drop');
+  if(sd && sd.classList.contains('open')){
+    sd.classList.remove('open'); return;
+  }
+  // Nothing open — let browser go back (exits app)
+});
+// Push initial state so first back doesn't immediately exit
+history.pushState({page:'home'},'','');
+</script>
+
+<!-- AI ASSISTANT FLOATING BUTTON -->
+<style>
+.map-filter-btn{background:#fff;border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:6px 13px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.map-filter-btn.active{background:var(--p);color:#fff;border-color:var(--p)}
+.guide-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.guide-avatar{width:44px;height:44px;border-radius:50%;background:var(--g1);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;flex-shrink:0}
+.guide-name{font-weight:700;font-size:.88rem}
+.guide-lang{font-size:.72rem;color:var(--muted);margin-top:2px}
+.guide-call{background:var(--p);color:#fff;border:none;border-radius:16px;padding:6px 14px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.ft-social-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-decoration:none;transition:opacity .2s}
+.ft-social-icon:hover{opacity:.8}
+/* Detail page photo slideshow */
+.dp-photo-slide{position:relative;height:265px;overflow:hidden}
+.dp-slide-rail{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.dp-slide-item{flex-shrink:0;width:100%;height:100%;position:relative}
+.dp-slide-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.dp-slide-dots{position:absolute;bottom:60px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
+.dp-slide-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;padding:0}
+.dp-slide-dot.on{background:#fff;width:18px;border-radius:3px}
+.dp-social-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-size:.78rem;font-weight:700;text-decoration:none;color:#fff}
+.dp-photo-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer}
+.photo-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center}
+.photo-lightbox.open{display:flex}
+.photo-lightbox img{max-width:95vw;max-height:90vh;border-radius:10px;object-fit:contain}
+.photo-lightbox-close{position:absolute;top:16px;right:20px;color:#fff;font-size:1.6rem;cursor:pointer;background:none;border:none}
+.ai-fab{
+  position:fixed;bottom:80px;right:16px;z-index:999;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#0a7c6e,#0ea5e9);
+  color:#fff;font-size:1.4rem;border:none;cursor:pointer;
+  box-shadow:0 4px 20px rgba(10,124,110,.4);
+  display:flex;align-items:center;justify-content:center;
+  animation:fabPulse 2.5s infinite;
+  text-decoration:none;
+}
+@keyframes fabPulse{
+  0%,100%{box-shadow:0 4px 20px rgba(10,124,110,.4)}
+  50%{box-shadow:0 4px 32px rgba(10,124,110,.7),0 0 0 8px rgba(10,124,110,.1)}
+}
+.ai-fab-label{
+  position:fixed;bottom:88px;right:72px;z-index:999;
+  background:#0f172a;color:#fff;font-size:.68rem;font-weight:700;
+  padding:5px 10px;border-radius:20px;white-space:nowrap;
+  font-family:'DM Sans',sans-serif;pointer-events:none;
+  opacity:1;animation:labelFade 4s forwards;
+}
+@keyframes labelFade{0%,60%{opacity:1}100%{opacity:0}}
+@media(min-width:600px){
+  .ai-fab{bottom:30px;right:30px;width:58px;height:58px;font-size:1.6rem;}
+  .ai-fab-label{bottom:38px;right:96px;}
+}
+@media(min-width:900px){
+  body{max-width:100%;background:#e8ede9}
+  #install-banner{max-width:900px}
+  .app-shell{max-width:900px;margin:0 auto;background:var(--sand);box-shadow:0 0 40px rgba(0,0,0,0.12);min-height:100vh;position:relative}
+  .bnav{max-width:900px;left:50%;transform:translateX(-50%)}
+  #dp{max-width:900px}
+  .dp-actions{max-width:900px}
+  .sheet{max-width:900px}
+  /* Grid layout for place cards */
+  .places-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:0 16px}
+  .place-card{margin:0}
+  /* Hero section bigger */
+  .hero{height:260px}
+  .hero-title{font-size:2rem}
+  /* Tab bar bigger */
+  .tabs{gap:12px;padding:14px 20px}
+  .tab{font-size:.82rem;padding:8px 18px}
+  /* Search bigger */
+  .search-wrap{padding:14px 20px}
+  /* AI fab reposition */
+  .ai-fab{bottom:40px;right:calc(50% - 450px + 20px)}
+  .ai-fab-label{bottom:48px;right:calc(50% - 450px + 78px)}
+}
+</style>
+</div></div>
+<div class="ai-fab-label">Ask AI Guide 🌊</div>
+<a class="ai-fab" href="ai-assistant.html" title="AI Travel Assistant">🤖</a>
+</body>
+</html>
