@@ -11,27 +11,33 @@
   <link rel="manifest" href="manifest.json"/>
   <link rel="apple-touch-icon" href="icons/icon-192.png"/>
   <title>Discover Byndoor 🌊</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
   <style>
   :root{
     --p:#0a7c6e;--p2:#0d9e8d;--acc:#f97316;--gold:#fbbf24;
     --pink:#e11d7a;--sea:#0ea5e9;--sand:#fdf6ec;--dark:#0f172a;
     --muted:#64748b;--bdr:#e8e4de;--r:18px;--r2:12px;
+    --card:#fff;
     --g1:linear-gradient(135deg,#0a7c6e,#0ea5e9);
     --g2:linear-gradient(135deg,#f97316,#fbbf24);
     --g3:linear-gradient(135deg,#e11d7a,#f97316);
     --g4:linear-gradient(135deg,#7c3aed,#0ea5e9);
     --g5:linear-gradient(135deg,#0f172a,#1e40af);
     --g6:linear-gradient(135deg,#dc2626,#991b1b);
-    --card:#fff;--bg:#f0f4f4;
   }
   /* DARK MODE */
   body.dark{
-    --sand:#0d1f1c;--dark:#f1f5f9;--card:#1a2e2b;--bg:#0a1a17;
+    --sand:#0d1f1c;--dark:#f1f5f9;--card:#1a2e2b;
     --bdr:#1e3530;--muted:#94a3b8;
   }
+  body.dark .weather-widget,body.dark .pcard,body.dark .lcard,
+  body.dark .ecard,body.dark .tcard,body.dark .emcard,body.dark .ncard,
+  body.dark .search-box,body.dark .tab,body.dark .sheet,body.dark .iitem,
+  body.dark .stab{background:var(--card)!important}
+  body.dark .bnav{background:#0d1f1c;border-color:#1e3530}
+  body.dark .search-box input{color:var(--dark)}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+  body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--dark);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 
   /* INSTALL BANNER */
   #install-banner{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--dark);color:#fff;padding:10px 16px;z-index:999;align-items:center;gap:10px}
@@ -40,124 +46,103 @@
   #ibtn{background:var(--acc);color:#fff;border:none;border-radius:20px;padding:5px 14px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
   #dbtn{background:none;border:none;color:#aaa;font-size:1.1rem;cursor:pointer}
 
-  /* ── HERO ── */
-  .hero-bg{position:relative;overflow:hidden;padding:0 0 60px}
-  .hero-media{height:72vh;min-height:420px;position:relative;overflow:hidden}
-  .hero-gradient{position:absolute;inset:0;background:linear-gradient(160deg,#064e3b 0%,#0a7c6e 45%,#0ea5e9 100%);z-index:0;transition:background 1.5s ease}
-  .hero-orbs{position:absolute;inset:0;z-index:1;overflow:hidden}
-  .orb{position:absolute;border-radius:50%;animation:orb-float 10s ease-in-out infinite}
-  .orb1{width:280px;height:280px;top:-100px;right:-80px;background:radial-gradient(circle,rgba(14,165,233,.35),transparent 70%);animation-duration:12s}
-  .orb2{width:180px;height:180px;bottom:80px;left:-60px;background:radial-gradient(circle,rgba(5,150,105,.4),transparent 70%);animation-duration:9s;animation-delay:-3s}
-  .orb3{width:120px;height:120px;top:35%;right:10%;background:radial-gradient(circle,rgba(249,115,22,.25),transparent 70%);animation-duration:7s;animation-delay:-5s}
-  @keyframes orb-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(12px,-15px) scale(1.05)}66%{transform:translate(-8px,10px) scale(.97)}}
-  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.05) 0%,transparent 40%,rgba(0,0,0,.55) 100%);z-index:2}
-  .hero-top{position:absolute;top:0;left:0;right:0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;z-index:5}
-  .hero-logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;display:flex;align-items:center;gap:7px;text-shadow:0 1px 8px rgba(0,0,0,.2)}
-  .hero-logo-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-  .hero-top-right{display:flex;align-items:center;gap:8px}
-  .dark-toggle{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 12px;color:#fff;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px}
-  .weather-chip{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);color:#fff;padding:6px 13px;border-radius:30px;font-size:.73rem;font-weight:600;display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.2);cursor:pointer}
-  .hero-content{position:absolute;bottom:0;left:0;right:0;padding:0 18px 22px;z-index:5}
-  .hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);backdrop-filter:blur(6px);color:rgba(255,255,255,.95);font-size:.67rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;border:1px solid rgba(255,255,255,.22)}
-  .hero-title{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:900;color:#fff;line-height:1.08;text-shadow:0 2px 20px rgba(0,0,0,.3);margin-bottom:8px}
-  .hero-title em{font-style:italic;color:#fbbf24}
-  .hero-sub{color:rgba(255,255,255,.82);font-size:.8rem;line-height:1.65;font-weight:400;margin-bottom:16px}
-  .hero-btns{display:flex;gap:9px;flex-wrap:wrap}
-  .btn-primary{background:linear-gradient(135deg,#f5a623,#f97316);color:#fff;border:none;border-radius:25px;padding:11px 22px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 6px 20px rgba(249,115,22,.45);display:flex;align-items:center;gap:6px;transition:transform .18s,box-shadow .18s;text-decoration:none}
-  .btn-primary:active{transform:scale(.95);box-shadow:none}
-  .btn-ghost{background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:25px;padding:11px 18px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:background .18s;text-decoration:none}
-  .btn-ghost:active{background:rgba(255,255,255,.28)}
-  .hero-curve{position:absolute;bottom:-1px;left:-5%;width:110%;height:52px;background:var(--bg);border-radius:55% 55% 0 0/100% 100% 0 0;z-index:3}
+  /* HERO */
+  .hero-bg{background:linear-gradient(160deg,#064e3b 0%,#0a7c6e 40%,#0ea5e9 75%,#f97316 100%);padding:24px 18px 78px;position:relative;overflow:hidden;transition:background 1.5s ease}
+  .hero-bg::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10S0 14.5 0 20s4.5 10 10 10 10-4.5 10-10zm10 0c0 5.5 4.5 10 10 10s10-4.5 10-10-4.5-10-10-10-10 4.5-10 10z'/%3E%3C/g%3E%3C/svg%3E")}
+  .hero-bg::after{content:'';position:absolute;bottom:-1px;left:-5%;width:110%;height:55px;background:var(--sand);border-radius:55% 55% 0 0/100% 100% 0 0;transition:background .3s}
+  .hero-orb{position:absolute;border-radius:50%;background:rgba(255,255,255,.08);animation:orb-float 10s ease-in-out infinite}
+  .orb1{width:200px;height:200px;top:-80px;right:-50px;animation-duration:12s}
+  .orb2{width:120px;height:120px;top:40px;right:20px;animation-duration:9s;animation-delay:-3s}
+  .orb3{width:80px;height:80px;bottom:60px;left:-20px;animation-duration:7s;animation-delay:-5s}
+  @keyframes orb-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(10px,-12px) scale(1.05)}66%{transform:translate(-7px,8px) scale(.97)}}
+  .hero-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;margin-bottom:20px}
+  .hero-logo{font-family:'Playfair Display',serif;font-size:1.35rem;color:#fff;display:flex;align-items:center;gap:6px}
+  .weather-chip{background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;padding:6px 13px;border-radius:30px;font-size:.73rem;font-weight:600;display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.2);cursor:pointer}
+  .hero-body{position:relative;z-index:2}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);color:rgba(255,255,255,.95);font-size:.68rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:12px;border:1px solid rgba(255,255,255,.22)}
+  .hero-title{font-family:'Playfair Display',serif;font-size:2.1rem;color:#fff;line-height:1.12;text-shadow:0 2px 20px rgba(0,0,0,.25);margin-bottom:8px}
+  .hero-sub{color:rgba(255,255,255,.85);font-size:.82rem;line-height:1.65;font-weight:500}
 
-  /* ── WEATHER WIDGET ── */
-  .weather-widget{margin:0 16px;margin-top:-32px;position:relative;z-index:10;background:var(--card);border-radius:20px;padding:14px 16px;box-shadow:0 8px 32px rgba(0,0,0,.12);display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.8)}
-  body.dark .weather-widget{border-color:var(--bdr);box-shadow:0 8px 32px rgba(0,0,0,.4)}
-  .ww-icon{font-size:2.4rem;flex-shrink:0;animation:ww-bob 3s ease-in-out infinite}
+  /* WEATHER WIDGET */
+  .weather-widget{margin:0 16px;margin-top:-26px;position:relative;z-index:10;background:var(--card);border-radius:var(--r);padding:14px 16px;box-shadow:0 8px 32px rgba(0,0,0,.12);display:flex;align-items:center;gap:14px}
+  .ww-icon{font-size:2.2rem;flex-shrink:0;animation:ww-bob 3s ease-in-out infinite}
   @keyframes ww-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .ww-icon{font-size:2.2rem;flex-shrink:0}
   .ww-main{flex:1}
-  .ww-temp{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--p);line-height:1}
+  .ww-temp{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--p);line-height:1}
   .ww-desc{font-size:.78rem;font-weight:600;color:var(--dark);margin-top:2px}
-  .ww-loc{font-size:.65rem;color:var(--muted)}
-  .ww-pills{display:flex;gap:7px}
-  .wpill{text-align:center;background:var(--bg);border-radius:10px;padding:6px 10px}
+  .ww-loc{font-size:.67rem;color:var(--muted)}
+  .ww-pills{display:flex;gap:8px}
+  .wpill{text-align:center;background:var(--sand);border-radius:10px;padding:6px 10px}
   .wpill-v{font-size:.78rem;font-weight:700;color:var(--p)}
   .wpill-l{font-size:.6rem;color:var(--muted);margin-top:1px}
 
-  /* ── SKELETON LOADING ── */
-  .skel{background:linear-gradient(90deg,#e8e4de 25%,#f4f0ea 50%,#e8e4de 75%);background-size:200% 100%;animation:skel-shine 1.4s infinite;border-radius:8px}
-  body.dark .skel{background:linear-gradient(90deg,#1e3530 25%,#243d39 50%,#1e3530 75%);background-size:200% 100%}
-  @keyframes skel-shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
-  .skel-card{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.07)}
-  .skel-img{height:115px}
-  .skel-body{padding:10px}
-  .skel-line{margin-bottom:6px}
-
-  /* ── BEAUTY CARD ── */
+  /* BEAUTY CARD */
   .beauty-wrap{padding:18px 16px 0}
-  .beauty-card{border-radius:20px;padding:20px;background:linear-gradient(145deg,#064e3b,#0a7c6e 50%,#0c8a9f);color:#fff;position:relative;overflow:hidden}
+  .beauty-card{border-radius:var(--r);padding:20px;background:linear-gradient(145deg,#064e3b,#0a7c6e 50%,#0c8a9f);color:#fff;position:relative;overflow:hidden}
   .beauty-card::after{content:'🌊🌴';position:absolute;right:-8px;bottom:-14px;font-size:4rem;opacity:.14;letter-spacing:-4px}
   .beauty-head{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:8px}
   .beauty-body{font-size:.79rem;line-height:1.75;opacity:.92}
   .beauty-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
   .bchip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.67rem;font-weight:600;padding:3px 11px;border-radius:20px}
 
-  /* ── SEARCH ── */
+  /* SEARCH */
   .search-wrap{padding:16px 16px 0;position:relative;z-index:40}
-  .search-box{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:50px;padding:12px 18px;box-shadow:0 4px 20px rgba(0,0,0,.09);border:2px solid transparent;transition:border-color .2s,box-shadow .2s}
-  .search-box:focus-within{border-color:var(--p);box-shadow:0 4px 20px rgba(10,124,110,.15)}
+  .search-box{display:flex;align-items:center;gap:10px;background:#fff;border-radius:50px;padding:11px 18px;box-shadow:0 4px 20px rgba(0,0,0,.1);border:2px solid transparent;transition:border-color .2s}
+  .search-box:focus-within{border-color:var(--p)}
   .search-box input{border:none;outline:none;flex:1;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--dark);background:transparent}
   .search-box input::placeholder{color:#c4bfb8}
   .srch-clear{cursor:pointer;color:#bbb;font-size:.85rem;display:none;padding:2px 4px}
-  .search-drop{display:none;position:absolute;top:calc(100% - 4px);left:16px;right:16px;background:var(--card);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.15);overflow:hidden;max-height:300px;overflow-y:auto}
+  .search-drop{display:none;position:absolute;top:calc(100% - 4px);left:16px;right:16px;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.15);overflow:hidden;max-height:300px;overflow-y:auto}
   .search-drop.open{display:block}
-  .sitem{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;border-bottom:1px solid var(--bdr);transition:background .15s}
+  .sitem{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;border-bottom:1px solid #f5f0ea;transition:background .15s}
   .sitem:last-child{border:none}
-  .sitem:active,.sitem:hover{background:var(--bg)}
+  .sitem:active,.sitem:hover{background:#fafaf8}
   .sitem-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
   .sitem-name{font-size:.85rem;font-weight:600}
   .sitem-cat{font-size:.68rem;color:var(--muted);margin-top:1px}
   .snone{padding:18px;text-align:center;font-size:.8rem;color:var(--muted)}
 
-  /* ── SECTION HEADERS ── */
-  .sh{display:flex;justify-content:space-between;align-items:center;padding:20px 16px 10px}
-  .sh h2{font-family:'Playfair Display',serif;font-size:1.12rem}
+  /* TRENDING */
+  .sh{display:flex;justify-content:space-between;align-items:center;padding:18px 16px 10px}
+  .sh h2{font-family:'Playfair Display',serif;font-size:1.1rem}
   .sh-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
-
-  /* ── TRENDING ── */
   .trend-outer{padding:0 16px}
-  .trend-wrap{border-radius:var(--r);overflow:hidden;position:relative;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+  .trend-wrap{border-radius:var(--r);overflow:hidden;position:relative}
   .trend-rail{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1)}
-  .tslide{flex-shrink:0;width:100%;height:220px;position:relative;cursor:pointer;overflow:hidden}
+  .tslide{flex-shrink:0;width:100%;height:210px;position:relative;cursor:pointer;overflow:hidden}
   .tslide img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transform:scale(1.05);transition:transform 6s ease}
-  .tslide.active img{transform:scale(1)}
+  .tslide.active img{transform:scale(1.0)}
+  .tslide-badge{display:inline-block;background:var(--acc);color:#fff;font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:10px;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
   .tslide-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem}
-  .tslide-ov{position:absolute;inset:0;background:linear-gradient(transparent 25%,rgba(0,0,0,.75))}
+  .tslide-ov{position:absolute;inset:0;background:linear-gradient(transparent 35%,rgba(0,0,0,.72))}
   .tslide-info{position:absolute;bottom:14px;left:16px;right:16px;color:#fff}
-  .tslide-badge{display:inline-block;background:var(--acc);color:#fff;font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:10px;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-  .tslide-name{font-family:'Playfair Display',serif;font-size:1.2rem;text-shadow:0 1px 8px rgba(0,0,0,.4)}
-  .tslide-cat{font-size:.7rem;opacity:.85;margin-top:2px;display:flex;align-items:center;gap:5px}
+  .tslide-name{font-family:'Playfair Display',serif;font-size:1.1rem;text-shadow:0 1px 8px rgba(0,0,0,.4)}
+  .tslide-cat{font-size:.7rem;opacity:.85;margin-top:2px}
   .tdots{display:flex;justify-content:center;gap:5px;margin-top:8px}
   .tdot{width:6px;height:6px;border-radius:50%;background:#d1ccc4;border:none;cursor:pointer;padding:0;transition:all .3s}
   .tdot.on{background:var(--p);width:20px;border-radius:3px}
 
-  /* ── NEARBY SCROLL ── */
+
   .nscroll{display:flex;gap:12px;padding:0 16px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px}
   .nscroll::-webkit-scrollbar{display:none}
-  .ncard{flex-shrink:0;width:148px;background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.1);cursor:pointer;transition:transform .2s,box-shadow .2s}
-  .ncard:active{transform:scale(.96);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+  .ncard{flex-shrink:0;width:148px;background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.11);cursor:pointer;transition:transform .15s}
+  .ncard:active{transform:scale(.96)}
   .ncard-img{height:105px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
   .ncard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
   .ncard-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,rgba(0,0,0,.35))}
   .ncard-body{padding:10px 11px 13px}
   .ncard-name{font-family:'Playfair Display',serif;font-size:.88rem;line-height:1.25;color:var(--dark)}
   .ncard-dist{font-size:.67rem;color:var(--p);font-weight:700;margin-top:4px;display:flex;align-items:center;gap:3px}
+  .ncard-desc{font-size:.64rem;color:var(--muted);margin-top:3px;line-height:1.4}
+  .ncard-arrow{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+  .ncard-dir{background:var(--p);color:#fff;font-size:.6rem;font-weight:700;padding:3px 9px;border-radius:10px}
 
-  /* ── TABS ── */
+  /* TABS */
   .tabs-wrap{padding:18px 16px 0;overflow-x:auto;scrollbar-width:none}
   .tabs-wrap::-webkit-scrollbar{display:none}
   .tabs{display:flex;gap:8px}
-  .tab{flex-shrink:0;border:none;cursor:pointer;padding:9px 17px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;background:var(--card);color:var(--muted);box-shadow:0 2px 8px rgba(0,0,0,.07);transition:all .25s}
+  .tab{flex-shrink:0;border:none;cursor:pointer;padding:9px 17px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;background:#fff;color:var(--muted);box-shadow:0 2px 8px rgba(0,0,0,.07);transition:all .25s}
   .tab.active{color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.18)}
   .tab[data-tab="attractions"].active{background:var(--g1)}
   .tab[data-tab="events"].active{background:var(--g3)}
@@ -166,53 +151,50 @@
   .tab[data-tab="transport"].active{background:var(--g5)}
   .tab[data-tab="emergency"].active{background:var(--g6)}
 
-  /* ── SECTIONS ── */
+  /* SECTIONS */
   .sec{display:none;padding:8px 0 130px;animation:fu .3s ease}
   .sec.active{display:block}
   @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-  /* ── SEC BANNER ── */
+  /* SEC BANNER */
   .sbanner{margin:12px 16px;border-radius:var(--r);padding:16px 18px;color:#fff;position:relative;overflow:hidden}
   .sbanner h2{font-family:'Playfair Display',serif;font-size:1.1rem}
   .sbanner p{font-size:.76rem;opacity:.9;margin-top:3px}
   .sbanner .deco{position:absolute;right:10px;bottom:-14px;font-size:3.8rem;opacity:.2}
 
-  /* ── SUB TABS ── */
+  /* SUB TABS */
   .stabs{display:flex;gap:7px;padding:8px 16px;overflow-x:auto;scrollbar-width:none;margin-bottom:6px}
   .stabs::-webkit-scrollbar{display:none}
-  .stab{flex-shrink:0;border:2px solid var(--bdr);cursor:pointer;padding:5px 13px;border-radius:25px;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;background:var(--card);color:var(--muted);transition:all .2s}
+  .stab{flex-shrink:0;border:2px solid var(--bdr);cursor:pointer;padding:5px 13px;border-radius:25px;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;background:#fff;color:var(--muted);transition:all .2s}
   .stab.active{background:var(--p);color:#fff;border-color:var(--p)}
 
-  /* ── MAGAZINE CARDS (pcard) ── */
+  /* PLACE GRID — magazine style */
   .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
-
-  /* Full-width first card */
   .pgrid .pcard:first-child{grid-column:1/-1}
-  .pgrid .pcard:first-child .pcard-img{height:180px}
-  .pgrid .pcard:first-child .pcard-name{font-size:1.1rem}
-
-  .pcard{background:var(--card);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 2px 12px rgba(0,0,0,.07)}
-  .pcard:active{transform:scale(.97);box-shadow:0 1px 6px rgba(0,0,0,.07)}
-  .pcard-img{height:120px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
-  .pcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .4s ease}
+  .pgrid .pcard:first-child .pcard-img{height:185px}
+  .pgrid .pcard:first-child .pcard-name{font-size:1.05rem}
+  .pcard{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.08);cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .pcard:active{transform:scale(.97);box-shadow:0 1px 6px rgba(0,0,0,.06)}
+  .pcard-img{height:118px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+  .pcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .4s}
   .pcard:active .pcard-img img{transform:scale(1.04)}
-  .pcard-ov{position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.6))}
-  .pcard-bdg{position:absolute;top:8px;left:8px;background:var(--acc);color:#fff;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px}
-  .pcard-rating{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);color:#fbbf24;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:8px;display:flex;align-items:center;gap:3px}
-  .pcard-body{padding:10px 11px 12px}
-  .pcard-name{font-family:'Playfair Display',serif;font-size:.92rem;line-height:1.25;color:var(--dark)}
-  .pcard-sub{font-size:.65rem;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:4px}
+  .pcard-img-ov{position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.55))}
+  .pcard-bdg{position:absolute;top:8px;left:8px;background:var(--acc);color:#fff;font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px}
+  .pcard-rating{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);color:#fbbf24;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:8px}
+  .pcard-body{padding:9px 11px 12px}
+  .pcard-name{font-family:'Playfair Display',serif;font-size:.9rem;line-height:1.2;color:var(--dark)}
+  .pcard-stars{font-size:.7rem;color:var(--gold);margin-top:2px}
+  .pcard-sub{font-size:.65rem;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:3px}
   .pcard-crowd{font-size:.6rem;font-weight:700;margin-top:5px;padding:2px 8px;border-radius:8px;display:inline-block}
   .crowd-low{background:#dcfce7;color:#15803d}
   .crowd-mid{background:#fef9c3;color:#854d0e}
   .crowd-high{background:#fee2e2;color:#dc2626}
 
-  /* ── LIST CARD ── */
-  .lcard{background:var(--card);border-radius:var(--r);margin:0 16px 12px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.07);cursor:pointer;transition:transform .2s,box-shadow .2s}
-  .lcard:active{transform:scale(.99);box-shadow:0 1px 6px rgba(0,0,0,.07)}
-  .lcard-img{height:148px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
-  .lcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .4s}
-  .lcard:active .lcard-img img{transform:scale(1.03)}
+  /* LIST CARD */
+  .lcard{background:var(--card);border-radius:var(--r);margin:0 16px 12px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.07);cursor:pointer;transition:transform .15s}
+  .lcard:active{transform:scale(.99)}
+  .lcard-img{height:138px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+  .lcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
   .lcard-body{padding:12px 14px 14px}
   .lcard-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
   .lcard-name{font-family:'Playfair Display',serif;font-size:1rem}
@@ -224,8 +206,8 @@
   .chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
   .chip{font-size:.63rem;font-weight:600;padding:3px 9px;border-radius:8px}
 
-  /* ── EVENT CARD ── */
-  .ecard{display:flex;align-items:center;gap:13px;background:var(--card);border-radius:var(--r);padding:14px;margin:0 16px 11px;box-shadow:0 3px 12px rgba(0,0,0,.07);cursor:pointer;transition:transform .2s}
+  /* EVENT CARD */
+  .ecard{display:flex;align-items:center;gap:13px;background:var(--card);border-radius:var(--r);padding:14px;margin:0 16px 11px;box-shadow:0 3px 12px rgba(0,0,0,.07);cursor:pointer;transition:transform .15s}
   .ecard:active{transform:scale(.99)}
   .edate{flex-shrink:0;width:52px;height:58px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
   .edate-d{font-family:'Playfair Display',serif;font-size:1.5rem;line-height:1}
@@ -234,7 +216,7 @@
   .einfo-meta{font-size:.7rem;color:var(--muted);margin-top:3px;line-height:1.5}
   .etag{display:inline-block;margin-top:5px;font-size:.62rem;font-weight:700;padding:2px 9px;border-radius:8px;color:#fff}
 
-  /* ── TRANSPORT ── */
+  /* TRANSPORT */
   .tpage{padding:0 16px}
   .tcat-hd{display:flex;align-items:center;gap:8px;font-family:'Playfair Display',serif;font-size:1rem;margin:16px 0 10px}
   .tcat-hd span{font-size:1.3rem}
@@ -245,7 +227,7 @@
   .tcall{background:var(--p);color:#fff;border:none;border-radius:18px;padding:5px 14px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
   .tempty{font-size:.8rem;color:var(--muted);font-style:italic;padding:4px 0}
 
-  /* ── EMERGENCY ── */
+  /* EMERGENCY */
   .epage{padding:0 16px}
   .emcard{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:var(--r);padding:15px;margin-bottom:11px;box-shadow:0 3px 12px rgba(0,0,0,.07)}
   .emico{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
@@ -255,32 +237,28 @@
   .emsub{font-size:.68rem;color:var(--muted);margin-top:2px}
   .emcall{background:var(--p);color:#fff;border:none;border-radius:20px;padding:7px 16px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
 
-  /* ── BOTTOM NAV ── */
-  .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--bdr);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}
+  /* BOTTOM NAV */
+  .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--bdr);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom)}
   .nbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 2px 11px;gap:2px;cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.54rem;font-weight:700;color:#bbb;transition:color .2s;min-width:0}
   .nbtn .ico{font-size:1.15rem;transition:transform .2s}
   .nbtn.active{color:var(--p)}
   .nbtn.active .ico{transform:scale(1.2)}
 
-  /* ── DETAIL PAGE (CINEMATIC) ── */
+  /* DETAIL PAGE */
   #dp{display:none;position:fixed;inset:0;background:var(--sand);z-index:500;overflow-y:auto;max-width:430px;margin:0 auto}
-  .dp-hero{height:300px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:5rem}
-  .dp-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transform:scale(1.08);animation:ken-burns 8s ease-out forwards}
-  @keyframes ken-burns{from{transform:scale(1.08)}to{transform:scale(1)}}
-  .dp-ov{position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,20,40,.85))}
-  .dp-name{position:absolute;bottom:18px;left:16px;right:16px;font-family:'Playfair Display',serif;font-size:1.55rem;color:#fff;line-height:1.2;text-shadow:0 2px 12px rgba(0,0,0,.5)}
-  .dp-name-sub{font-size:.75rem;opacity:.82;font-family:'DM Sans',sans-serif;font-weight:400;margin-top:3px}
-  .dp-back{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);border:none;color:#fff;padding:7px 15px;border-radius:25px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;z-index:2;display:flex;align-items:center;gap:5px}
-  .dp-body{padding:16px 16px 120px}
-  .dp-meta-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .dp-hero{height:265px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:5rem}
+  .dp-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .dp-ov{position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(10,20,40,.82))}
+  .dp-name{position:absolute;bottom:14px;left:16px;right:16px;font-family:'Playfair Display',serif;font-size:1.45rem;color:#fff;line-height:1.2;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+  .dp-back{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.38);backdrop-filter:blur(8px);border:none;color:#fff;padding:7px 15px;border-radius:25px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;z-index:2}
+  .dp-body{padding:14px 16px 110px}
   .dp-stars{color:var(--gold);font-size:1.05rem}
   .dp-rat{font-size:.78rem;color:var(--muted)}
-  .dp-bdg{display:inline-block;font-size:.68rem;font-weight:700;padding:3px 13px;border-radius:20px}
-  .dp-crowd-badge{font-size:.68rem;font-weight:700;padding:3px 11px;border-radius:20px}
-  .dp-h{font-family:'Playfair Display',serif;font-size:1rem;margin:18px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--bdr)}
-  .dp-about{font-size:.84rem;line-height:1.85;color:var(--muted)}
+  .dp-bdg{display:inline-block;font-size:.68rem;font-weight:700;padding:3px 13px;border-radius:20px;margin:8px 0 12px}
+  .dp-h{font-family:'Playfair Display',serif;font-size:1rem;margin:16px 0 7px;padding-bottom:5px;border-bottom:2px solid var(--bdr)}
+  .dp-about{font-size:.84rem;line-height:1.8}
   .igrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0}
-  .iitem{background:var(--card);border-radius:11px;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .iitem{background:#fff;border-radius:11px;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
   .iitem-l{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
   .iitem-v{font-family:'Playfair Display',serif;font-size:.9rem;margin-top:3px}
   .tipbox{background:linear-gradient(135deg,#fff7ed,#ffedd5);border-radius:12px;padding:12px 14px;margin:8px 0;border-left:4px solid var(--acc)}
@@ -289,30 +267,10 @@
   .mwrap iframe{width:100%;height:100%;border:none}
   .discbox{background:#fff5f5;border-radius:11px;padding:11px 13px;border-left:3px solid #fca5a5;margin-top:8px}
   .discbox p{font-size:.72rem;color:#7f1d1d;line-height:1.7}
-  .dp-actions{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--bdr);padding:10px 16px;display:flex;gap:8px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:100;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  .dp-actions{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--bdr);padding:10px 16px;display:flex;gap:8px;box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:100;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
   .abtn{flex:1;text-align:center;padding:10px;border-radius:25px;font-size:.78rem;font-weight:700;color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
 
-  /* ── SLIDESHOW (existing) ── */
-  .dp-photo-slide{position:relative;height:300px;overflow:hidden}
-  .dp-slide-rail{display:flex;height:100%;transition:transform .45s cubic-bezier(.4,0,.2,1)}
-  .dp-slide-item{flex-shrink:0;width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;font-size:5rem}
-  .dp-slide-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .dp-slide-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
-  .dp-slide-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;padding:0;transition:all .25s}
-  .dp-slide-dot.on{background:#fff;width:18px;border-radius:3px}
-
-  /* ── AI FAB ── */
-  .ai-fab{position:fixed;bottom:80px;right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);color:#fff;font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:200;box-shadow:0 6px 24px rgba(10,124,110,.45);text-decoration:none;border:none;transition:transform .2s}
-  .ai-fab:active{transform:scale(.92)}
-  .ai-fab-pulse{position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(10,124,110,.4);animation:fab-pulse 2s ease-out infinite}
-  .ai-fab-pulse2{position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(10,124,110,.2);animation:fab-pulse 2s ease-out infinite .6s}
-  @keyframes fab-pulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.4);opacity:0}}
-  .ai-fab-bubble{position:fixed;bottom:142px;right:14px;background:var(--card);border-radius:16px 16px 4px 16px;padding:10px 14px;font-size:.75rem;font-weight:600;color:var(--dark);box-shadow:0 4px 20px rgba(0,0,0,.15);max-width:180px;z-index:200;animation:bubble-in .4s cubic-bezier(.34,1.56,.64,1) forwards;display:none;line-height:1.5}
-  .ai-fab-bubble.show{display:block}
-  @keyframes bubble-in{from{opacity:0;transform:scale(.8) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-  .ai-fab-label{position:fixed;bottom:88px;right:76px;background:rgba(0,0,0,.65);color:#fff;font-size:.65rem;font-weight:600;padding:4px 10px;border-radius:10px;z-index:200;pointer-events:none;white-space:nowrap}
-
-  /* ── FOOTER ── */
+  /* FOOTER */
   .footer{background:var(--dark);color:#fff;padding:28px 18px 20px;margin-top:12px}
   .ft-logo{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:3px}
   .ft-tag{font-size:.72rem;color:#475569;margin-bottom:18px}
@@ -322,24 +280,28 @@
   .ft-full{grid-column:1/-1}
   .ft-hr{border:none;border-top:1px solid rgba(255,255,255,.07);margin-bottom:14px}
   .ft-copy{font-size:.68rem;color:#334155;line-height:1.9}
-  .ft-social{display:flex;gap:12px;margin-bottom:16px}
-  .ft-sico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(255,255,255,.07);cursor:pointer;transition:background .2s;text-decoration:none}
-  .ft-sico:active{background:rgba(255,255,255,.15)}
 
-  /* ── SHEET ── */
+  /* SHEET */
   .sov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:800;align-items:flex-end;justify-content:center}
   .sov.open{display:flex}
-  .sheet{background:var(--card);border-radius:24px 24px 0 0;padding:22px 20px 50px;width:100%;max-width:430px;max-height:82vh;overflow-y:auto}
+  .sheet{background:#fff;border-radius:24px 24px 0 0;padding:22px 20px 50px;width:100%;max-width:430px;max-height:82vh;overflow-y:auto}
   .sheet-hd{font-family:'Playfair Display',serif;font-size:1.15rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .sheet-x{background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999}
   .sheet h3{font-family:'Playfair Display',serif;font-size:.92rem;margin:13px 0 4px;color:var(--p)}
   .sheet p{font-size:.79rem;color:var(--muted);line-height:1.8;margin-bottom:7px}
-  .fb-field{width:100%;border:2px solid var(--bdr);border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;margin-bottom:10px;background:var(--card);color:var(--dark);transition:border .2s}
+  .fb-field{width:100%;border:2px solid var(--bdr);border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none;margin-bottom:10px;background:#fff;color:var(--dark);transition:border .2s}
   .fb-field:focus{border-color:var(--p)}
   textarea.fb-field{min-height:95px;resize:vertical}
   .fb-sub{width:100%;background:var(--p);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer}
 
-  /* ── LOADING / EMPTY ── */
+  /* SKELETON LOADING */
+  .skel{background:linear-gradient(90deg,#e8e4de 25%,#f5f2ec 50%,#e8e4de 75%);background-size:200% 100%;animation:skel-shine 1.4s infinite;border-radius:8px}
+  body.dark .skel{background:linear-gradient(90deg,#1e3530 25%,#243d39 50%,#1e3530 75%);background-size:200% 100%}
+  @keyframes skel-shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .skel-card{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.07)}
+  .skel-body{padding:10px}
+  .skel-line{margin-bottom:6px}
+  /* LOADING / EMPTY */
   .loading{display:flex;align-items:center;justify-content:center;padding:48px;flex-direction:column;gap:12px}
   .spinner{width:30px;height:30px;border:3px solid var(--bdr);border-top-color:var(--p);border-radius:50%;animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
@@ -347,14 +309,9 @@
   .empty-ico{font-size:2.8rem;margin-bottom:10px}
   .empty p{font-size:.8rem}
 
-  /* ── TOAST ── */
+  /* TOAST */
   .toast{display:none;position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:8px 20px;border-radius:25px;font-size:.77rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.35)}
   .toast.show{display:block}
-
-  /* ── MAP ── */
-  #map-container{height:calc(100vh - 180px);border-radius:var(--r);overflow:hidden;margin:12px 16px}
-  .map-filter-bar{display:flex;gap:7px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
-  .map-filter-bar::-webkit-scrollbar{display:none}
   </style>
 </head>
 <body>
@@ -365,40 +322,24 @@
   <button id="dbtn">✕</button>
 </div>
 
-<!-- ── HERO ── -->
+<!-- HERO -->
 <div class="hero-bg">
-  <div class="hero-media">
-    <div class="hero-gradient" id="hero-gradient"></div>
-    <div class="hero-orbs">
-      <div class="orb orb1"></div>
-      <div class="orb orb2"></div>
-      <div class="orb orb3"></div>
-    </div>
-    <div class="hero-overlay"></div>
-    <div class="hero-top">
-      <div class="hero-logo">
-        <span class="hero-logo-dot"></span>
-        🌊 Discover Byndoor
-      </div>
-      <div class="hero-top-right">
-        <button class="dark-toggle" onclick="toggleDark()" id="dark-btn">🌙 Dark</button>
-        <div class="weather-chip" id="weather-chip">☀️ <span id="chip-temp">29°C</span></div>
-      </div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-eyebrow">📍 Byndoor Taluk · Udupi District · Karnataka</div>
-      <div class="hero-title">Coastal<br/><em>Karnataka's</em><br/>Hidden Gem</div>
-      <div class="hero-sub">Maravanthe · Kollur · Trasi · Navunda<br/>Beaches · Temples · Waterfalls · Seafood</div>
-      <div class="hero-btns">
-        <button class="btn-primary" onclick="document.querySelector('.tabs-wrap').scrollIntoView({behavior:'smooth'})">🏖️ Explore Places</button>
-        <a class="btn-ghost" href="ai-assistant.html">🤖 Ask AI Guide</a>
-      </div>
-    </div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+  <div class="hero-top">
+    <div class="hero-logo">🌊 Discover Byndoor</div>
+    <button id="dark-btn" onclick="toggleDark()" style="background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px">🌙 Dark</button>
+    <div class="weather-chip" id="weather-chip">☀️ <span id="chip-temp">29°C</span></div>
   </div>
-  <div class="hero-curve"></div>
+  <div class="hero-body">
+    <div class="hero-eyebrow">📍 Byndoor Taluk · Udupi District · Karnataka</div>
+    <div class="hero-title">Byndoor Taluk<br/>Tourism Guide</div>
+    <div class="hero-sub">Maravanthe · Kollur · Byndoor · Trasi · Navunda<br/>Beaches · Temples · Waterfalls · Wildlife</div>
+  </div>
 </div>
 
-<!-- ── WEATHER WIDGET ── -->
+<!-- WEATHER -->
 <div class="weather-widget">
   <div class="ww-icon" id="ww-ico">☀️</div>
   <div class="ww-main">
@@ -413,11 +354,11 @@
   </div>
 </div>
 
-<!-- ── BEAUTY ── -->
+<!-- BEAUTY -->
 <div class="beauty-wrap">
   <div class="beauty-card">
     <div class="beauty-head">🌊 Welcome to Byndoor Taluk</div>
-    <div class="beauty-body">Byndoor Taluk is a stunning stretch of coastal Karnataka where the Western Ghats meet the Arabian Sea. From the world-famous Maravanthe Beach — where NH 66 runs between the sea and the Sauparnika river — to the divine Kollur Mookambika Temple, pristine Trasi beach, and thundering waterfalls hidden in the Ghats.</div>
+    <div class="beauty-body">Byndoor Taluk is a stunning stretch of coastal Karnataka where the Western Ghats meet the Arabian Sea. From the world-famous Maravanthe Beach — where the NH 66 runs between the sea and the Sauparnika river — to the divine Kollur Mookambika Temple, the pristine Trasi beach, Navunda's tranquil river banks, and thundering waterfalls hidden in the Ghats — Byndoor Taluk is Karnataka's best-kept secret. The taluk offers an authentic coastal experience with warm hospitality, fresh seafood, and breathtaking sunsets year-round.</div>
     <div class="beauty-chips">
       <span class="bchip">🏖️ Maravanthe Beach</span>
       <span class="bchip">🛕 Kollur Mookambika</span>
@@ -425,11 +366,12 @@
       <span class="bchip">🦋 Butterfly Camp</span>
       <span class="bchip">💧 Waterfalls</span>
       <span class="bchip">🦀 Fresh Seafood</span>
+      <span class="bchip">🌿 Western Ghats</span>
     </div>
   </div>
 </div>
 
-<!-- ── SEARCH ── -->
+<!-- SEARCH -->
 <div class="search-wrap">
   <div class="search-box">
     <span style="color:#c4bfb8;font-size:.95rem">🔍</span>
@@ -439,7 +381,7 @@
   <div class="search-drop" id="srch-drop"></div>
 </div>
 
-<!-- ── TRENDING ── -->
+<!-- TRENDING -->
 <div class="sh">
   <div>
     <h2>🔥 Trending Now</h2>
@@ -453,16 +395,9 @@
   <div class="tdots" id="tdots"></div>
 </div>
 
-<!-- ── NEARBY ── -->
-<div class="sh" style="padding-top:14px">
-  <div>
-    <h2>🗺️ Explore Nearby</h2>
-    <div class="sh-sub">Day trips from Byndoor</div>
-  </div>
-</div>
-<div class="nscroll" id="nearby-list"></div>
 
-<!-- ── TABS ── -->
+
+<!-- TABS -->
 <div class="tabs-wrap">
   <div class="tabs">
     <button class="tab active" data-tab="attractions">🏛️ Attractions</button>
@@ -476,7 +411,7 @@
   </div>
 </div>
 
-<!-- ── ATTRACTIONS ── -->
+<!-- ATTRACTIONS -->
 <div class="sec active" id="attractions">
   <div class="sbanner" style="background:var(--g1)"><h2>Explore Byndoor's Wonders</h2><p>Beaches, temples, waterfalls, wildlife &amp; more</p><div class="deco">🌅</div></div>
   <div class="stabs" id="stabs">
@@ -493,38 +428,37 @@
     <button class="stab" data-sub="others">📍 Others</button>
   </div>
   <div id="att-grid" class="pgrid">
-    <!-- SKELETON LOADING -->
-    <div class="skel-card" style="grid-column:1/-1"><div class="skel skel-img" style="height:180px"></div><div class="skel-body"><div class="skel skel-line" style="height:14px;width:70%"></div><div class="skel skel-line" style="height:10px;width:45%"></div></div></div>
-    <div class="skel-card"><div class="skel skel-img" style="height:115px"></div><div class="skel-body"><div class="skel skel-line" style="height:12px;width:80%"></div><div class="skel skel-line" style="height:9px;width:55%"></div></div></div>
-    <div class="skel-card"><div class="skel skel-img" style="height:115px"></div><div class="skel-body"><div class="skel skel-line" style="height:12px;width:65%"></div><div class="skel skel-line" style="height:9px;width:40%"></div></div></div>
+    <div class="skel-card" style="grid-column:1/-1"><div class="skel" style="height:185px;border-radius:var(--r) var(--r) 0 0"></div><div class="skel-body"><div class="skel skel-line" style="height:14px;width:65%"></div><div class="skel skel-line" style="height:10px;width:40%"></div></div></div>
+    <div class="skel-card"><div class="skel" style="height:118px;border-radius:var(--r) var(--r) 0 0"></div><div class="skel-body"><div class="skel skel-line" style="height:12px;width:75%"></div><div class="skel skel-line" style="height:9px;width:50%"></div></div></div>
+    <div class="skel-card"><div class="skel" style="height:118px;border-radius:var(--r) var(--r) 0 0"></div><div class="skel-body"><div class="skel skel-line" style="height:12px;width:60%"></div><div class="skel skel-line" style="height:9px;width:45%"></div></div></div>
   </div>
 </div>
 
-<!-- ── EVENTS ── -->
+<!-- EVENTS -->
 <div class="sec" id="events">
   <div class="sbanner" style="background:var(--g3)"><h2>Byndoor Celebrates!</h2><p>Festivals, cultural nights &amp; local events</p><div class="deco">🎊</div></div>
   <div id="evt-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
-<!-- ── STAY ── -->
+<!-- STAY -->
 <div class="sec" id="stay">
   <div class="sbanner" style="background:var(--g4)"><h2>Rest in Coastal Comfort</h2><p>Hotels, resorts, homestays &amp; camps</p><div class="deco">🌴</div></div>
   <div id="stay-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
-<!-- ── FOOD ── -->
+<!-- FOOD -->
 <div class="sec" id="food">
   <div class="sbanner" style="background:var(--g2)"><h2>Taste Coastal Karnataka!</h2><p>Fresh seafood, coconut curries &amp; local delicacies</p><div class="deco">🦐</div></div>
   <div id="food-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
-<!-- ── TRANSPORT ── -->
+<!-- TRANSPORT -->
 <div class="sec" id="transport">
   <div class="sbanner" style="background:var(--g5)"><h2>Getting Around Byndoor</h2><p>Trains, buses, taxis &amp; auto rickshaws</p><div class="deco">🚌</div></div>
   <div class="tpage" id="transport-body"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
-<!-- ── EMERGENCY ── -->
+<!-- EMERGENCY -->
 <div class="sec" id="emergency">
   <div class="sbanner" style="background:var(--g6)"><h2>Emergency Contacts</h2><p>Byndoor &amp; Karnataka emergency services</p><div class="deco">🚨</div></div>
   <div class="epage">
@@ -537,75 +471,173 @@
   </div>
 </div>
 
-<!-- ── MAP ── -->
+
+
+<!-- MAP TAB -->
 <div class="sec" id="map">
-  <div class="sbanner" style="background:var(--g1)"><h2>🗺️ Tourist Map</h2><p>All places on an interactive map</p><div class="deco">📍</div></div>
-  <div class="map-filter-bar" id="map-filter-bar">
-    <button class="stab active" onclick="filterMap('all',this)">All</button>
-    <button class="stab" onclick="filterMap('attractions',this)">🏛️ Attractions</button>
-    <button class="stab" onclick="filterMap('stay',this)">🏨 Stay</button>
-    <button class="stab" onclick="filterMap('food',this)">🍛 Food</button>
-    <button class="stab" onclick="filterMap('nearby',this)">🗺️ Nearby</button>
+  <div class="sbanner" style="background:var(--g5)"><h2>Tourist Map</h2><p>All Byndoor attractions on one map</p><div class="deco">🗺️</div></div>
+  <div style="padding:12px 16px 6px;display:flex;gap:8px;flex-wrap:wrap" id="map-filter-btns">
+    <button class="map-filter-btn active" data-mcat="all" onclick="filterMapPins('all')">All</button>
+    <button class="map-filter-btn" data-mcat="attractions" onclick="filterMapPins('attractions')">🏛️ Attractions</button>
+    <button class="map-filter-btn" data-mcat="stay" onclick="filterMapPins('stay')">🏨 Stay</button>
+    <button class="map-filter-btn" data-mcat="food" onclick="filterMapPins('food')">🍛 Food</button>
+    <button class="map-filter-btn" data-mcat="nearby" onclick="filterMapPins('nearby')">📍 Nearby</button>
   </div>
-  <div id="map-container"></div>
+  <div id="tourist-map-container" style="margin:8px 16px 80px;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.12);height:65vh;background:#e8f4f0;display:flex;align-items:center;justify-content:center">
+    <div id="map-loading" style="text-align:center;color:var(--muted)"><div style="font-size:2.5rem">🗺️</div><div style="font-size:.85rem;margin-top:8px">Loading map…</div></div>
+  </div>
 </div>
 
-<!-- ── MORE ── -->
+<!-- MORE TAB -->
 <div class="sec" id="more">
-  <div class="sbanner" style="background:linear-gradient(135deg,#374151,#1f2937)"><h2>More</h2><p>Guides, emergency &amp; more</p><div class="deco">☰</div></div>
-  <div style="padding:0 16px" id="guide-list"></div>
-  <div class="footer">
-    <div class="ft-logo">🌊 Discover Byndoor</div>
-    <div class="ft-tag">Karnataka's Coastal Hidden Gem</div>
-    <div class="ft-social" id="ft-social">
-      <a class="ft-sico" id="fs-fb" href="#" target="_blank">📘</a>
-      <a class="ft-sico" id="fs-yt" href="#" target="_blank">▶️</a>
-      <a class="ft-sico" id="fs-ig" href="#" target="_blank">📸</a>
-      <a class="ft-sico" id="fs-tw" href="#" target="_blank">🐦</a>
+  <div class="sbanner" style="background:linear-gradient(135deg,#374151,#1f2937)"><h2>More</h2><p>Nearby places, emergency &amp; more</p><div class="deco">☰</div></div>
+  
+  <!-- NEARBY PLACES -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">📍 Explore Nearby Places</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div class="nscroll" id="nearby-list"></div>
+
+  <!-- SOS EMERGENCY -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px;margin-top:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">🚨 Emergency Contacts</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div class="epage">
+    <div class="emcard"><div class="emico" style="background:#FEE2E2">👮</div><div class="eminfo"><div class="emname">Police Station</div><div class="emnum">100</div><div class="emsub">Byndoor Police · 24/7</div></div><button class="emcall" onclick="window.open('tel:100')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#FEE2E2">🚑</div><div class="eminfo"><div class="emname">Ambulance</div><div class="emnum">108</div><div class="emsub">Karnataka Emergency · Free</div></div><button class="emcall" onclick="window.open('tel:108')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#FEF3C7">🚒</div><div class="eminfo"><div class="emname">Fire Service</div><div class="emnum">101</div><div class="emsub">Fire &amp; Rescue · Emergency</div></div><button class="emcall" onclick="window.open('tel:101')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#DCFCE7">🏥</div><div class="eminfo"><div class="emname">CHC Byndoor Hospital</div><div class="emnum">08254-253027</div><div class="emsub">Community Health Centre</div></div><button class="emcall" onclick="window.open('tel:08254253027')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#EDE9FE">🆘</div><div class="eminfo"><div class="emname">National Emergency</div><div class="emnum">112</div><div class="emsub">Police · Fire · Medical</div></div><button class="emcall" onclick="window.open('tel:112')">Call</button></div>
+    <div class="emcard"><div class="emico" style="background:#E0F2FE">🌊</div><div class="eminfo"><div class="emname">Coast Guard</div><div class="emnum">1554</div><div class="emsub">Sea Emergency · Distress at Sea</div></div><button class="emcall" onclick="window.open('tel:1554')">Call</button></div>
+  </div>
+
+  <!-- TOURIST GUIDES -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px;margin-top:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">🧭 Tourist Guides</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div id="guides-list" style="padding:0 16px 8px">
+    <div style="font-size:.8rem;color:#bbb;font-style:italic">Loading guides…</div>
+  </div>
+
+  <!-- CONTACT US -->
+  <div style="padding:16px 16px 6px;display:flex;align-items:center;gap:8px;margin-top:8px">
+    <span style="font-size:.82rem;font-weight:700;color:var(--dark)">📞 Contact Us</span>
+    <div style="flex:1;height:1px;background:#e8e4de"></div>
+  </div>
+  <div style="padding:0 16px 80px">
+    <div class="emcard" style="cursor:pointer" onclick="showSheet('contact')">
+      <div class="emico" style="background:#E0F2FE">📧</div>
+      <div class="eminfo"><div class="emname">Discover Byndoor</div><div class="emsub">📍 Byndoor, Udupi District, Karnataka</div></div>
+      <button class="emcall">Open</button>
     </div>
-    <div class="ft-grid">
-      <button class="ft-btn" onclick="showSheet('about')">ℹ️ About App</button>
-      <button class="ft-btn" onclick="showSheet('privacy')">🔒 Privacy Policy</button>
-      <button class="ft-btn" onclick="showSheet('terms')">📋 Terms of Use</button>
-      <button class="ft-btn" onclick="showSheet('contact')">📞 Contact Us</button>
-      <button class="ft-btn ft-full" onclick="showSheet('feedback')">💬 Feedback &amp; Suggestions</button>
+    <div class="emcard" style="cursor:pointer" onclick="showSheet('about')">
+      <div class="emico" style="background:#DCFCE7">ℹ️</div>
+      <div class="eminfo"><div class="emname">About App</div><div class="emsub">Version 2.0 · Discover Byndoor</div></div>
+      <button class="emcall">Open</button>
     </div>
-    <hr class="ft-hr"/>
-    <div class="ft-copy">© 2025 Discover Byndoor · Made with ❤️ for Byndoor Taluk<br/>Data updates in real-time · Free &amp; Open to all</div>
+    <div class="emcard" style="cursor:pointer" onclick="showSheet('feedback')">
+      <div class="emico" style="background:#FEF3C7">💬</div>
+      <div class="eminfo"><div class="emname">Feedback</div><div class="emsub">Help us improve</div></div>
+      <button class="emcall">Open</button>
+    </div>
   </div>
 </div>
 
-<!-- ── BOTTOM NAV ── -->
-<nav class="bnav">
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="ft-logo">🌊 Discover Byndoor</div>
+  <div class="ft-tag">Official tourism guide · Coastal Karnataka</div>
+  <div id="footer-social" style="display:flex;gap:12px;justify-content:center;margin:14px 0 4px">
+    <a id="fs-fb" href="#" class="ft-social-icon" style="background:#1877F2;display:none" target="_blank" title="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+    <a id="fs-yt" href="#" class="ft-social-icon" style="background:#FF0000;display:none" target="_blank" title="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg></a>
+    <a id="fs-ig" href="#" class="ft-social-icon" style="background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);display:none" target="_blank" title="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+    <a id="fs-tw" href="#" class="ft-social-icon" style="background:#000;display:none" target="_blank" title="X / Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.632z"/></svg></a>
+  </div>
+  <div class="ft-grid">
+    <button class="ft-btn" onclick="showSheet('about')">ℹ️ About App</button>
+    <button class="ft-btn" onclick="showSheet('privacy')">🔒 Privacy Policy</button>
+    <button class="ft-btn" onclick="showSheet('terms')">📋 Terms of Use</button>
+    <button class="ft-btn" onclick="showSheet('contact')">📞 Contact Us</button>
+    <button class="ft-btn ft-full" onclick="showSheet('feedback')">💬 Feedback &amp; Suggestions</button>
+  </div>
+  <hr class="ft-hr"/>
+  <div class="ft-copy">
+    <strong style="color:#64748b">© 2025 Discover Byndoor.</strong> All rights reserved.<br/>
+    Information is for guidance only · Verify locally before visiting.<br/>
+    Photos © respective owners · Powered by Firebase &amp; Open-Meteo
+  </div>
+</footer>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
   <button class="nbtn active" data-nav="attractions"><span class="ico">🏛️</span>Explore</button>
   <button class="nbtn" data-nav="events"><span class="ico">🎉</span>Events</button>
   <button class="nbtn" data-nav="stay"><span class="ico">🏨</span>Stay</button>
   <button class="nbtn" data-nav="food"><span class="ico">🍛</span>Food</button>
   <button class="nbtn" data-nav="transport"><span class="ico">🚌</span>Transport</button>
-  <button class="nbtn" data-nav="emergency"><span class="ico">🚨</span>SOS</button>
-</nav>
-
-<!-- ── DETAIL PAGE ── -->
-<div id="dp">
-  <div id="dp-hero" class="dp-hero">
-    <span id="dp-emoji"></span>
-    <div class="dp-ov"></div>
-    <button class="dp-back" onclick="closeDp()">← Back</button>
-    <div class="dp-name" id="dp-name"></div>
-  </div>
-  <div id="dp-body" class="dp-body"></div>
-  <div id="dp-actions" class="dp-actions"></div>
+  <button class="nbtn" data-nav="map"><span class="ico">🗺️</span>Map</button>
+  <button class="nbtn" data-nav="more"><span class="ico">☰</span>More</button>
 </div>
 
-<!-- ── AI FAB ── -->
-<div class="ai-fab-bubble" id="ai-bubble">👋 Hi! Ask me anything about Byndoor 🌊</div>
-<a class="ai-fab" href="ai-assistant.html" id="ai-fab">
-  <div class="ai-fab-pulse"></div>
-  <div class="ai-fab-pulse2"></div>
-  🤖
-</a>
+<!-- DETAIL PAGE -->
+<div id="dp">
+  <div id="dp-hero" class="dp-hero">
+    <span id="dp-emoji">🏛️</span>
+    <div class="dp-ov"></div>
+    <button class="dp-back" onclick="closeDp()">← Back</button>
+    <div id="dp-name" class="dp-name"></div>
+  </div>
+  <div class="dp-body">
+    <div style="display:flex;align-items:center;gap:8px;margin:10px 0 4px">
+      <div id="dp-stars" class="dp-stars">★★★★★</div>
+      <div id="dp-rat" class="dp-rat">(5.0)</div>
+    </div>
+    <span id="dp-bdg" class="dp-bdg"></span>
+    <div class="dp-h">📖 About</div>
+    <p id="dp-about" class="dp-about"></p>
+    <div class="dp-h">ℹ️ Info</div>
+    <div class="igrid">
+      <div class="iitem"><div class="iitem-l">⏰ Timing</div><div class="iitem-v" id="dp-timing">—</div></div>
+      <div class="iitem"><div class="iitem-l">🎟️ Entry Fee</div><div class="iitem-v" id="dp-entry">—</div></div>
+      <div class="iitem"><div class="iitem-l">🌤️ Best Time</div><div class="iitem-v" id="dp-best">—</div></div>
+      <div class="iitem" id="dp-transport-row" style="display:none"><div class="iitem-l">🚌 Transport</div><div class="iitem-v" id="dp-transport" style="font-size:.78rem">—</div></div>
+      <div class="iitem" id="dp-risk-row" style="display:none"><div class="iitem-l">⚠️ Risk/Notes</div><div class="iitem-v" id="dp-risk" style="font-size:.75rem">—</div></div>
+    </div>
+    <div id="dp-tips-row" style="display:none">
+      <div class="dp-h">💡 Tips</div>
+      <div class="tipbox"><p id="dp-tips"></p></div>
+    </div>
+    <div id="dp-tags-row" style="display:none">
+      <div class="dp-h">🏷️ Tags</div>
+      <div id="dp-tags" class="chip-row" style="margin-top:0"></div>
+    </div>
+    <div id="dp-map-row" style="display:none">
+      <div class="dp-h">🗺️ Location</div>
+      <div class="mwrap" id="dp-map"></div>
+    </div>
+    <div id="dp-social-row" style="display:none;margin-top:8px">
+      <div class="dp-h">🔗 Follow</div>
+      <div id="dp-social" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"></div>
+    </div>
+    <div id="dp-photos-row" style="display:none">
+      <div class="dp-h">📷 More Photos</div>
+      <div id="dp-photos" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px"></div>
+    </div>
+    <div class="discbox" style="margin-top:14px">
+      <p>⚠️ Information is for general guidance only. Entry fees, timings and availability may change. Please verify locally before visiting.</p>
+    </div>
+  </div>
+  <div class="dp-actions">
+    <button class="abtn" style="background:var(--p)" id="dp-dir">🗺️ Directions</button>
+    <button class="abtn" style="background:var(--pink);display:none" id="dp-call">📞 Call</button>
+    <button class="abtn" style="background:var(--acc)" onclick="sharePlace()">📤 Share</button>
+  </div>
+</div>
 
-<!-- ── SHEET ── -->
+<!-- SHEET -->
 <div class="sov" id="sov" onclick="closeSheet(event)">
   <div class="sheet">
     <div class="sheet-hd"><span id="s-title"></span><button class="sheet-x" onclick="closeSheet()">✕</button></div>
@@ -613,61 +645,8 @@
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div id="toast" class="toast"></div>
 
-<script>
-// ── DARK MODE ──
-function toggleDark(){
-  document.body.classList.toggle('dark');
-  const btn = document.getElementById('dark-btn');
-  btn.textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
-  localStorage.setItem('byndoor-dark', document.body.classList.contains('dark') ? '1' : '0');
-}
-if(localStorage.getItem('byndoor-dark')==='1'){
-  document.body.classList.add('dark');
-  document.getElementById('dark-btn').textContent='☀️ Light';
-}
-
-// ── AI FAB GREETING BUBBLE ──
-setTimeout(()=>{
-  const bubble = document.getElementById('ai-bubble');
-  bubble.classList.add('show');
-  setTimeout(()=>bubble.classList.remove('show'), 4000);
-}, 3000);
-
-// ── CROWD INDICATOR ──
-function getCrowdLevel(){
-  const h = new Date().getHours();
-  const d = new Date().getDay(); // 0=Sun
-  if(d===0||d===6){ // weekend
-    if(h>=9&&h<=18) return {label:'🔴 Peak time', cls:'crowd-high'};
-    return {label:'🟡 Moderate', cls:'crowd-mid'};
-  }
-  if(h>=10&&h<=16) return {label:'🟡 Moderate', cls:'crowd-mid'};
-  if(h<8||h>19) return {label:'🟢 Quiet now', cls:'crowd-low'};
-  return {label:'🟢 Less crowded', cls:'crowd-low'};
-}
-
-// ── HERO WEATHER MOOD ──
-function setHeroMood(weatherCode, hour){
-  const grad = document.getElementById('hero-gradient');
-  if(!grad) return;
-  if(weatherCode>=61&&weatherCode<=82){
-    // Rainy — moody dark
-    grad.style.background='linear-gradient(160deg,#0f2027 0%,#203a43 45%,#2c5364 100%)';
-  } else if(hour<7||hour>19){
-    // Night
-    grad.style.background='linear-gradient(160deg,#0a0a2e 0%,#16213e 45%,#0f3460 100%)';
-  } else if(hour<10){
-    // Sunrise — golden
-    grad.style.background='linear-gradient(160deg,#f97316 0%,#0a7c6e 55%,#0ea5e9 100%)';
-  } else {
-    // Default day
-    grad.style.background='linear-gradient(160deg,#064e3b 0%,#0a7c6e 45%,#0ea5e9 100%)';
-  }
-}
-setHeroMood(0, new Date().getHours());
-</script>
 <script>
 const FIREBASE_CONFIG={apiKey:"AIzaSyDuMIST8WwSXmuRBX88QwG1a5-cFAxKLpE",authDomain:"explore-byndoor.firebaseapp.com",projectId:"explore-byndoor",storageBucket:"explore-byndoor.firebasestorage.app",messagingSenderId:"805954923101",appId:"1:805954923101:web:bbab57320b2959d4ee7bb4"};
 
@@ -740,18 +719,19 @@ function renderAtt(){
   let ps=places.filter(p=>p.category==='attractions');
   if(sub!=='all')ps=ps.filter(p=>(p.subtype||p.subcategory||'').toLowerCase().includes(sub));
   if(!ps.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏛️</div><p>No places in this category yet.</p></div>';return;}
+  const crowd=getCrowd();
   el.innerHTML=ps.map(p=>`
     <div class="pcard" onclick="openDp('${p.id}')">
       <div class="pcard-img" style="background:${p.cardBg||g(p.category)}">
         ${p.photoURL?`<img src="${p.photoURL}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||ce(p.category)}</span>`}
-        <div class="pcard-ov"></div>
+        <div class="pcard-img-ov"></div>
         ${p.subtype?`<div class="pcard-bdg">${p.subtype}</div>`:''}
         <div class="pcard-rating">⭐ ${p.rating||4}</div>
       </div>
       <div class="pcard-body">
         <div class="pcard-name">${p.name}</div>
         <div class="pcard-sub">📍 ${p.subtype||p.subcategory||'Byndoor'}</div>
-        <div class="pcard-crowd ${getCrowdLevel().cls}">${getCrowdLevel().label}</div>
+        <div class="pcard-crowd ${crowd.cls}">${crowd.label}</div>
       </div>
     </div>`).join('');
 }
@@ -1199,6 +1179,43 @@ window.addEventListener('popstate', function(e){
 });
 // Push initial state so first back doesn't immediately exit
 history.pushState({page:'home'},'','');
+
+// ── DARK MODE ──
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const b=document.getElementById('dark-btn');
+  if(b) b.textContent=document.body.classList.contains('dark')?'☀️ Light':'🌙 Dark';
+  localStorage.setItem('byndoor-dark',document.body.classList.contains('dark')?'1':'0');
+}
+if(localStorage.getItem('byndoor-dark')==='1'){
+  document.body.classList.add('dark');
+  const b=document.getElementById('dark-btn');
+  if(b) b.textContent='☀️ Light';
+}
+
+// ── CROWD INDICATOR ──
+function getCrowd(){
+  const h=new Date().getHours(),d=new Date().getDay();
+  if((d===0||d===6)&&h>=9&&h<=18) return{label:'🔴 Peak time',cls:'crowd-high'};
+  if(h>=10&&h<=16) return{label:'🟡 Moderate',cls:'crowd-mid'};
+  return{label:'🟢 Quiet now',cls:'crowd-low'};
+}
+
+// ── HERO WEATHER MOOD ──
+function setHeroMood(code){
+  const h=new Date().getHours();
+  const bg=document.querySelector('.hero-bg');
+  if(!bg)return;
+  if(code>=61&&code<=82) bg.style.background='linear-gradient(160deg,#0f2027 0%,#203a43 45%,#2c5364 100%)';
+  else if(h<7||h>19) bg.style.background='linear-gradient(160deg,#0a0a2e 0%,#16213e 45%,#0f3460 100%)';
+  else if(h<10) bg.style.background='linear-gradient(160deg,#c2410c 0%,#0a7c6e 55%,#0ea5e9 100%)';
+}
+
+// ── AI BUBBLE GREETING ──
+setTimeout(()=>{
+  const b=document.getElementById('ai-bubble');
+  if(b){b.classList.add('show');setTimeout(()=>b.classList.remove('show'),4500);}
+},3500);
 </script>
 
 <!-- AI ASSISTANT FLOATING BUTTON -->
@@ -1248,6 +1265,17 @@ history.pushState({page:'home'},'','');
   opacity:1;animation:labelFade 4s forwards;
 }
 @keyframes labelFade{0%,60%{opacity:1}100%{opacity:0}}
+.ai-fab-bubble{
+  position:fixed;bottom:148px;right:14px;z-index:999;
+  background:var(--card);border-radius:16px 16px 4px 16px;
+  padding:10px 14px;font-size:.75rem;font-weight:600;
+  color:var(--dark);box-shadow:0 4px 20px rgba(0,0,0,.15);
+  max-width:190px;display:none;line-height:1.5;
+  font-family:'DM Sans',sans-serif;
+  animation:bubble-pop .4s cubic-bezier(.34,1.56,.64,1);
+}
+.ai-fab-bubble.show{display:block}
+@keyframes bubble-pop{from{opacity:0;transform:scale(.8) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @media(min-width:600px){
   .ai-fab{bottom:30px;right:30px;width:58px;height:58px;font-size:1.6rem;}
   .ai-fab-label{bottom:38px;right:96px;}
@@ -1277,6 +1305,7 @@ history.pushState({page:'home'},'','');
 }
 </style>
 </div></div>
+<div class="ai-fab-bubble" id="ai-bubble">👋 Hi! Ask me anything about Byndoor 🌊</div>
 <div class="ai-fab-label">Ask AI Guide 🌊</div>
 <a class="ai-fab" href="ai-assistant.html" title="AI Travel Assistant">🤖</a>
 </body>
