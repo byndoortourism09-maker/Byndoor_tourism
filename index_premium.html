@@ -156,6 +156,15 @@
   .sec.active{display:block}
   @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
+  /* CROWD BANNER */
+  .crowd-banner{display:flex;align-items:center;gap:10px;margin:10px 16px 0;padding:10px 14px;border-radius:14px;font-size:.78rem;font-weight:600;font-family:'DM Sans',sans-serif}
+  .crowd-banner-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+  .crowd-banner.low{background:#dcfce7;color:#15803d}
+  .crowd-banner.mid{background:#fef9c3;color:#854d0e}
+  .crowd-banner.high{background:#fee2e2;color:#dc2626}
+  .crowd-banner.low .crowd-banner-dot{background:#15803d}
+  .crowd-banner.mid .crowd-banner-dot{background:#854d0e}
+  .crowd-banner.high .crowd-banner-dot{background:#dc2626}
   /* SEC BANNER */
   .sbanner{margin:12px 16px;border-radius:var(--r);padding:16px 18px;color:#fff;position:relative;overflow:hidden}
   .sbanner h2{font-family:'Playfair Display',serif;font-size:1.1rem}
@@ -185,10 +194,7 @@
   .pcard-name{font-family:'Playfair Display',serif;font-size:.9rem;line-height:1.2;color:var(--dark)}
   .pcard-stars{font-size:.7rem;color:var(--gold);margin-top:2px}
   .pcard-sub{font-size:.65rem;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:3px}
-  .pcard-crowd{font-size:.6rem;font-weight:700;margin-top:5px;padding:2px 8px;border-radius:8px;display:inline-block}
-  .crowd-low{background:#dcfce7;color:#15803d}
-  .crowd-mid{background:#fef9c3;color:#854d0e}
-  .crowd-high{background:#fee2e2;color:#dc2626}
+
 
   /* LIST CARD */
   .lcard{background:var(--card);border-radius:var(--r);margin:0 16px 12px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.07);cursor:pointer;transition:transform .15s}
@@ -414,6 +420,7 @@
 <!-- ATTRACTIONS -->
 <div class="sec active" id="attractions">
   <div class="sbanner" style="background:var(--g1)"><h2>Explore Byndoor's Wonders</h2><p>Beaches, temples, waterfalls, wildlife &amp; more</p><div class="deco">🌅</div></div>
+  <div id="crowd-banner-att" class="crowd-banner"></div>
   <div class="stabs" id="stabs">
     <button class="stab active" data-sub="all">All</button>
     <button class="stab" data-sub="beaches">🏖️ Beaches</button>
@@ -443,12 +450,14 @@
 <!-- STAY -->
 <div class="sec" id="stay">
   <div class="sbanner" style="background:var(--g4)"><h2>Rest in Coastal Comfort</h2><p>Hotels, resorts, homestays &amp; camps</p><div class="deco">🌴</div></div>
+  <div id="crowd-banner-stay" class="crowd-banner"></div>
   <div id="stay-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
 <!-- FOOD -->
 <div class="sec" id="food">
   <div class="sbanner" style="background:var(--g2)"><h2>Taste Coastal Karnataka!</h2><p>Fresh seafood, coconut curries &amp; local delicacies</p><div class="deco">🦐</div></div>
+  <div id="crowd-banner-food" class="crowd-banner"></div>
   <div id="food-list"><div class="loading"><div class="spinner"></div></div></div>
 </div>
 
@@ -698,6 +707,9 @@ async function load(){
     const s=await getDocs(collection(db,'places'));
     places=s.docs.map(d=>({id:d.id,...d.data()}));
     render('attractions');buildTrending();buildNearby(places);buildFooterSocial();
+  renderCrowdBanner('crowd-banner-att','beaches','🏖️ Beaches & Attractions');
+  renderCrowdBanner('crowd-banner-stay','stay','🏨 Hotels & Stays');
+  renderCrowdBanner('crowd-banner-food','food','🍛 Restaurants & Food');
   }catch(e){
     document.getElementById('att-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Could not load. Check connection.</p></div>';
   }
@@ -719,7 +731,6 @@ function renderAtt(){
   let ps=places.filter(p=>p.category==='attractions');
   if(sub!=='all')ps=ps.filter(p=>(p.subtype||p.subcategory||'').toLowerCase().includes(sub));
   if(!ps.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏛️</div><p>No places in this category yet.</p></div>';return;}
-  const crowd=getCrowd();
   el.innerHTML=ps.map(p=>`
     <div class="pcard" onclick="openDp('${p.id}')">
       <div class="pcard-img" style="background:${p.cardBg||g(p.category)}">
@@ -731,7 +742,7 @@ function renderAtt(){
       <div class="pcard-body">
         <div class="pcard-name">${p.name}</div>
         <div class="pcard-sub">📍 ${p.subtype||p.subcategory||'Byndoor'}</div>
-        <div class="pcard-crowd ${crowd.cls}">${crowd.label}</div>
+
       </div>
     </div>`).join('');
 }
@@ -1193,12 +1204,33 @@ if(localStorage.getItem('byndoor-dark')==='1'){
   if(b) b.textContent='☀️ Light';
 }
 
-// ── CROWD INDICATOR ──
-function getCrowd(){
-  const h=new Date().getHours(),d=new Date().getDay();
-  if((d===0||d===6)&&h>=9&&h<=18) return{label:'🔴 Peak time',cls:'crowd-high'};
-  if(h>=10&&h<=16) return{label:'🟡 Moderate',cls:'crowd-mid'};
-  return{label:'🟢 Quiet now',cls:'crowd-low'};
+// ── CROWD INDICATOR — per category, different logic per place type ──
+const CROWD_RULES = {
+  beaches:   [{days:[0,6],h0:9,h1:18,lvl:'high'},{days:'all',h0:10,h1:17,lvl:'mid'}],
+  temples:   [{days:[0,6],h0:6,h1:10,lvl:'high'},{days:'all',h0:6,h1:9,lvl:'mid'}],
+  food:      [{days:[0,6],h0:12,h1:14,lvl:'high'},{days:'all',h0:12,h1:13,lvl:'mid'},{days:'all',h0:19,h1:21,lvl:'mid'}],
+  stay:      [{days:[0,5],h0:14,h1:16,lvl:'high'},{days:[0,6],h0:10,h1:18,lvl:'mid'}],
+  default:   [{days:[0,6],h0:9,h1:18,lvl:'mid'}],
+};
+const CROWD_LABELS = {
+  high:{label:'🔴 Peak time — expect crowds',cls:'high'},
+  mid: {label:'🟡 Moderate — good time to visit',cls:'mid'},
+  low: {label:'🟢 Quiet — great time to visit!',cls:'low'},
+};
+function getCrowdForCategory(cat){
+  const h=new Date().getHours(), d=new Date().getDay();
+  const rules=CROWD_RULES[cat]||CROWD_RULES.default;
+  for(const r of rules){
+    const dayMatch = r.days==='all' || r.days.includes(d);
+    if(dayMatch && h>=r.h0 && h<r.h1) return CROWD_LABELS[r.lvl];
+  }
+  return CROWD_LABELS.low;
+}
+function renderCrowdBanner(bannerId, cat, placeName){
+  const el=document.getElementById(bannerId); if(!el) return;
+  const crowd=getCrowdForCategory(cat);
+  el.className='crowd-banner '+crowd.cls;
+  el.innerHTML=`<span class="crowd-banner-dot"></span>${placeName}: ${crowd.label}`;
 }
 
 // ── HERO WEATHER MOOD ──
