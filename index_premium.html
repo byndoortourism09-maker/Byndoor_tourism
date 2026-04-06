@@ -263,6 +263,13 @@
   .dp-bdg{display:inline-block;font-size:.68rem;font-weight:700;padding:3px 13px;border-radius:20px;margin:8px 0 12px}
   .dp-h{font-family:'Playfair Display',serif;font-size:1rem;margin:16px 0 7px;padding-bottom:5px;border-bottom:2px solid var(--bdr)}
   .dp-about{font-size:.84rem;line-height:1.8}
+  /* USER RATING */
+  .rating-section{background:var(--card);border-radius:14px;padding:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .rating-stars{display:flex;gap:6px;margin:8px 0}
+  .rating-star{font-size:1.6rem;cursor:pointer;transition:transform .15s;line-height:1;filter:grayscale(1);opacity:.4}
+  .rating-star.active,.rating-star:hover{filter:none;opacity:1;transform:scale(1.15)}
+  .rating-label{font-size:.75rem;color:var(--muted);margin-top:4px}
+  .rating-submitted{font-size:.82rem;color:#15803d;font-weight:600;display:none}
   .igrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0}
   .iitem{background:#fff;border-radius:11px;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
   .iitem-l{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
@@ -335,8 +342,10 @@
   <div class="hero-orb orb3"></div>
   <div class="hero-top">
     <div class="hero-logo">🌊 Discover Byndoor</div>
-    <button id="dark-btn" onclick="toggleDark()" style="background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px">🌙 Dark</button>
-    <div class="weather-chip" id="weather-chip">☀️ <span id="chip-temp">29°C</span></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button id="dark-btn" onclick="toggleDark()" style="background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🌙</button>
+      <div class="weather-chip" id="weather-chip">☀️ <span id="chip-temp">29°C</span></div>
+    </div>
   </div>
   <div class="hero-body">
     <div class="hero-eyebrow">📍 Byndoor Taluk · Udupi District · Karnataka</div>
@@ -623,6 +632,12 @@
       <div class="dp-h">🏷️ Tags</div>
       <div id="dp-tags" class="chip-row" style="margin-top:0"></div>
     </div>
+    <!-- USER RATING -->
+    <div class="rating-section">
+      <div style="font-family:'Playfair Display',serif;font-size:.95rem;margin-bottom:4px">⭐ Rate this place</div>
+      <div class="rating-stars" id="dp-rating-stars"></div>
+      <div class="rating-label" id="dp-rating-label">Tap to rate your experience</div>
+    </div>
     <div id="dp-map-row" style="display:none">
       <div class="dp-h">🗺️ Location</div>
       <div class="mwrap" id="dp-map"></div>
@@ -669,6 +684,90 @@ const SHEETS={
   contact:{t:"📞 Contact Us",b:`<h3>Discover Byndoor</h3><p>📍 Byndoor, Udupi District, Karnataka — 576214</p><h3>Get in Touch</h3><p>📧 admin@byndoor.com<br/>📱 WhatsApp: +91 00000 00000</p><h3>List Your Business Free</h3><p>Want to list your hotel, restaurant or attraction? Contact us!</p>`},
   feedback:{t:"💬 Feedback",b:`<p style="font-size:.8rem;color:#64748b;margin-bottom:14px">Help us improve Discover Byndoor!</p><input class="fb-field" id="fb-name" placeholder="Your name (optional)"/><input class="fb-field" id="fb-email" type="email" placeholder="Email (optional)"/><select class="fb-field" id="fb-type"><option value="">Feedback type…</option><option>General Feedback</option><option>Missing Place</option><option>Wrong Information</option><option>App Issue</option><option>Suggestion</option></select><textarea class="fb-field" id="fb-msg" placeholder="Your feedback…"></textarea><button class="fb-sub" onclick="submitFb()">Send Feedback 💬</button>`}
 };
+
+
+
+// ── USER RATING ──
+const RATING_LABELS=['','Not great','It was ok','Good visit','Really liked it!','Absolutely loved it! 🎉'];
+window.setRating=function(pid,n){
+  localStorage.setItem('rating_'+pid,n);
+  const stars=document.querySelectorAll('#dp-rating-stars .rating-star');
+  stars.forEach((s,i)=>s.classList.toggle('active',i<n));
+  const lbl=document.getElementById('dp-rating-label');
+  if(lbl)lbl.textContent=RATING_LABELS[n]+' · your rating ✅';
+  toast('Thanks for rating! '+('★'.repeat(n)));
+};
+window.hoverRating=function(pid,n){
+  const stars=document.querySelectorAll('#dp-rating-stars .rating-star');
+  stars.forEach((s,i)=>s.classList.toggle('active',i<n));
+  const lbl=document.getElementById('dp-rating-label');
+  if(lbl)lbl.textContent=RATING_LABELS[n];
+};
+window.resetRatingHover=function(pid){
+  const saved=parseInt(localStorage.getItem('rating_'+pid)||0);
+  const stars=document.querySelectorAll('#dp-rating-stars .rating-star');
+  stars.forEach((s,i)=>s.classList.toggle('active',i<saved));
+  const lbl=document.getElementById('dp-rating-label');
+  if(lbl)lbl.textContent=saved?RATING_LABELS[saved]+' · your rating':'Tap to rate your experience';
+};
+// ── DARK MODE ──
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const b=document.getElementById('dark-btn');
+  if(b) b.textContent=document.body.classList.contains('dark')?'☀️ Light':'🌙 Dark';
+  localStorage.setItem('byndoor-dark',document.body.classList.contains('dark')?'1':'0');
+}
+if(localStorage.getItem('byndoor-dark')==='1'){
+  document.body.classList.add('dark');
+  const b=document.getElementById('dark-btn');
+  if(b) b.textContent='☀️ Light';
+}
+
+// ── CROWD INDICATOR — per category, different logic per place type ──
+const CROWD_RULES = {
+  beaches:   [{days:[0,6],h0:9,h1:18,lvl:'high'},{days:'all',h0:10,h1:17,lvl:'mid'}],
+  temples:   [{days:[0,6],h0:6,h1:10,lvl:'high'},{days:'all',h0:6,h1:9,lvl:'mid'}],
+  food:      [{days:[0,6],h0:12,h1:14,lvl:'high'},{days:'all',h0:12,h1:13,lvl:'mid'},{days:'all',h0:19,h1:21,lvl:'mid'}],
+  stay:      [{days:[0,5],h0:14,h1:16,lvl:'high'},{days:[0,6],h0:10,h1:18,lvl:'mid'}],
+  default:   [{days:[0,6],h0:9,h1:18,lvl:'mid'}],
+};
+const CROWD_LABELS = {
+  high:{label:'🔴 Peak time — expect crowds',cls:'high'},
+  mid: {label:'🟡 Moderate — good time to visit',cls:'mid'},
+  low: {label:'🟢 Quiet — great time to visit!',cls:'low'},
+};
+function getCrowdForCategory(cat){
+  const h=new Date().getHours(), d=new Date().getDay();
+  const rules=CROWD_RULES[cat]||CROWD_RULES.default;
+  for(const r of rules){
+    const dayMatch = r.days==='all' || r.days.includes(d);
+    if(dayMatch && h>=r.h0 && h<r.h1) return CROWD_LABELS[r.lvl];
+  }
+  return CROWD_LABELS.low;
+}
+function renderCrowdBanner(bannerId, cat, placeName){
+  const el=document.getElementById(bannerId); if(!el) return;
+  const crowd=getCrowdForCategory(cat);
+  el.className='crowd-banner '+crowd.cls;
+  el.innerHTML=`<span class="crowd-banner-dot"></span>${placeName}: ${crowd.label}`;
+}
+
+// ── HERO WEATHER MOOD ──
+function setHeroMood(code){
+  const h=new Date().getHours();
+  const bg=document.querySelector('.hero-bg');
+  if(!bg)return;
+  if(code>=61&&code<=82) bg.style.background='linear-gradient(160deg,#0f2027 0%,#203a43 45%,#2c5364 100%)';
+  else if(h<7||h>19) bg.style.background='linear-gradient(160deg,#0a0a2e 0%,#16213e 45%,#0f3460 100%)';
+  else if(h<10) bg.style.background='linear-gradient(160deg,#c2410c 0%,#0a7c6e 55%,#0ea5e9 100%)';
+}
+
+// ── AI BUBBLE GREETING ──
+setTimeout(()=>{
+  const b=document.getElementById('ai-bubble');
+  if(b){b.classList.add('show');setTimeout(()=>b.classList.remove('show'),4500);}
+},3500);
+
 </script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -1082,36 +1181,37 @@ function stopDpSlide(){if(dpSlideTimer){clearInterval(dpSlideTimer);dpSlideTimer
 function buildDpSlideshow(photos, heroEl){
   stopDpSlide();dpSlideIdx=0;
   if(!photos||photos.length<2){
-    // single photo — keep existing hero as-is
+    heroEl.innerHTML=photos&&photos[0]?`<img src="${photos[0]}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;animation:ken-slide 6s ease-out forwards"/>`:'';
     return;
   }
-  // Replace hero with slideshow
-  heroEl.innerHTML='';
   heroEl.className='dp-photo-slide';
-  const rail=document.createElement('div');rail.className='dp-slide-rail';
-  photos.forEach((url,i)=>{
-    const item=document.createElement('div');item.className='dp-slide-item';
-    const img=document.createElement('img');img.src=url;img.alt='Photo '+(i+1);
-    item.appendChild(img);
-    rail.appendChild(item);
-  });
-  // overlay and name
-  const ov=document.createElement('div');ov.style.cssText='position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(10,20,40,.82));z-index:1';
-  const back=document.createElement('button');back.className='dp-back';back.textContent='← Back';back.onclick=closeDp;back.style.zIndex='2';
-  const name=document.createElement('div');name.id='dp-name';name.className='dp-name';
-  // dots
-  const dotsEl=document.createElement('div');dotsEl.className='dp-slide-dots';dotsEl.style.zIndex='3';
-  photos.forEach((_,i)=>{
-    const d=document.createElement('button');d.className='dp-slide-dot'+(i===0?' on':'');
-    d.onclick=()=>goDpSlide(rail,dotsEl,i);dotsEl.appendChild(d);
-  });
-  heroEl.appendChild(rail);heroEl.appendChild(ov);heroEl.appendChild(back);heroEl.appendChild(name);heroEl.appendChild(dotsEl);
-  // auto slide every 3 sec
-  dpSlideTimer=setInterval(()=>{
-    dpSlideIdx=(dpSlideIdx+1)%photos.length;
-    goDpSlide(rail,dotsEl,dpSlideIdx);
-  },3000);
+  heroEl.innerHTML=
+    `<div class="dp-slide-rail" id="dsr">`+
+    photos.map((u,i)=>`<div class="dp-slide-item">${u?`<img src="${u}" alt="photo ${i+1}" loading="${i===0?'eager':'lazy'}"/>`:'<span>🏛️</span>'}<div class="dp-ov"></div></div>`).join('')+
+    `</div>`+
+    `<button class="dp-slide-arrow left" onclick="dpSlide(-1)">‹</button>`+
+    `<button class="dp-slide-arrow right" onclick="dpSlide(1)">›</button>`+
+    `<div class="dp-slide-count" id="dsc">1 / ${photos.length}</div>`+
+    `<div class="dp-slide-dots">`+photos.map((_,i)=>`<button class="dp-slide-dot${i===0?' on':''}" onclick="dpGo(${i})"></button>`).join('')+`</div>`;
+  dpSlideTimer=setInterval(()=>dpSlide(1),4000);
 }
+window.dpSlide=function(dir){
+  const photos=document.querySelectorAll('#dsr .dp-slide-item');
+  if(!photos.length)return;
+  dpSlideIdx=(dpSlideIdx+dir+photos.length)%photos.length;
+  dpGo(dpSlideIdx);
+};
+window.dpGo=function(idx){
+  dpSlideIdx=idx;
+  const rail=document.getElementById('dsr');
+  if(rail) rail.style.transform=`translateX(-${idx*100}%)`;
+  document.querySelectorAll('.dp-slide-dot').forEach((d,i)=>d.classList.toggle('on',i===idx));
+  const sc=document.getElementById('dsc');
+  if(sc) sc.textContent=`${idx+1} / ${document.querySelectorAll('#dsr .dp-slide-item').length}`;
+  // restart Ken Burns on visible slide
+  const items=document.querySelectorAll('#dsr .dp-slide-item img');
+  items.forEach((img,i)=>{if(i===idx){img.style.animation='none';void img.offsetWidth;img.style.animation='ken-slide 6s ease-out forwards';}});
+};
 
 function goDpSlide(rail,dots,i){
   dpSlideIdx=i;
@@ -1191,63 +1291,28 @@ window.addEventListener('popstate', function(e){
 // Push initial state so first back doesn't immediately exit
 history.pushState({page:'home'},'','');
 
-// ── DARK MODE ──
-function toggleDark(){
-  document.body.classList.toggle('dark');
-  const b=document.getElementById('dark-btn');
-  if(b) b.textContent=document.body.classList.contains('dark')?'☀️ Light':'🌙 Dark';
-  localStorage.setItem('byndoor-dark',document.body.classList.contains('dark')?'1':'0');
-}
-if(localStorage.getItem('byndoor-dark')==='1'){
-  document.body.classList.add('dark');
-  const b=document.getElementById('dark-btn');
-  if(b) b.textContent='☀️ Light';
-}
-
-// ── CROWD INDICATOR — per category, different logic per place type ──
-const CROWD_RULES = {
-  beaches:   [{days:[0,6],h0:9,h1:18,lvl:'high'},{days:'all',h0:10,h1:17,lvl:'mid'}],
-  temples:   [{days:[0,6],h0:6,h1:10,lvl:'high'},{days:'all',h0:6,h1:9,lvl:'mid'}],
-  food:      [{days:[0,6],h0:12,h1:14,lvl:'high'},{days:'all',h0:12,h1:13,lvl:'mid'},{days:'all',h0:19,h1:21,lvl:'mid'}],
-  stay:      [{days:[0,5],h0:14,h1:16,lvl:'high'},{days:[0,6],h0:10,h1:18,lvl:'mid'}],
-  default:   [{days:[0,6],h0:9,h1:18,lvl:'mid'}],
-};
-const CROWD_LABELS = {
-  high:{label:'🔴 Peak time — expect crowds',cls:'high'},
-  mid: {label:'🟡 Moderate — good time to visit',cls:'mid'},
-  low: {label:'🟢 Quiet — great time to visit!',cls:'low'},
-};
-function getCrowdForCategory(cat){
-  const h=new Date().getHours(), d=new Date().getDay();
-  const rules=CROWD_RULES[cat]||CROWD_RULES.default;
-  for(const r of rules){
-    const dayMatch = r.days==='all' || r.days.includes(d);
-    if(dayMatch && h>=r.h0 && h<r.h1) return CROWD_LABELS[r.lvl];
+// ── ANDROID BACK BUTTON HANDLER ──
+window.addEventListener('popstate', function(e){
+  // Close detail page if open
+  const dp = document.getElementById('dp');
+  if(dp && dp.style.display !== 'none'){
+    closeDp(); return;
   }
-  return CROWD_LABELS.low;
-}
-function renderCrowdBanner(bannerId, cat, placeName){
-  const el=document.getElementById(bannerId); if(!el) return;
-  const crowd=getCrowdForCategory(cat);
-  el.className='crowd-banner '+crowd.cls;
-  el.innerHTML=`<span class="crowd-banner-dot"></span>${placeName}: ${crowd.label}`;
-}
+  // Close sheet if open
+  const sov = document.getElementById('sov');
+  if(sov && sov.classList.contains('open')){
+    closeSheet(); return;
+  }
+  // Close search drop if open
+  const sd = document.getElementById('srch-drop');
+  if(sd && sd.classList.contains('open')){
+    sd.classList.remove('open'); return;
+  }
+  // Nothing open — let browser go back (exits app)
+});
+// Push initial state so first back doesn't immediately exit
+history.pushState({page:'home'},'','');
 
-// ── HERO WEATHER MOOD ──
-function setHeroMood(code){
-  const h=new Date().getHours();
-  const bg=document.querySelector('.hero-bg');
-  if(!bg)return;
-  if(code>=61&&code<=82) bg.style.background='linear-gradient(160deg,#0f2027 0%,#203a43 45%,#2c5364 100%)';
-  else if(h<7||h>19) bg.style.background='linear-gradient(160deg,#0a0a2e 0%,#16213e 45%,#0f3460 100%)';
-  else if(h<10) bg.style.background='linear-gradient(160deg,#c2410c 0%,#0a7c6e 55%,#0ea5e9 100%)';
-}
-
-// ── AI BUBBLE GREETING ──
-setTimeout(()=>{
-  const b=document.getElementById('ai-bubble');
-  if(b){b.classList.add('show');setTimeout(()=>b.classList.remove('show'),4500);}
-},3500);
 </script>
 
 <!-- AI ASSISTANT FLOATING BUTTON -->
@@ -1262,13 +1327,18 @@ setTimeout(()=>{
 .ft-social-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;text-decoration:none;transition:opacity .2s}
 .ft-social-icon:hover{opacity:.8}
 /* Detail page photo slideshow */
-.dp-photo-slide{position:relative;height:265px;overflow:hidden}
-.dp-slide-rail{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-.dp-slide-item{flex-shrink:0;width:100%;height:100%;position:relative}
-.dp-slide-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.dp-slide-dots{position:absolute;bottom:60px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
-.dp-slide-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;padding:0}
-.dp-slide-dot.on{background:#fff;width:18px;border-radius:3px}
+.dp-photo-slide{position:relative;height:300px;overflow:hidden}
+.dp-slide-rail{display:flex;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.dp-slide-item{flex-shrink:0;width:100%;height:100%;position:relative;overflow:hidden}
+.dp-slide-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transform:scale(1.05);animation:ken-slide 6s ease-out forwards}
+@keyframes ken-slide{from{transform:scale(1.05)}to{transform:scale(1.0)}}
+.dp-slide-count{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);color:#fff;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:10px;z-index:3}
+.dp-slide-dots{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
+.dp-slide-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;padding:0;transition:all .3s}
+.dp-slide-dot.on{background:#fff;width:22px;border-radius:4px}
+.dp-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.38);backdrop-filter:blur(4px);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;z-index:3;font-size:1rem}
+.dp-slide-arrow.left{left:10px}
+.dp-slide-arrow.right{right:10px}
 .dp-social-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-size:.78rem;font-weight:700;text-decoration:none;color:#fff}
 .dp-photo-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer}
 .photo-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center}
