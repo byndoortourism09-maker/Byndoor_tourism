@@ -4,8 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>
 <title>Byndoor Travel Assistant</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -27,17 +25,17 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 .chips{padding:8px 14px;background:#fff;border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip-row{display:flex;gap:7px;width:max-content}
-.chip{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.chip{background:var(--sand);border:1.5px solid var(--bdr);color:var(--dark);border-radius:20px;padding:5px 13px;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
 .chip:active{background:var(--p);color:#fff;border-color:var(--p)}
 
 .msgs-wrap{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--sand)}
 .msgs{display:flex;flex-direction:column;gap:14px;padding:16px 14px 24px}
 
-.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px 20px;text-align:center;min-height:300px}
-.w-wave{font-size:3rem;display:inline-block;animation:wv 2.5s ease-in-out infinite;margin-bottom:12px}
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px 20px;text-align:center}
+.w-wave{font-size:3rem;display:inline-block;animation:wv 2.5s ease-in-out infinite;margin-bottom:10px}
 @keyframes wv{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-.w-title{font-family:'Playfair Display',serif;font-size:1.18rem;color:var(--dark);margin-bottom:8px}
-.w-sub{font-size:.77rem;color:var(--muted);line-height:1.7;max-width:290px;margin-bottom:18px}
+.w-title{font-family:'Playfair Display',serif;font-size:1.18rem;color:var(--dark);margin-bottom:7px}
+.w-sub{font-size:.77rem;color:var(--muted);line-height:1.7;max-width:290px;margin-bottom:16px}
 .feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
 .feat{background:#fff;border-radius:14px;padding:11px 12px;display:flex;align-items:center;gap:9px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:left}
 .feat-ico{font-size:1.1rem;flex-shrink:0}
@@ -55,15 +53,13 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 .bubble-time{font-size:.6rem;opacity:.6;margin-top:5px;display:block}
 .msg.user .bubble-time{text-align:right}
 
-/* AI response elements */
-.ai-sec{display:block;font-weight:700;color:var(--dark);font-size:.88rem;margin:10px 0 4px}
-.ai-item{display:block;padding-left:14px;position:relative;margin:4px 0;line-height:1.6}
-.ai-item::before{content:'•';color:var(--acc);font-weight:900;position:absolute;left:2px}
-.ai-num{display:flex;gap:8px;margin:4px 0;line-height:1.6;align-items:flex-start}
+.ai-sec{display:block;font-weight:700;color:var(--p);font-size:.88rem;margin:8px 0 4px}
+.ai-item{display:block;padding-left:14px;position:relative;margin:4px 0;line-height:1.65}
+.ai-item::before{content:'•';color:var(--acc);font-weight:900;position:absolute;left:2px;top:1px}
+.ai-num{display:flex;gap:8px;margin:4px 0;line-height:1.65;align-items:flex-start}
 .ai-nbadge{background:var(--p);color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:3px}
 .ai-p{display:block;margin:3px 0}
 
-/* Typing dots */
 .typing{display:inline-flex;gap:4px;align-items:center;padding:4px 0}
 .typing span{width:7px;height:7px;border-radius:50%;background:var(--p);opacity:.5;display:inline-block;animation:td .9s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
@@ -71,19 +67,31 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 @keyframes td{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-7px);opacity:1}}
 
 .voice-row{margin-top:8px}
-.speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif}
+.speak-btn{background:var(--sand);border:1.5px solid var(--bdr);border-radius:20px;padding:5px 13px;font-size:.7rem;font-weight:600;cursor:pointer;color:var(--p);display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .2s}
 .speak-btn.speaking{background:var(--p);color:#fff;border-color:var(--p)}
 
-/* Input bar fixed to bottom, moves above keyboard */
+/* MIC STATUS BAR */
+.mic-status{display:none;align-items:center;justify-content:center;gap:8px;padding:8px;background:#fee2e2;color:#dc2626;font-size:.75rem;font-weight:600;flex-shrink:0}
+.mic-status.listening{background:#dcfce7;color:#15803d;display:flex}
+.mic-status.error{background:#fee2e2;color:#dc2626;display:flex}
+.mic-waves{display:flex;gap:3px;align-items:center}
+.mic-wave{width:3px;border-radius:2px;background:#15803d;animation:wave .6s ease-in-out infinite}
+.mic-wave:nth-child(1){height:8px;animation-delay:0s}
+.mic-wave:nth-child(2){height:14px;animation-delay:.1s}
+.mic-wave:nth-child(3){height:10px;animation-delay:.2s}
+.mic-wave:nth-child(4){height:16px;animation-delay:.3s}
+.mic-wave:nth-child(5){height:8px;animation-delay:.4s}
+@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.6)}}
+
 .input-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;border-top:1px solid var(--bdr);padding:10px 12px;display:flex;align-items:flex-end;gap:8px;box-shadow:0 -3px 16px rgba(0,0,0,.07);z-index:100}
 .inp-wrap{flex:1;min-width:0;background:var(--sand);border:2px solid var(--bdr);border-radius:24px;padding:9px 14px;display:flex;align-items:flex-end;gap:8px;transition:border-color .2s}
 .inp-wrap:focus-within{border-color:var(--p)}
 #msg-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--dark);resize:none;max-height:100px;min-height:22px;line-height:1.5}
 #msg-input::placeholder{color:#bbb}
-.mic-btn{width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:var(--muted);font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.mic-btn.on{color:var(--p);animation:mp 1s infinite}
-@keyframes mp{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-.send-btn{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(10,124,110,.35);transition:transform .15s,opacity .15s}
+.mic-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.mic-btn.listening{color:#dc2626;background:#fee2e2;animation:micPulse 1s infinite}
+@keyframes micPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.send-btn{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#0a7c6e,#0ea5e9);border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(10,124,110,.35);transition:transform .15s,opacity .15s}
 .send-btn:active{transform:scale(.9)}
 .send-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
 
@@ -94,6 +102,8 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
 .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .lang-opt{background:var(--sand);border:2px solid var(--bdr);border-radius:12px;padding:10px;cursor:pointer;font-size:.82rem;font-weight:600;font-family:'DM Sans',sans-serif;text-align:center;transition:all .2s}
 .lang-opt.active{background:var(--p);color:#fff;border-color:var(--p)}
+
+.error-msg{background:#fff3cd;border:1px solid #ffc107;border-radius:12px;padding:10px 14px;font-size:.75rem;color:#856404;margin:0 14px;display:none}
 </style>
 </head>
 <body>
@@ -103,31 +113,39 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
   <div class="hd-av">🌊</div>
   <div class="hd-info">
     <div class="hd-name">Byndoor Travel Assistant</div>
-    <div class="hd-status"><span class="hd-dot"></span>Online · Ready to help</div>
+    <div class="hd-status"><span class="hd-dot"></span>Online · Powered by Gemini AI</div>
   </div>
   <button class="hd-lang" onclick="openLang()">🌐 <span id="lang-label">English</span></button>
 </div>
 
 <div class="chips">
   <div class="chip-row">
-    <button class="chip" onclick="quickAsk('Best places to visit in Byndoor?')">🏖️ Best places</button>
-    <button class="chip" onclick="quickAsk('Plan a 2 day trip to Byndoor')">🗺️ Trip plan</button>
-    <button class="chip" onclick="quickAsk('What is the weather in Byndoor today?')">🌤️ Weather</button>
-    <button class="chip" onclick="quickAsk('Best food to eat in Byndoor?')">🍛 Food</button>
-    <button class="chip" onclick="quickAsk('Hotels and stays in Byndoor?')">🏨 Hotels</button>
-    <button class="chip" onclick="quickAsk('How to reach Byndoor from Mangalore?')">🚌 Transport</button>
+    <button class="chip" onclick="quickAsk('What are the best beaches in Byndoor?')">🏖️ Beaches</button>
+    <button class="chip" onclick="quickAsk('Plan a 2 day trip to Byndoor taluk')">🗺️ 2 Day Trip</button>
+    <button class="chip" onclick="quickAsk('How is the weather in Byndoor today?')">🌤️ Weather</button>
+    <button class="chip" onclick="quickAsk('What are the best foods to eat in Byndoor?')">🍛 Food</button>
+    <button class="chip" onclick="quickAsk('Best hotels and homestays in Byndoor?')">🏨 Hotels</button>
+    <button class="chip" onclick="quickAsk('How to reach Byndoor from Mangalore and Bangalore?')">🚌 How to Reach</button>
+    <button class="chip" onclick="quickAsk('Tell me about Kollur Mookambika Temple')">🛕 Kollur Temple</button>
+    <button class="chip" onclick="quickAsk('What are the waterfalls near Byndoor?')">💧 Waterfalls</button>
   </div>
+</div>
+
+<div class="mic-status" id="mic-status">
+  <div class="mic-waves"><div class="mic-wave"></div><div class="mic-wave"></div><div class="mic-wave"></div><div class="mic-wave"></div><div class="mic-wave"></div></div>
+  <span id="mic-status-text">Listening… speak now</span>
+  <button onclick="stopMic()" style="background:#dc2626;color:#fff;border:none;border-radius:12px;padding:3px 10px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Stop</button>
 </div>
 
 <div class="msgs-wrap" id="msgs-wrap" style="padding-bottom:80px">
   <div class="welcome" id="welcome">
     <span class="w-wave">🌊</span>
     <div class="w-title">Namaste! I'm your Byndoor Guide</div>
-    <div class="w-sub">Ask me about beaches, temples, hotels, food, transport — or let me plan your perfect trip!</div>
+    <div class="w-sub">Ask me anything about Byndoor — beaches, temples, food, hotels, waterfalls, transport and more!</div>
     <div class="feat-grid">
       <div class="feat"><span class="feat-ico">📍</span><span class="feat-txt">Places &amp; Attractions</span></div>
       <div class="feat"><span class="feat-ico">🗺️</span><span class="feat-txt">Trip Planning</span></div>
-      <div class="feat"><span class="feat-ico">🌤️</span><span class="feat-txt">Weather Advisory</span></div>
+      <div class="feat"><span class="feat-ico">🌤️</span><span class="feat-txt">Live Weather</span></div>
       <div class="feat"><span class="feat-ico">🔊</span><span class="feat-txt">Voice Reply</span></div>
       <div class="feat"><span class="feat-ico">🌐</span><span class="feat-txt">8 Languages</span></div>
       <div class="feat"><span class="feat-ico">🎙️</span><span class="feat-txt">Voice Input</span></div>
@@ -140,7 +158,7 @@ body{font-family:'DM Sans',sans-serif;max-width:520px;margin:0 auto;display:flex
   <div class="inp-wrap">
     <textarea id="msg-input" placeholder="Ask anything about Byndoor…" rows="1"
       onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-    <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎙️</button>
+    <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input">🎙️</button>
   </div>
   <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
 </div>
@@ -169,9 +187,9 @@ const inputBar = document.getElementById('input-bar');
 const msgsWrap = document.getElementById('msgs-wrap');
 function adjustForKeyboard(){
   if(!window.visualViewport) return;
-  const kb = window.innerHeight - window.visualViewport.height;
-  inputBar.style.bottom = Math.max(0,kb) + 'px';
-  msgsWrap.style.paddingBottom = (inputBar.offsetHeight + Math.max(0,kb) + 8) + 'px';
+  const kb = Math.max(0, window.innerHeight - window.visualViewport.height);
+  inputBar.style.bottom = kb + 'px';
+  msgsWrap.style.paddingBottom = (inputBar.offsetHeight + kb + 8) + 'px';
   setTimeout(()=>{ msgsWrap.scrollTop = msgsWrap.scrollHeight; }, 80);
 }
 if(window.visualViewport){
@@ -191,183 +209,358 @@ firebase.initializeApp({
 const db = firebase.firestore();
 window.PL = []; window.WD = null;
 (async()=>{
-  try{ const s = await db.collection('places').get(); window.PL = s.docs.map(d=>({id:d.id,...d.data()})); }catch(e){}
-  try{ const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&timezone=Asia/Kolkata&forecast_days=2'); window.WD = await r.json(); }catch(e){}
+  try{
+    const s = await db.collection('places').get();
+    window.PL = s.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){ console.log('Firebase error',e); }
+  try{
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=13.8785&longitude=74.7313&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&timezone=Asia/Kolkata&forecast_days=3');
+    window.WD = await r.json();
+  }catch(e){ console.log('Weather error',e); }
 })();
 
 // ── STATE ──
-let lang='en-IN', langName='English', hist=[], synth=window.speechSynthesis;
-let rec=null, listening=false, msgN=0, started=false, currentUtt=null;
+let lang='en-IN', langName='English';
+let hist=[], synth=window.speechSynthesis;
+let rec=null, listening=false, msgN=0, started=false;
 
-// ── SYSTEM PROMPT ──
-// Build system prompt ONCE and cache it — not rebuilt every message
-let _sysPr = '';
-function sysPr(){
-  if(_sysPr && lang==='en-IN') return _sysPr; // return cached if English
-  const wd={0:'Clear',1:'Clear',2:'Cloudy',3:'Overcast',51:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',80:'Showers',95:'Storm'};
-  // Weather — only temp and condition, minimal tokens
-  let w='';
-  if(window.WD){ const c=window.WD.current; w=' Weather:'+Math.round(c.temperature_2m)+'°C '+(wd[c.weather_code]||'').toLowerCase()+'.'; }
-  // Places — names only, no descriptions (saves ~200 tokens per request)
-  let p='';
-  if(window.PL.length){
-    const names = window.PL.map(x=>x.name).slice(0,20).join(', ');
-    p=' Local places: '+names+'.';
+// ── SYSTEM PROMPT — rich, detailed, relevant ──
+function buildSystemPrompt(){
+  // Weather context
+  let weather = '';
+  if(window.WD){
+    const wdesc = {0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Light rain',63:'Moderate rain',65:'Heavy rain',80:'Rain showers',95:'Thunderstorm'};
+    const c = window.WD.current;
+    const d = window.WD.daily;
+    weather = `\nCURRENT WEATHER IN BYNDOOR: ${wdesc[c.weather_code]||'Unknown'}, ${Math.round(c.temperature_2m)}°C, Humidity: ${c.relative_humidity_2m}%, Wind: ${Math.round(c.wind_speed_10m)} km/h, Rain: ${c.precipitation}mm. Tomorrow max: ${d?.temperature_2m_max?.[1]}°C.`;
   }
-  _sysPr = 'Byndoor Travel Assistant. Expert guide for Byndoor Taluk, Karnataka, India.'
-    +' Format: plain text, no markdown. Lists: "- Title: info". Always give complete answers.'
-    +' Key info: Maravanthe Beach(NH66), Trasi Beach, Someshwara Beach, Kollur Temple(32km), Belkal Falls.'
-    +' Nearby: Murudeshwar 58km, Udupi 55km, Mangalore 110km. Season: Oct-Mar.'
-    +' Food: Fish curry, Neer dosa, Prawn curry, Bangda fry.'
-    +' Creator: Discover Byndoor team.'
-    +(lang!=='en-IN'?' Reply in '+langName+'.':'')
-    +w+p;
-  return _sysPr;
+
+  // Places from Firebase
+  let places = '';
+  if(window.PL.length){
+    const bycat = {};
+    window.PL.forEach(p=>{ if(!bycat[p.category]) bycat[p.category]=[]; bycat[p.category].push(p); });
+    places = '\nPLACES IN BYNDOOR APP DATABASE:';
+    Object.entries(bycat).forEach(([cat, ps])=>{
+      places += `\n[${cat.toUpperCase()}]: ` + ps.slice(0,10).map(p=>p.name+(p.about?' ('+p.about.slice(0,40)+')':'')).join(', ');
+    });
+  }
+
+  return `You are a warm, knowledgeable local travel guide for Byndoor Taluk, Udupi District, Karnataka, India. Your name is "Byndoor Guide". You work for the Discover Byndoor tourism app.
+
+ABOUT BYNDOOR TALUK:
+Byndoor Taluk is a stunning coastal paradise in Udupi District, Karnataka. It lies on the Konkan coast with the Western Ghats in the east. The taluk headquarters is Byndoor town.
+
+KEY ATTRACTIONS:
+- Maravanthe Beach: Unique beach where NH-66 highway runs between the Arabian Sea and Sauparnika River — one of India's most scenic coastal drives. Highly photogenic.
+- Trasi Beach: Pristine quiet beach near Byndoor, great for sunrise and peaceful walks
+- Someshwara Beach: Beautiful beach with rocky outcrops near Someshwara village
+- Trasi Coconut Island: Small river island surrounded by coconut trees, accessible by coracle boat
+- Kollur Mookambika Temple: One of the most important temples in Karnataka, dedicated to Goddess Mookambika. Located 32km from Byndoor. Major pilgrimage site.
+- Someshwara Temple: Ancient Shiva temple on the banks of Sauparnika River
+- Maravanthe Shree Brahmalingeshwara Temple: Sacred temple in Maravanthe
+- Belkal Teertha Falls (Belkal Falls): Beautiful two-stage waterfall near Mudur village, 12km from Byndoor. Requires 4km trek through forest.
+- Navunda: Scenic village with backwaters and traditional fishing
+- Butterfly Camp Byndoor: Eco-tourism spot for nature lovers
+
+NEARBY PLACES (within 60km):
+- Murudeshwar: Famous Shiva statue and temple, 58km from Byndoor
+- Udupi: Famous for Udupi cuisine and Krishna Temple, 55km
+- Kundapur: Nearest major town, 15km
+- Kollur: Temple town, 32km
+- Mangalore: Nearest city with airport, 110km
+- Gokarna: Beach town, 90km
+- Bangalore: 420km (6-7 hours)
+
+LOCAL FOOD MUST TRY:
+Fish curry rice (staple), Neer dosa with coconut chutney, Kane (Ladyfish) fry, Bangda (Indian Mackerel) fry, Prawn curry, Crab masala, Goli baje, Kori rotti, Mangalore buns, Pathrode
+
+HOW TO REACH BYNDOOR:
+- By Road: NH-66 (Coastal Highway). From Mangalore: 110km, 2.5hrs. From Bangalore: 420km, 7hrs. From Goa: 180km.
+- By Train: Byndoor Railway Station (small halt) or Kundapur Station (15km) on Konkan Railway route
+- By Air: Mangalore International Airport (110km), Goa Airport (180km)
+- Local Transport: Auto rickshaws, taxis available
+
+BEST TIME TO VISIT: October to March (post-monsoon, pleasant weather, calm sea)
+AVOID: June to September (heavy monsoon, rough sea, roads may be flooded)
+
+ACCOMMODATION TYPES: Beach resorts, Homestays, Budget hotels in Byndoor/Kundapur town, Eco camps
+
+FORMATTING RULES:
+- Use plain text only. No asterisks (*). No hash (#) symbols. No markdown.
+- For bullet lists: write "- Item name: description" each on its own line
+- For numbered lists: write "1. Item" on its own line
+- Bold title before colon using this exact format: write the title then colon then space then description
+- Always give COMPLETE detailed answers. Never cut your response short.
+- Use relevant emojis naturally (not excessively)
+- Be warm, friendly and enthusiastic about Byndoor
+- If asked who made you: say "I was created by the Discover Byndoor team"
+${lang !== 'en-IN' ? `\nIMPORTANT: Respond ENTIRELY in ${langName}. Translate everything including place names context.` : ''}
+${weather}
+${places}`;
 }
 
 // ── SEND MESSAGE ──
 async function sendMessage(){
   const inp = document.getElementById('msg-input');
-  const txt = inp.value.trim(); if(!txt) return;
+  const txt = inp.value.trim();
+  if(!txt) return;
   inp.value=''; inp.style.height='auto';
   addMsg('user', txt);
   hist.push({role:'user', content:txt});
-  const btn = document.getElementById('send-btn'); btn.disabled=true;
+  const btn = document.getElementById('send-btn');
+  btn.disabled=true;
   const tid = showTyping();
   try{
     const res = await fetch('https://byndoor-gemini.byndoortourism09.workers.dev',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({systemPrompt:sysPr(), messages:hist.slice(-6)})
+      body:JSON.stringify({
+        systemPrompt: buildSystemPrompt(),
+        messages: hist.slice(-10)
+      })
     });
     removeTyping(tid);
+    if(!res.ok){
+      const err = await res.json().catch(()=>({}));
+      throw new Error(err.error || 'Server error '+res.status);
+    }
     const data = await res.json();
-    if(!res.ok) throw new Error(data.error||'Request failed');
-    const reply = data.reply || 'Sorry, no response received.';
+    const reply = data.reply || 'Sorry, I did not get a response. Please try again.';
     addMsg('ai', reply, true);
     hist.push({role:'assistant', content:reply});
-  } catch(e){
+  }catch(e){
     removeTyping(tid);
-    addMsg('ai', 'Sorry, something went wrong: '+e.message+'. Please try again 🙏');
+    let errMsg = 'Something went wrong. ';
+    if(e.message.includes('429')) errMsg += 'Too many requests — please wait a minute and try again.';
+    else if(e.message.includes('Failed to fetch')) errMsg += 'No internet connection. Please check your connection.';
+    else errMsg += e.message;
+    addMsg('ai', errMsg + ' 🙏');
   }
   btn.disabled=false;
 }
 
 // ── ADD MESSAGE ──
 function addMsg(role, text, voice=false){
-  if(!started){ started=true; document.getElementById('welcome').style.display='none'; }
+  if(!started){
+    started=true;
+    document.getElementById('welcome').style.display='none';
+  }
   const isAi = role==='ai';
   const now = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   const d = document.createElement('div');
   d.className = 'msg '+(isAi?'ai':'user');
   let vhtml = '';
   if(isAi && voice){
-    msgN++; const mid='m'+msgN;
+    msgN++;
+    const mid = 'm'+msgN;
     d.id=mid; d.dataset.text=text;
-    vhtml='<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="speakText(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';
+    vhtml = '<div class="voice-row"><button class="speak-btn" id="vb-'+mid+'" onclick="speakText(this,\''+mid+'\')">🔊 Listen in '+langName+'</button></div>';
   }
   const content = isAi ? fmtAI(text) : '<span>'+esc(text)+'</span>';
   d.innerHTML = '<div class="av '+(isAi?'ai-av':'user-av')+'">'+(isAi?'🌊':'👤')+'</div>'
-    +'<div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+content+vhtml+'<span class="bubble-time">'+now+'</span></div>';
+    +'<div class="bubble '+(isAi?'ai-bubble':'user-bubble')+'">'+content+vhtml
+    +'<span class="bubble-time">'+now+'</span></div>';
   document.getElementById('msgs').appendChild(d);
   scrollDown();
 }
 
-// ── FORMAT AI RESPONSE ──
+// ── FORMAT AI TEXT ──
 function fmtAI(raw){
-  // Escape HTML first for safety
-  const e = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  let html='';
-  for(const line of e.split('\n')){
-    const l = line.trim();
-    if(!l){ html+='<br/>'; continue; }
+  const safe = raw
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+  let html = '';
+  const lines = safe.split('\n');
+  for(let i=0; i<lines.length; i++){
+    const l = lines[i].trim();
+    if(!l){ html += '<br/>'; continue; }
     if(/^#{1,3}\s/.test(l)){
-      // Section heading — dark bold
-      html+='<span class="ai-sec">'+l.replace(/^#{1,3}\s/,'')+'</span>';
-    } else if(/^[-–]\s/.test(l)){
-      // Bullet — bold teal "Title:" then normal text
-      const txt = l.replace(/^[-–]\s/,'');
-      const fmt = txt.replace(/^([^:]{1,50}:)\s*/,'<strong style="color:var(--p)">$1</strong> ');
-      html+='<div class="ai-item">'+fmt+'</div>';
+      html += '<span class="ai-sec">'+l.replace(/^#{1,3}\s/,'')+'</span>';
+    } else if(/^[-–•]\s/.test(l)){
+      const txt = l.replace(/^[-–•]\s/,'');
+      // Bold "Title:" part only
+      const fmt = txt.replace(/^([^:]{1,50}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
+      html += '<div class="ai-item">'+fmt+'</div>';
     } else if(/^\d+\.\s/.test(l)){
-      // Numbered — bold teal "Title:" then normal text
       const m = l.match(/^(\d+)\.\s(.*)/);
       if(m){
-        const fmt = m[2].replace(/^([^:]{1,50}:)\s*/,'<strong style="color:var(--p)">$1</strong> ');
-        html+='<div class="ai-num"><span class="ai-nbadge">'+m[1]+'</span><span>'+fmt+'</span></div>';
+        const fmt = m[2].replace(/^([^:]{1,50}:)\s*/, '<strong style="color:var(--p)">$1</strong> ');
+        html += '<div class="ai-num"><span class="ai-nbadge">'+m[1]+'</span><span>'+fmt+'</span></div>';
       }
     } else {
-      // Regular paragraph — handle **bold** after escaping
       const p = l.replace(/\*\*([^*]+)\*\*/g,'<strong style="color:var(--p)">$1</strong>');
-      html+='<span class="ai-p">'+p+'</span>';
+      html += '<span class="ai-p">'+p+'</span>';
     }
   }
   return html;
 }
-
-// ── HELPERS ──
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── TYPING ──
 function showTyping(){
   if(!started){ started=true; document.getElementById('welcome').style.display='none'; }
-  const id='t'+Date.now();
-  const d=document.createElement('div'); d.className='msg ai'; d.id=id;
+  const id = 't'+Date.now();
+  const d = document.createElement('div');
+  d.className='msg ai'; d.id=id;
   d.innerHTML='<div class="av ai-av">🌊</div><div class="bubble ai-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
   document.getElementById('msgs').appendChild(d);
-  scrollDown(); return id;
+  scrollDown();
+  return id;
 }
 function removeTyping(id){ document.getElementById(id)?.remove(); }
 function scrollDown(){ setTimeout(()=>{ msgsWrap.scrollTop=msgsWrap.scrollHeight; },60); }
-window.quickAsk = t=>{ document.getElementById('msg-input').value=t; sendMessage(); };
-function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+
+// ── HELPERS ──
+window.quickAsk = t => { document.getElementById('msg-input').value=t; sendMessage(); };
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMessage(); } }
 function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
 
 // ── VOICE SPEAK ──
-window.speakText = function(btn,mid){
-  const el=document.getElementById(mid); if(!el) return;
+window.speakText = function(btn, mid){
+  const el = document.getElementById(mid);
+  if(!el) return;
   if(synth.speaking){
     synth.cancel();
-    document.querySelectorAll('.speak-btn').forEach(b=>{b.classList.remove('speaking');b.textContent='🔊 Listen in '+langName;});
+    document.querySelectorAll('.speak-btn').forEach(b=>{
+      b.classList.remove('speaking');
+      b.textContent='🔊 Listen in '+langName;
+    });
     return;
   }
-  const clean=(el.dataset.text||'').replace(/\*\*?([^*]+)\*\*?/g,'$1').replace(/#{1,3} /g,'').replace(/[-•]\s/g,'').replace(/\n/g,' ').replace(/\s+/g,' ').trim();
-  const utt=new SpeechSynthesisUtterance(clean); utt.lang=lang; utt.rate=0.9; utt.pitch=1; utt.volume=1;
-  const match=synth.getVoices().find(v=>v.lang===lang||v.lang.startsWith(lang.split('-')[0]));
-  if(match) utt.voice=match;
-  btn.textContent='⏹ Stop'; btn.classList.add('speaking');
-  utt.onend=utt.onerror=()=>{ btn.textContent='🔊 Listen in '+langName; btn.classList.remove('speaking'); };
+  const raw = el.dataset.text || '';
+  const clean = raw
+    .replace(/\*\*?([^*]+)\*\*?/g,'$1')
+    .replace(/#{1,3}\s/g,'')
+    .replace(/^[-•]\s/gm,'')
+    .replace(/\n+/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+  if(!clean) return;
+  const utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = lang;
+  utt.rate = 0.9;
+  utt.pitch = 1;
+  utt.volume = 1;
+  // Try to find matching voice
+  const voices = synth.getVoices();
+  const match = voices.find(v=>v.lang===lang) || voices.find(v=>v.lang.startsWith(lang.split('-')[0]));
+  if(match) utt.voice = match;
+  btn.textContent='⏹ Stop';
+  btn.classList.add('speaking');
+  utt.onend = () => { btn.textContent='🔊 Listen in '+langName; btn.classList.remove('speaking'); };
+  utt.onerror = () => { btn.textContent='🔊 Listen in '+langName; btn.classList.remove('speaking'); };
   synth.speak(utt);
 };
-if(synth){ synth.onvoiceschanged=()=>synth.getVoices(); synth.getVoices(); }
+// Load voices
+if(synth){
+  synth.onvoiceschanged = () => synth.getVoices();
+  synth.getVoices();
+}
 
-// ── VOICE INPUT ──
+// ── VOICE INPUT — properly handles all states ──
+function setMicStatus(state, text){
+  const bar = document.getElementById('mic-status');
+  const txt = document.getElementById('mic-status-text');
+  const btn = document.getElementById('mic-btn');
+  bar.className = 'mic-status '+(state||'');
+  if(txt) txt.textContent = text||'';
+  if(btn){
+    btn.className = 'mic-btn'+(state==='listening'?' listening':'');
+    btn.textContent = state==='listening'?'🔴':'🎙️';
+  }
+}
+
+window.stopMic = function(){
+  if(rec){ try{ rec.stop(); }catch(e){} rec=null; }
+  listening=false;
+  setMicStatus('','');
+};
+
 window.toggleMic = function(){
-  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice input works only in Chrome.');return;}
-  if(listening){rec?.stop();return;}
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  rec=new SR(); rec.lang=lang; rec.interimResults=false;
-  rec.onstart=()=>{ listening=true; document.getElementById('mic-btn').classList.add('on'); };
-  rec.onresult=e=>{ document.getElementById('msg-input').value=e.results[0][0].transcript; autoResize(document.getElementById('msg-input')); sendMessage(); };
-  rec.onend=rec.onerror=()=>{ listening=false; document.getElementById('mic-btn').classList.remove('on'); };
-  rec.start();
+  // Check browser support
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    addMsg('ai','Sorry, voice input only works on Chrome browser. Please type your question instead 🙏');
+    return;
+  }
+  // If already listening — stop
+  if(listening){ window.stopMic(); return; }
+  // Start fresh
+  try{
+    rec = new SR();
+    rec.lang = lang;
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    rec.continuous = false;
+
+    rec.onstart = () => {
+      listening = true;
+      setMicStatus('listening','Listening… speak now');
+    };
+
+    rec.onresult = (e) => {
+      const transcript = e.results[0][0].transcript;
+      document.getElementById('msg-input').value = transcript;
+      autoResize(document.getElementById('msg-input'));
+      setMicStatus('','');
+      listening = false;
+      rec = null;
+      sendMessage();
+    };
+
+    rec.onerror = (e) => {
+      listening = false;
+      rec = null;
+      let errText = 'Mic error. ';
+      if(e.error==='not-allowed') errText = '❌ Mic permission denied. Allow mic in browser settings.';
+      else if(e.error==='no-speech') errText = 'No speech detected. Try again.';
+      else if(e.error==='network') errText = 'Network error with mic. Check connection.';
+      else if(e.error==='audio-capture') errText = '❌ No microphone found on device.';
+      else errText = 'Mic error: '+e.error;
+      setMicStatus('error', errText);
+      setTimeout(()=>setMicStatus('',''), 3000);
+    };
+
+    rec.onend = () => {
+      if(listening){
+        listening = false;
+        setMicStatus('','');
+      }
+      rec = null;
+    };
+
+    rec.start();
+  }catch(e){
+    listening = false;
+    rec = null;
+    setMicStatus('error','Could not start mic: '+e.message);
+    setTimeout(()=>setMicStatus('',''), 3000);
+  }
 };
 
 // ── LANGUAGE ──
-window.openLang  = ()=>{document.getElementById('lang-panel').classList.add('open');history.pushState({page:'lang'},'','');};
-window.closeLang = e=>{ if(e.target===document.getElementById('lang-panel')) document.getElementById('lang-panel').classList.remove('open'); };
-window.setLang   = function(name,code){
+window.openLang = () => {
+  document.getElementById('lang-panel').classList.add('open');
+  history.pushState({page:'lang'},'','');
+};
+window.closeLang = e => {
+  if(e.target===document.getElementById('lang-panel'))
+    document.getElementById('lang-panel').classList.remove('open');
+};
+window.setLang = function(name, code){
   lang=code; langName=name;
   document.getElementById('lang-label').textContent=name;
   document.querySelectorAll('.lang-opt').forEach(b=>b.classList.toggle('active',b.textContent.includes(name)));
   document.getElementById('lang-panel').classList.remove('open');
-  addMsg('ai','Language changed to '+name+' 🌐 How can I help you explore Byndoor?',true);
+  addMsg('ai','Language set to '+name+' 🌐 Ask me anything about Byndoor!',true);
 };
 
 // ── ANDROID BACK BUTTON ──
 window.addEventListener('popstate', function(){
   const lp = document.getElementById('lang-panel');
-  if(lp && lp.classList.contains('open')){
-    lp.classList.remove('open'); return;
-  }
+  if(lp && lp.classList.contains('open')){ lp.classList.remove('open'); return; }
   window.location.href = 'index.html';
 });
 history.pushState({page:'chat'},'','');
